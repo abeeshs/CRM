@@ -57,7 +57,7 @@ export const userLogin = asyncHandler(async (req, res) => {
 	} else {
 		const userExist = await User.findOne({ email: email });
 		if (userExist && (await bcrypt.compare(req.body.password, userExist.password))) {
-			res.status(200).json({ message: 'Loggin Success', token: generateToken(userExist._id) });
+			res.status(200).json({ message: 'Loggin Success', token: generateToken(userExist._id),username:userExist.username });
 		} else {
 			res.status(401);
 			throw new Error('Incorrect email or password');

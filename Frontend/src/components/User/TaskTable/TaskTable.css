@@ -1,0 +1,27 @@
+.css-1jbbcbn-MuiDataGrid-columnHeaderTitle {
+	font-weight: 700 !important;
+	font-size: 15px !important;
+}
+.create-task-btn {
+	color: white;
+	background-color: rgba(255, 68, 0, 0.734) !important;
+	float: right;
+}
+/* .outlined-basic{
+    padding: 10px !important;
+    margin: 10px;
+
+
+} */
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+	margin: 10px;
+    
+}
+.outlined-basic1{
+    width: 500px;
+}
+.note{
+    width:500px;
+    height: 150px ;
+
+}

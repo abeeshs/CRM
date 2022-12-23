@@ -18,7 +18,7 @@ export const createNewTask= asyncHandler(async(req,res)=>{
         due_date:dueDate,
         due_time:time,
         description:description,
-        created_by:"req.user._id"
+        created_by:req.user._id
 
     }
     const newTask=await Task.create(taskDetails);

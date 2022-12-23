@@ -1,25 +1,69 @@
+import { Box } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Sidebar, { DrawerHeader } from './components/Admin/Sidebar/Sidebar';
 import Dashboard from './pages/admin/Dashboard';
 import Login from './pages/admin/Login';
 import Register from './pages/admin/Register';
+import Tasks from './pages/admin/Tasks';
+import UserRegister from './pages/user/Register'
+import UserLogin from './pages/user/Login'
+import Home from './pages/user/Home'
+import './App.css'
 
+// function App() {
+// 	return (
+// 		<>
+// 			<Router>
+// 				<Routes>
+// 					<Route path="/admin/login" element={<Login />} />
+// 					<Route path="/admin/register" element={<Register />} />
+// 				</Routes>
+// 				<Box sx={{ display: 'flex' }}>
+// 					<Sidebar />
+// 					<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+// 						<DrawerHeader />
 
+// 						<Routes>
+// 							<Route path="/admin">
+// 								<Route path="/admin" element={<Dashboard />} />
+
+// 								<Route path="/admin/task" element={<Tasks />} />
+// 							</Route>
+// 						</Routes>
+// 					</Box>
+// 				</Box>
+// 			</Router>
+// 			<ToastContainer />
+// 		</>
+// 	);
+// }
+
+// export default App;
 function App() {
 	return (
 		<>
 			<Router>
-				<div className='container'>
-        
-					<Routes>
-            
-            <Route path='/admin' element={<Dashboard/>}/>
-            <Route path='/admin/login' element={<Login/>}/>
-            <Route path='/admin/register' element={<Register/>}/>
-          </Routes>
-				</div>
+				<Routes>
+					<Route path="/admin/login" element={<Login />} />
+					<Route path="/admin/register" element={<Register />} />
+					<Route path='/' element={<UserLogin/>}/>
+					<Route path='/signup' element={<UserRegister/>}/>
+					<Route path='/home' element={<Home/>}/>
+				</Routes>
+			
+				<Routes>
+					
+
+					<Route path="/admin" element={<Dashboard />} />
+
+					<Route path="/admin/task" element={<Tasks />} />
+					
+				</Routes>
 			</Router>
+			<ToastContainer />
 		</>
 	);
 }

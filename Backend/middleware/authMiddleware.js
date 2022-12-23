@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import Admin from '../Model/adminModel.js';
 
-export const protect = asyncHandler(async (req, res, next) => {
+export const adminProtect = asyncHandler(async (req, res, next) => {
 	let token;
 	console.log(req.headers)
 

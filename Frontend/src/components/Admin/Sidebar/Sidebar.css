@@ -2,6 +2,11 @@
     background-color: blue;
     color: white;
 }
-.css-i4bv87-MuiSvgIcon-root{
+.css-i4bv87-MuiSvgIcon{
     color: white;
+}
+.newuser{
+    float: right;
+    background-color:#ff5722cc !important;
+    color: orange;
 }

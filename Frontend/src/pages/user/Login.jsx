@@ -18,7 +18,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import *as authService from '../../services/authService'
 import { useDispatch } from 'react-redux';
-import { setAdminToken } from '../../features/auth/adminAuthSlice';
+import { setUserToken } from '../../features/auth/userAuthSlice';
 
 
 const theme = createTheme();
@@ -27,7 +27,7 @@ export default function SignIn() {
   const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-  //Admin login form schema
+  //User login form schema
 	const schema = yup.object().shape({	
 		email: yup.string().email().required('Email is required'),	
 		password: yup.string().min(3).required('Password is required'),
@@ -41,12 +41,12 @@ export default function SignIn() {
   //form on submit function
 	const onSubmit = async (data) => {
 		console.log(data);
-		const  response = await authService.adminLogin(data)
-		console.log(response)
+		const  response = await authService.userLogin(data)
+		console.log({response})
 		if(response){
 
-			dispatch(setAdminToken({ token: response.token, admin: true }));
-			navigate('/admin')
+			dispatch(setUserToken({ token: response.token,username:response.username }));
+      navigate('/home')
 			
 		}
 	};
@@ -66,6 +66,9 @@ export default function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
+          <Typography component="h3" variant="p">
+            Welcome to CRM
+          </Typography>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -114,7 +117,7 @@ export default function SignIn() {
                 </Linke>
               </Grid>
               <Grid item>
-                <Link to='/admin/register' >Don't have an account? Sign Up</Link>
+                <Link to='/signup' >Don't have an account? Sign Up</Link>
                 {/* <Linke href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Linke> */}

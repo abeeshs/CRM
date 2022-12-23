@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import *as userController from '../controller/userController.js'
-import {protect} from '../middleware/authMiddleware.js'
+import *as contactController from '../controller/contactController.js'
 import *as taskController from '../controller/taskController.js'
 
 // router.get('/',userController.userLogin)
@@ -15,6 +15,10 @@ router.post('/task/add-task',taskController.createNewTask);
 router.delete('/task/delete-task/:id',taskController.deleteTask);
 //Edit Task
 router.put('/task/edit-task/:id',taskController.editTask);
+//view -Contacts
+
+//create contacts
+router.post('/contacts/add-contact',contactController.addNewContact)
 
 
 export default router;

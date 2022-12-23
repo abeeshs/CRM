@@ -3,16 +3,19 @@ import bcrypt from 'bcryptjs';
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken'
 import User from '../Model/userModel.js'
+import Tasks from '../Model/taskModel.js'
 
 //-------------Admin Register-------------
 //method = POST
 export const adminRegister = asyncHandler(async (req, res) => {
+	console.log("object")
 	console.log(req.body);
 	const { firstname, lastname, email, mobile, password, confirmPassword } = req.body;
 
 	if (!firstname || !lastname || !email || !mobile || !password || !confirmPassword) {
-		res.status(400);
-		throw new Error('all fields required');
+		console.log("........")
+		res.status(400)
+		throw new Error('All fields required');
 	}
 	//check email or admin already exist
 
@@ -20,7 +23,7 @@ export const adminRegister = asyncHandler(async (req, res) => {
 
 	if (emailExist) {
 		res.status(404);
-		throw new Error('email already exist');
+		throw new Error('Email already exist');
 	} else {
 		//password bcrypt
 		const salt = await bcrypt.genSalt(10);
@@ -91,6 +94,36 @@ export const createUser =asyncHandler(async(req,res)=>{
 			res.status(200).json({message:"User created successfully"})
 		}
 	}
+})
+
+
+//------------GET ALL USER----------------
+//Method -GET
+
+export const getAllUser=asyncHandler(async(req,res)=>{
+	const users= await User.find()
+	console.log(users)
+	if(users){
+		res.status(200).json(users)
+	}else{
+		res.status(400)
+		throw new Error("Users not found")
+	}
+})
+
+//-------------GET ALL TASK----------------
+//Method -GET
+
+export const getAllTask= asyncHandler(async(req,res)=>{
+	const task =await Tasks.find();
+	console.log(task)
+	if(task){
+		res.status(200).json(task)
+	}else{
+		res.status(200)
+		throw new Error('Tasks not found')
+	}
+
 })
 
 //------------JWT token generate-----------

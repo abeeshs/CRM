@@ -1,0 +1,11 @@
+.css-1f2xuhi-MuiDrawer-docked .MuiDrawer-paper {
+	color: white !important;
+	background-color: #06a2e9;
+	background: rgb(178, 23, 198) !important;
+	background: linear-gradient(
+		180deg,
+		rgba(178, 23, 198, 1) 0%,
+		rgba(123, 0, 255, 1) 32%,
+		rgba(123, 0, 255, 1) 100%
+	) !important;
+}

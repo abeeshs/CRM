@@ -6,6 +6,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -18,12 +19,22 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import Usertable from '../Usertable/Usertable';
+import SettingsIcon from '@mui/icons-material/Settings';
+import TaskIcon from '@mui/icons-material/Task';
+import ChatIcon from '@mui/icons-material/Chat';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import GroupsIcon from '@mui/icons-material/Groups';
+import GroupIcon from '@mui/icons-material/Group';
+import './Sidebar.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
-    backgroundColor: '#1976d2',
-    color:'white',
+	backgroundColor: '#1976d2',
+	color: 'white',
 	width: drawerWidth,
 	transition: theme.transitions.create('width', {
 		easing: theme.transitions.easing.sharp,
@@ -37,7 +48,7 @@ const closedMixin = (theme) => ({
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen
 	}),
-    backgroundColor: '#1976d2',
+	backgroundColor: '#1976d2',
 	overflowX: 'hidden',
 	width: `calc(${theme.spacing(7)} + 1px)`,
 	[theme.breakpoints.up('sm')]: {
@@ -45,7 +56,7 @@ const closedMixin = (theme) => ({
 	}
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
+export const DrawerHeader = styled('div')(({ theme }) => ({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'flex-end',
@@ -76,7 +87,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 	({ theme, open }) => ({
 		width: drawerWidth,
 		flexShrink: 0,
-        backgroundColor: 'blue',
+		backgroundColor: 'blue',
 		whiteSpace: 'nowrap',
 		boxSizing: 'border-box',
 		...(open && {
@@ -91,6 +102,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Sidebar() {
+	const navigate = useNavigate();
+
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
 
@@ -103,7 +116,7 @@ export default function Sidebar() {
 	};
 
 	return (
-		<Box sx={{ display: 'flex' }}>
+		<>
 			<CssBaseline />
 			<AppBar position="fixed" open={open}>
 				<Toolbar>
@@ -119,7 +132,7 @@ export default function Sidebar() {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" noWrap component="div">
-						Mini variant drawer
+						CRM
 					</Typography>
 				</Toolbar>
 			</AppBar>
@@ -132,8 +145,21 @@ export default function Sidebar() {
 					</DrawerHeader>
 					<Divider />
 					<List>
-						{['Users', 'Dashboard', 'Conversation', 'Deals','Task','Contacts','Meatings','Settings'].map((text, index) => (
-							<ListItem key={text} disablePadding sx={{ display: 'block' }}>
+						{[
+							{name:'Users',icon:<GroupIcon/>},
+							{name:'Conversation',icon:<ChatIcon/>},
+							{name:'Deals',icon:<ListAltIcon/>},
+							{name:'Task',icon:<TaskIcon/>},
+							{name:'Contacts',icon:<PermContactCalendarIcon/>},
+							{name:'Meatings',icon:<GroupsIcon/>},
+							{name:'Settings',icon:<SettingsIcon/>},
+							
+						].map((text, index) => (
+							<ListItem
+								key={text.name}
+								disablePadding
+								sx={{ display: 'block',backgroundColor:'' }}
+								>
 								<ListItemButton
 									sx={{
 										minHeight: 48,
@@ -146,9 +172,14 @@ export default function Sidebar() {
 											mr: open ? 3 : 'auto',
 											justifyContent: 'center'
 										}}>
-										{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+										{text.icon}
 									</ListItemIcon>
-									<ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+									<ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} onClick={() => {
+										let text2=text.name.toLowerCase()
+										console.log(text2)
+										text2==='users'?navigate('/admin'):
+									navigate(`/admin/${text2}`);
+								}} />
 								</ListItemButton>
 							</ListItem>
 						))}
@@ -178,11 +209,6 @@ export default function Sidebar() {
 					</List> */}
 				</Drawer>
 			</Box>
-			<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-				<DrawerHeader />
-			
-				
-			</Box>
-		</Box>
+		</>
 	);
 }
