@@ -33,7 +33,7 @@ export const adminLogin = async (data) => {
 	console.log({ data });
 	try {
 		const res = await axios.post('http://localhost:8000/admin', data);
-		console.log(res);
+		console.log(res.data);
 		return res.data;
 	} catch (error) {
 		const message =

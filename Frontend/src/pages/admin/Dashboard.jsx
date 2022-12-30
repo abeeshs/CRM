@@ -5,11 +5,14 @@ import Usertable from '../../components/Admin/Usertable/Usertable';
 import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Dashboard() {
 	const navigate=useNavigate();
 
-	const token =JSON.parse(localStorage.getItem('admin-auth'))
+	const token  = useSelector((state) => state.adminAuth);
+	console.log("ithu tiken")
+	console.log(token)
 	useEffect(() => {
 		if (token) {
 			

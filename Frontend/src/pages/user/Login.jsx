@@ -29,7 +29,7 @@ export default function SignIn() {
 
   //User login form schema
 	const schema = yup.object().shape({	
-		email: yup.string().email().required('Email is required'),	
+		email: yup.string().email("Enter valid email").required('Email is required'),	
 		password: yup.string().min(3).required('Password is required'),
 	});
 
@@ -46,7 +46,7 @@ export default function SignIn() {
 		if(response){
 
 			dispatch(setUserToken({ token: response.token,username:response.username }));
-      navigate('/home')
+      navigate('/contacts')
 			
 		}
 	};
@@ -73,19 +73,19 @@ export default function SignIn() {
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
-          <p>{errors.email?.message}</p>
+          <p style={{color:'red'}}>{errors.email?.message}</p>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="emaili"
               label="Email Address"
               name="email"
               autoComplete="email"
               autoFocus
               {...register('email')}
             />
-             <p>{errors.password?.message}</p>
+             <p style={{color:'red'}}>{errors.password?.message}</p>
             <TextField
               margin="normal"
               required
@@ -97,10 +97,7 @@ export default function SignIn() {
               autoComplete="current-password"
               {...register('password')}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            
             <Button
               type="submit"
               fullWidth

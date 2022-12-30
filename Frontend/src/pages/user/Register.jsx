@@ -52,7 +52,7 @@ export default function Register() {
 		if(response){
 
 			dispatch(setAdminToken({ user: response.token}));
-			navigate('/home')
+			navigate('/contacts')
 			
 		}
 	};

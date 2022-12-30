@@ -70,3 +70,15 @@ export const generateToken = (id) => {
 		expiresIn: '30d'
 	});
 };
+
+//view all users
+
+export const viewAllUser =asyncHandler(async(req,res)=>{
+	const users= await User.find()
+	if(users){
+		res.status(200).json(users)
+	}else{
+		res.status(400)
+		throw new Error('Users not found')
+	}
+})

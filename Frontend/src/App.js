@@ -11,9 +11,13 @@ import Tasks from './pages/admin/Tasks';
 import UserRegister from './pages/user/Register'
 import UserLogin from './pages/user/Login'
 import Home from './pages/user/Home'
+import TasksPage from './pages/user/TasksPage'
 import './App.css'
+import Contacts from './pages/user/Contacts';
+import DealsPage from './pages/user/DealsPage';
+import Conversation from './pages/user/Conversation';
 
-// function App() {
+
 // 	return (
 // 		<>
 // 			<Router>
@@ -52,9 +56,14 @@ function App() {
 					<Route path='/' element={<UserLogin/>}/>
 					<Route path='/signup' element={<UserRegister/>}/>
 					<Route path='/home' element={<Home/>}/>
-				</Routes>
+					<Route path='/contacts' element={<Contacts/>}/>
+					<Route path='/task' element={<TasksPage/>}/>
+					<Route path='/deals' element={<DealsPage/>}/>
+					<Route path='/conversation' element={<Conversation/>}/>
+
+				{/* </Routes>
 			
-				<Routes>
+				<Routes> */}
 					
 
 					<Route path="/admin" element={<Dashboard />} />

@@ -1,22 +1,33 @@
-import React from 'react'
-import TaskTable from '../../components/Admin/TaskTable/TaskTable'
-import { Box } from '@mui/material';
+import React, { useEffect } from 'react';
 
-import Sidebar,{DrawerHeader} from '../../components/Admin/Sidebar/Sidebar';
+
+import { Box } from '@mui/material';
+import Sidebar, { DrawerHeader } from '../../components/Admin/Sidebar/Sidebar';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import AdminTaskTable from '../../components/Admin/TaskTable/AminTaskTable';
 function Tasks() {
-  return (
-    <>
-    <Box sx={{ display: 'flex' }}>
+	const navigate = useNavigate();
+	const {token}  = useSelector((state) => state.adminAuth);
+	useEffect(() => {
+		if (token) {
+     
+		} else {
+			navigate('/admin/login');
+		}
+	}, [token]);
+
+	return (
+		<>
+			<Box sx={{ display: 'flex' }}>
 				<Sidebar />
 				<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
 					<DrawerHeader />
-          <TaskTable />
+					<AdminTaskTable />
 				</Box>
 			</Box>
-   
-    
-    </>
-  )
+		</>
+	);
 }
 
-export default Tasks
+export default Tasks;

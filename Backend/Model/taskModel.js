@@ -2,9 +2,10 @@ import mongoose from 'mongoose';
 
 const taskSchema = new mongoose.Schema(
 	{
-		userId: {
+		created_by: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User'
+			ref: 'User',
+			required: true
 		},
 		title: {
 			type: String,
@@ -15,12 +16,13 @@ const taskSchema = new mongoose.Schema(
 			type: String,
 			required: true
 		},
-		associate_with: {
-			type: String
+		associated_with: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Contact'
 		},
 		assigned_to: {
-			type: String,
-			required: true
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User'
 		},
 		priority: {
 			type: String,
@@ -38,9 +40,7 @@ const taskSchema = new mongoose.Schema(
 			type: String,
 			required: true
 		},
-		created_by: {
-			type: String
-		},
+		
         task_status:{
             default:"Pending",
             type:String

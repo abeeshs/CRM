@@ -9,7 +9,6 @@ const initialState = {
 };
 
 //Register admin
-
 export const authSlice = createSlice({
 	name: 'auth',
 	initialState,

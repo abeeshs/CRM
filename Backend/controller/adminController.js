@@ -96,6 +96,21 @@ export const createUser =asyncHandler(async(req,res)=>{
 	}
 })
 
+//----------  DELETE USER--------------
+//Method -POST
+export const deleteUser=asyncHandler(async(req,res)=>{
+	const userId= req.params.id
+	const users= await User.findByIdAndDelete(userId)
+	console.log(users)
+	if(users){
+		res.status(200).json(users)
+	}else{
+		res.status(400)
+		throw new Error("Users not found")
+	}
+})
+
+
 
 //------------GET ALL USER----------------
 //Method -GET
@@ -115,7 +130,8 @@ export const getAllUser=asyncHandler(async(req,res)=>{
 //Method -GET
 
 export const getAllTask= asyncHandler(async(req,res)=>{
-	const task =await Tasks.find();
+	
+	const task =await Tasks.find().populate('assigned_to').populate('associated_with')
 	console.log(task)
 	if(task){
 		res.status(200).json(task)

@@ -154,7 +154,7 @@ export default function Register() {
 								</Linke>
 							</Grid>
 							<Grid item>
-								<Link to="/admin/register">Don't have an account? Sign Up</Link>
+								<Link to="/admin/register">Already have account? Sign In</Link>
 								{/* <Linke href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Linke> */}

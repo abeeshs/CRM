@@ -42,10 +42,12 @@ export default function SignIn() {
 	const onSubmit = async (data) => {
 		console.log(data);
 		const  response = await authService.adminLogin(data)
-		console.log(response)
+    console.log("ithu")
 		if(response){
+      console.log(response)
 
 			dispatch(setAdminToken({ token: response.token, admin: true }));
+      
 			navigate('/admin')
 			
 		}
@@ -94,10 +96,7 @@ export default function SignIn() {
               autoComplete="current-password"
               {...register('password')}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            
             <Button
               type="submit"
               fullWidth
