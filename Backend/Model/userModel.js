@@ -23,6 +23,10 @@ const userShema =new mongoose.Schema(
             type:String,
            
         },
+        is_block:{
+            type:Boolean,
+            default:false
+        }
        
 
     },

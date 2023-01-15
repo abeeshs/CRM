@@ -4,7 +4,7 @@ const taskSchema = new mongoose.Schema(
 	{
 		created_by: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User',
+			ref: 'Admin',
 			required: true
 		},
 		title: {
@@ -17,8 +17,9 @@ const taskSchema = new mongoose.Schema(
 			required: true
 		},
 		associated_with: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Contact'
+			type:String
+			// type: mongoose.Schema.Types.ObjectId,
+			// ref: 'Contact'
 		},
 		assigned_to: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -44,7 +45,11 @@ const taskSchema = new mongoose.Schema(
         task_status:{
             default:"Pending",
             type:String
-        }
+        },
+		file:{
+			type:String,
+			
+		}
 	},
 	{
 		timestamps: true

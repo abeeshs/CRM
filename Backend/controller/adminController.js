@@ -1,20 +1,20 @@
 import Admin from '../Model/adminModel.js';
 import bcrypt from 'bcryptjs';
 import asyncHandler from 'express-async-handler';
-import jwt from 'jsonwebtoken'
-import User from '../Model/userModel.js'
-import Tasks from '../Model/taskModel.js'
+import jwt from 'jsonwebtoken';
+import User from '../Model/userModel.js';
+import Tasks from '../Model/taskModel.js';
 
 //-------------Admin Register-------------
 //method = POST
 export const adminRegister = asyncHandler(async (req, res) => {
-	console.log("object")
+	console.log('object');
 	console.log(req.body);
 	const { firstname, lastname, email, mobile, password, confirmPassword } = req.body;
 
 	if (!firstname || !lastname || !email || !mobile || !password || !confirmPassword) {
-		console.log("........")
-		res.status(400)
+		console.log('........');
+		res.status(400);
 		throw new Error('All fields required');
 	}
 	//check email or admin already exist
@@ -50,7 +50,6 @@ export const adminRegister = asyncHandler(async (req, res) => {
 	}
 });
 
-
 //-------------Admin Login--------------
 //method =POST
 
@@ -73,78 +72,97 @@ export const adminLogin = asyncHandler(async (req, res) => {
 	}
 });
 
+//-------------Admin Logout--------------
+//method =POST
+
+export const logOut = asyncHandler(async (req, res) => {
+	res.status(200).json({ logout: true, message: 'Logout Success' });
+});
+
 //-------------Create New User------------
 //Method -POST
-export const createUser =asyncHandler(async(req,res)=>{
+export const createUser = asyncHandler(async (req, res) => {
+	console.log(req.body);
+	const email = req.body.email;
+	if (!email) {
+		res.status(400);
+		throw new Error('Please enter email');
+	} else {
+		const user = await User.findOne({ email: email });
 
-	console.log(req.body)
-	const email=req.body.email
-	if(!email){
-		res.status(400)
-		throw new Error("Please enter email");
-	}else{
-		const user=await User.findOne({email:email})
-
-		if(user){
-			res.status(401)
-			throw new Error('Email already exist')
-		}else{
-			const newUser=await User.create({email:email})
-			console.log(newUser)
-			res.status(200).json({message:"User created successfully"})
+		if (user) {
+			res.status(401);
+			throw new Error('Email already exist');
+		} else {
+			const newUser = await User.create({ email: email });
+			console.log(newUser);
+			res.status(200).json({ message: 'User created successfully' });
 		}
 	}
-})
+});
 
 //----------  DELETE USER--------------
 //Method -POST
-export const deleteUser=asyncHandler(async(req,res)=>{
-	const userId= req.params.id
-	const users= await User.findByIdAndDelete(userId)
-	console.log(users)
-	if(users){
-		res.status(200).json(users)
-	}else{
-		res.status(400)
-		throw new Error("Users not found")
+export const deleteUser = asyncHandler(async (req, res) => {
+	const userId = req.params.id;
+	const users = await User.findByIdAndDelete(userId);
+	console.log(users);
+	if (users) {
+		res.status(200).json(users);
+	} else {
+		res.status(400);
+		throw new Error('Users not found');
 	}
-})
-
-
+});
 
 //------------GET ALL USER----------------
 //Method -GET
 
-export const getAllUser=asyncHandler(async(req,res)=>{
-	const users= await User.find()
-	console.log(users)
-	if(users){
-		res.status(200).json(users)
-	}else{
-		res.status(400)
-		throw new Error("Users not found")
+export const getAllUser = asyncHandler(async (req, res) => {
+	const users = await User.find();
+
+	if (users) {
+		res.status(200).json(users);
+	} else {
+		res.status(400);
+		throw new Error('Users not found');
 	}
-})
+});
 
 //-------------GET ALL TASK----------------
 //Method -GET
 
-export const getAllTask= asyncHandler(async(req,res)=>{
-	
-	const task =await Tasks.find().populate('assigned_to').populate('associated_with')
-	console.log(task)
-	if(task){
-		res.status(200).json(task)
-	}else{
-		res.status(200)
-		throw new Error('Tasks not found')
+export const getAllTask = asyncHandler(async (req, res) => {
+	const task = await Tasks.find().populate('assigned_to').populate('associated_with');
+	console.log(task);
+	if (task) {
+		res.status(200).json(task);
+	} else {
+		res.status(200);
+		throw new Error('Tasks not found');
 	}
+});
 
-})
+//------------GET ALL USER----------------
+//Method -GET
+
+export const blockUser = asyncHandler(async (req, res) => {
+	const userId = req.params.id;
+	console.log(req.body);
+	const updatedUser = await User.findByIdAndUpdate(userId, { is_block: req.body.status });
+	console.log(updatedUser);
+
+	if (updatedUser) {
+		res.status(200).json({ message: 'User blocked' });
+	} else {
+		res.status(400);
+		throw new Error('Users not found');
+	}
+});
 
 //------------JWT token generate-----------
-export const generateToken=(id)=>{
-	return jwt.sign({id},process.env.JWT_SECRET,{
-		expiresIn:'30d'
-	})
-}
+export const generateToken = (id) => {
+	return jwt.sign({ id }, process.env.JWT_SECRET, {
+		expiresIn: '30d'
+	});
+};

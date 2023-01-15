@@ -21,6 +21,8 @@ dotenv.config()
 
 app.use(cors());
 connectDB();
+app.use(express.static('public')); 
+app.use('/public', express.static('public'));
 const PORT = process.env.PORT || 5000;
 
 app.use('/',userRouter) 

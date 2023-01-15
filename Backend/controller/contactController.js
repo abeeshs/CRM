@@ -26,7 +26,7 @@ export const getAllContact = asyncHandler(async(req,res)=>{
 
 export const addNewContact =asyncHandler(async(req,res)=>{
     console.log(req.body)
-    const{email,mobile,firstname,lastname,contactOwner,jobTitle,lifeCycle,leadStatus}=req.body
+    const{email,mobile,firstname,lastname,contactOwner,jobTitle,lifeCycle,leadStatus}=req.body.data
     if(!email|| !mobile ||!firstname || !lastname || !contactOwner || !jobTitle|| !lifeCycle ||!leadStatus){
         res.status(400)
         throw new Error("All fields required")

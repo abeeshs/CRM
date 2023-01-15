@@ -10,6 +10,9 @@ const router = Router();
 router.post('/signup', adminController.adminRegister);
 //admin login
 router.post('/', adminController.adminLogin);
+
+router.get('/logout',adminProtect,adminController.logOut)
+
 //Add user
 router.post('/users/add-user', adminController.createUser);
 
@@ -24,12 +27,16 @@ router.post('/task/add-task', adminProtect, taskController.createNewTask);
 router.delete('/task/delete-task/:id', adminProtect, taskController.deleteTask);
 //Edit Task
 router.put('/task/edit-task/:id', adminProtect, taskController.editTask);
+//Change status 
+router.patch('/task/change-status/:id',taskController.aproveTask)
 
 //====================== USERS ========================
 //Get all users
 router.get('/Users',adminController.getAllUser);
 //delete user
 router.delete('/Users/delete-user/:id',adminController.deleteUser);
+router.patch('/Users/block-user/:id',adminController.blockUser);
+
 
 
 //================== CONTACTS ====================

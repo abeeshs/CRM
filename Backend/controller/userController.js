@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import User from '../Model/userModel.js';
 import bcrypt from 'bcryptjs';
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken';
 
 //------------- userSignup---------
 //Method - POST
@@ -45,7 +45,6 @@ export const userRegister = asyncHandler(async (req, res) => {
 	}
 });
 
-
 //---------------userLogin----------
 //method-POST
 export const userLogin = asyncHandler(async (req, res) => {
@@ -57,7 +56,18 @@ export const userLogin = asyncHandler(async (req, res) => {
 	} else {
 		const userExist = await User.findOne({ email: email });
 		if (userExist && (await bcrypt.compare(req.body.password, userExist.password))) {
-			res.status(200).json({ message: 'Loggin Success', token: generateToken(userExist._id),username:userExist.username });
+			if (userExist.is_block) {
+				res.status(401);
+				throw new Error('Temporarly blocked by admin');
+			} else {
+				res
+					.status(200)
+					.json({
+						message: 'Loggin Success',
+						token: generateToken(userExist._id),
+						username: userExist.username
+					});
+			}
 		} else {
 			res.status(401);
 			throw new Error('Incorrect email or password');
@@ -65,6 +75,21 @@ export const userLogin = asyncHandler(async (req, res) => {
 	}
 });
 
+//--------------User Logout-------------
+//Method - GET
+
+export const userLogOut = async () => {
+	try {
+		
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+
+
+
+//--------- Generate jwt Token ----------------
 export const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
 		expiresIn: '30d'
@@ -73,12 +98,12 @@ export const generateToken = (id) => {
 
 //view all users
 
-export const viewAllUser =asyncHandler(async(req,res)=>{
-	const users= await User.find()
-	if(users){
-		res.status(200).json(users)
-	}else{
-		res.status(400)
-		throw new Error('Users not found')
+export const viewAllUser = asyncHandler(async (req, res) => {
+	const users = await User.find();
+	if (users) {
+		res.status(200).json(users);
+	} else {
+		res.status(400);
+		throw new Error('Users not found');
 	}
-})
+});
