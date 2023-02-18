@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,13 +19,21 @@ import { useForm } from 'react-hook-form';
 import *as authService from '../../services/authService'
 import { useDispatch } from 'react-redux';
 import { setAdminToken } from '../../features/auth/adminAuthSlice';
-
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const theme = createTheme();
 
 export default function SignIn() {
+  const adminToken = JSON.parse(localStorage.getItem('admin-auth'));
+  const navigate = useNavigate();
+  useEffect (()=>{
+    if(adminToken){
+      navigate('/admin')
+    } 
+    
+  },[])
   const dispatch = useDispatch();
-	const navigate = useNavigate();
 
   //Admin login form schema
 	const schema = yup.object().shape({	
@@ -40,18 +48,21 @@ export default function SignIn() {
 
   //form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
+	
 		const  response = await authService.adminLogin(data)
     console.log("ithu")
 		if(response){
-      console.log(response)
+      console.log(response.token)
 
 			dispatch(setAdminToken({ token: response.token, admin: true }));
       
 			navigate('/admin')
 			
-		}
+		}else{
+      navigate('/admin/login')
+    }
 	};
+ 
 
   return (
     <ThemeProvider theme={theme}>
@@ -82,6 +93,8 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              error={!!errors.email}
+							helperText={errors.email ? errors.email.message : ''}
               {...register('email')}
             />
              <p>{errors.password?.message}</p>
@@ -94,6 +107,8 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              error={!!errors.password}
+							helperText={errors.password ? errors.password.message : ''}
               {...register('password')}
             />
             

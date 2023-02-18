@@ -18,11 +18,14 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import './Sidebar.css';
 import { Box } from '@mui/system';
-import { Collapse, Typography } from '@mui/material';
+import { Avatar, Collapse, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 const drawerWidth = 240;
 
-export default function Sidebar() {
+export default function Sidebar(props) {
+	const{setTableType,tableType}=props;
 	const [open, setOpen] = React.useState(false);
 
 	const handleClick = () => {
@@ -33,7 +36,22 @@ export default function Sidebar() {
 	return (
 		<>
 			<CssBaseline />
-
+			{/* <Box sx={{ backgroundColor: 'White', width: '100%', height: '65px' }}>
+				<Avatar
+					sx={{ float: 'right', margin: '10px', marginRight: '30px' }}
+					alt="Travis Howard"
+					src="/static/images/avatar/2.jpg"
+				/>
+				<CircleNotificationsIcon
+					sx={{
+						float: 'right',
+						margin: '15px',
+						color: 'grey',
+						fontSize: '30px',
+						marginRight: '30px'
+					}}
+				/>
+			</Box> */}
 			<Drawer
 				sx={{
 					width: drawerWidth,
@@ -47,6 +65,7 @@ export default function Sidebar() {
 				anchor="left">
 				<Box sx={{ width: '20px', height: '65px' }}>
 					<Typography></Typography>
+					
 				</Box>
 				<Divider />
 
@@ -78,13 +97,13 @@ export default function Sidebar() {
 						<TaskIcon />
 						</ListItemIcon>
 						<ListItemText primary="Task" />
-						{open ? <ExpandLess /> : <ExpandMore />}
+						{/* {open ? <ExpandLess /> : <ExpandMore />} */}
 					</ListItemButton>
 					<Collapse in={open} timeout="auto" unmountOnExit>
 						<List component="div" disablePadding>
-							<ListItemButton sx={{ pl: 4 }}>
+							<ListItemButton sx={{ pl: 4 }} onClick={()=>setTableType("Pending")}>  
 								<ListItemIcon>
-								
+								                                                 
 								</ListItemIcon >
 								<ListItemText primary="Pendig Task" />
 							</ListItemButton>
@@ -92,13 +111,13 @@ export default function Sidebar() {
 								<ListItemIcon>
 								
 								</ListItemIcon >
-								<ListItemText primary="Compleated Task" />
+								<ListItemText primary="Compleated Task" onClick={()=>setTableType("Compleated")} />
 							</ListItemButton>
 							<ListItemButton sx={{ pl: 4 }}>
 								<ListItemIcon>
 								
 								</ListItemIcon >
-								<ListItemText primary="Varified Task" />
+								<ListItemText primary="Varified Task" onClick={()=>setTableType("Varified")}/>
 							</ListItemButton>
 						</List>
 					</Collapse>

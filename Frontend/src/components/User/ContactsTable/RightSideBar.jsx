@@ -31,8 +31,11 @@ function RightSideBar({ getAllContacts }) {
 		firstname: yup.string().required('First Name is required'),
 		lastname: yup.string().required('Last Name is required'),
 		email: yup.string().email().required('Email is required'),
-		mobile: yup.number().min(10).positive().integer().required('Mobile is required'),
-		contactOwner: yup.string(),
+		mobile: yup
+			.string()
+			.required()
+			.matches(/^[789]\d{9}$/, 'Is not in correct format'),
+		contactOwner: yup.string().required(),
 		jobTitle: yup.string(),
 		lifeCycle: yup.string(),
 		leadStatus: yup.string()
@@ -47,21 +50,8 @@ function RightSideBar({ getAllContacts }) {
 		resolver: yupResolver(schema)
 	});
 
-	//form on submit function
-	const onSubmit = async (data) => {
-		
-		const response = await contactService.createContact(data);
-		
-		if (response) {
-			//dispatch(setAdminToken({ token: response.token, admin: true }));
-			navigate('/contacts');
-		}
-	};
-
 	const [state, setState] = React.useState({ right: false });
 	const [users, setUsers] = React.useState([]);
-
-	
 
 	const { token } = useSelector((state) => state.userAuth);
 	const toggleDrawer = (anchor, open) => async (event) => {
@@ -71,10 +61,22 @@ function RightSideBar({ getAllContacts }) {
 
 		setState({ ...state, [anchor]: open });
 
-	
 		const userlist = await userService.viwAllusers(token);
 		setUsers(userlist);
 		getAllContacts();
+	};
+
+	//form on submit function
+	const onSubmit = async (data) => {
+		console.log(data);
+		const response = await contactService.createContact(data);
+
+		if (response) {
+			toggleDrawer("right", false);
+			// toggleDrawer('right', false)
+			//dispatch(setAdminToken({ token: response.token, admin: true }));
+			getAllContacts();
+		}
 	};
 
 	const list = (anchor) => (
@@ -94,22 +96,40 @@ function RightSideBar({ getAllContacts }) {
 			<Box>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
-						<p style={{ color: 'red' }}>{errors.email?.message}</p>
 						<InputLabel className="label" htmlFor="my-input">
 							Email address
 						</InputLabel>
-						<TextField sx={{ width: 500 }} name="email" {...register('email')} />
-						<p style={{ color: 'red' }}>{errors.firstname?.message}</p>
+						<TextField
+							sx={{ width: 500 }}
+							name="email"
+							{...register('email')}
+							error={!!errors.email}
+							helperText={errors.email ? errors.email.message : ''}
+						/>
+
 						<InputLabel className="label" htmlFor="my-input">
 							First name
 						</InputLabel>
-						<TextField sx={{ width: 500 }} name="firstname" {...register('firstname')} />
-						<p style={{ color: 'red' }}>{errors.lastname?.message}</p>
+						<TextField
+							sx={{ width: 500 }}
+							name="firstname"
+							error={!!errors.firstname}
+							helperText={errors.firstname ? errors.firstname.message : ''}
+							{...register('firstname')}
+						/>
+
 						<InputLabel className="label" htmlFor="my-input">
 							Last name
 						</InputLabel>
-						<TextField sx={{ width: 500 }} name="lastname" {...register('lastname')} />
-						<p style={{ color: 'red' }}>{errors.contactOwner?.message}</p>
+
+						<TextField
+							sx={{ width: 500 }}
+							name="lastname"
+							error={!!errors.lastname}
+							helperText={errors.lastname ? errors.lastname.message : ''}
+							{...register('lastname')}
+						/>
+
 						<InputLabel className="label" htmlFor="my-input">
 							Contact owner
 						</InputLabel>
@@ -120,6 +140,8 @@ function RightSideBar({ getAllContacts }) {
 							onChange={onchange}
 							autoWidth
 							name="contactOwner"
+							error={!!errors.contactOwner}
+							helperText={errors.contactOwner ? errors.contactOwner.message : ''}
 							{...register('contactOwner')}>
 							<MenuItem value="">
 								<em>None</em>
@@ -128,15 +150,27 @@ function RightSideBar({ getAllContacts }) {
 								return <MenuItem value={user._id}>{user?.username}</MenuItem>;
 							})}
 						</Select>
-						<p style={{ color: 'red' }}>{errors.jobTitle?.message}</p>
+
 						<InputLabel className="label" htmlFor="my-input">
 							Job title
 						</InputLabel>
-						<TextField sx={{ width: 500 }} name="jobTitle" {...register('jobTitle')} />
+						<TextField
+							sx={{ width: 500 }}
+							name="jobTitle"
+							error={!!errors.jobTitle}
+							helperText={errors.jobTitle ? errors.jobTitle.message : ''}
+							{...register('jobTitle')}
+						/>
 						<InputLabel className="label" htmlFor="my-input">
 							Phone number
 						</InputLabel>
-						<TextField sx={{ width: 500 }} name="mobile" {...register('mobile')} />
+						<TextField
+							sx={{ width: 500 }}
+							name="mobile"
+							error={!!errors.mobile}
+							helperText={errors.mobile ? errors.mobile.message : ''}
+							{...register('mobile')}
+						/>
 						<InputLabel className="label" htmlFor="my-input">
 							Life cycle stage
 						</InputLabel>
@@ -147,6 +181,8 @@ function RightSideBar({ getAllContacts }) {
 							onChange={onchange}
 							autoWidth
 							name="lifeCycle"
+							error={!!errors.lifeCycle}
+							helperText={errors.lifeCycle ? errors.lifeCycle.message : ''}
 							{...register('lifeCycle')}>
 							<MenuItem value="">
 								<em>None</em>
@@ -166,6 +202,8 @@ function RightSideBar({ getAllContacts }) {
 							onChange={onchange}
 							autoWidth
 							name="leadStatus"
+							error={!!errors.leadStatus}
+							helperText={errors.leadStatus ? errors.leadStatus.message : ''}
 							{...register('leadStatus')}>
 							<MenuItem value="">
 								<em>None</em>
@@ -178,11 +216,7 @@ function RightSideBar({ getAllContacts }) {
 							<MenuItem value={'Bad timing'}>Bad timing</MenuItem>
 						</Select>
 					</Stack>
-					<Button
-						type="submit"
-						className="button-color"
-						style={{ color: 'white', margin: '25px' }}
-						onClick={toggleDrawer('right', false)}>
+					<Button type="submit" className="button-color" style={{ color: 'white', margin: '25px' }}>
 						{' '}
 						Create
 					</Button>

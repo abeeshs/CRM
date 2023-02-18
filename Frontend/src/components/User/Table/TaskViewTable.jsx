@@ -3,6 +3,7 @@ import {
 	Box,
 	Button,
 	Chip,
+	FormControl,
 	MenuItem,
 	Table,
 	TableBody,
@@ -13,33 +14,43 @@ import {
 	TextField
 } from '@mui/material';
 import { useState } from 'react';
-import * as taskService from '../../../services/taskService'
+import * as taskService from '../../../services/taskService';
 import { useSelector } from 'react-redux';
+import './Table.css';
+// import public from '../../../../public'
 
 function TaskViewTable(props) {
 	const { viewTask, setViewTask } = props;
-    const [status, setStatus]= useState('')
+	const [status, setStatus] = useState('');
+	const [file, setFile] = useState(null);
 
-    const { token } = useSelector((state) => state.userAuth);
-    
-    //change the task status 
-    const changeStatus=async(e)=>{
-        console.log(e.target.value);
-		viewTask.task_status=e.target.value
-        setStatus(e.target.value)
-        const response = await taskService.changeTaskStatus(token,e.target.value,viewTask._id)
-        // if(response){
-		// 	if(viewTask.task_status==='Pending'){
+	const { token } = useSelector((state) => state.userAuth);
 
-		// 		viewTask.task_status="Task varifying"
-		// 	}else if(viewTask.task_status=='Task varifying'){
-		// 		viewTask.task_status="Pending"
-		// 	}else{
-		// 		viewTask.task_status="Pending"
-		// 	}
-        // }
-    }
+	//change the task status
+	const changeStatus = async (e) => {
+		console.log(e.target.value);
+		viewTask.task_status = e.target.value;
+		setStatus(e.target.value);
+		const response = await taskService.changeTaskStatus(token, e.target.value, viewTask._id);
+	};
+	const handleChange = (e) => {
+		console.log(URL.createObjectURL(e.target.files[0]));
 
+		setFile(e.target.files[0]);
+	};
+	const submitHandler = async (e) => {
+		e.preventDefault();
+		console.log('hiii');
+		const data = new FormData();
+		console.log(data);
+		data.append('file', file);
+		console.log(data);
+		const response = await taskService.uploadFile(token, data, viewTask._id);
+	};
+	if (file) {
+		console.log(URL.createObjectURL(file));
+	}
+	// console.log(file?,file.name:'nofile')
 	return (
 		<Box>
 			<TableContainer>
@@ -52,58 +63,98 @@ function TaskViewTable(props) {
 					</TableRow>
 				</TableHead> */}
 					<TableBody>
-						<TableRow key={'1'}>
+						<TableRow key={'12'}>
 							<TableCell sx={{ fontWeight: 700 }}>Title</TableCell>
 							<TableCell>{viewTask.title}</TableCell>
 						</TableRow>
-						<TableRow key={'1'}>
+						<TableRow key={'13'}>
 							<TableCell sx={{ fontWeight: 700 }}>Task Type</TableCell>
 							<TableCell>{viewTask.task_type}</TableCell>
 						</TableRow>
-						<TableRow key={'1'}>
+						<TableRow key={'14'}>
 							<TableCell sx={{ fontWeight: 700 }}>Created By</TableCell>
-							<TableCell>{viewTask.created_by}</TableCell>
+							<TableCell>{viewTask.created_by.firstname}</TableCell>
 						</TableRow>
-						<TableRow key={'1'}>
+						<TableRow key={'15'}>
 							<TableCell sx={{ fontWeight: 700 }}>Priority</TableCell>
 							<TableCell>{viewTask.priority}</TableCell>
 						</TableRow>
-						<TableRow key={'1'}>
+						<TableRow key={'16'}>
 							<TableCell sx={{ fontWeight: 700 }}>Due Date</TableCell>
 							<TableCell>{viewTask.due_date}</TableCell>
 						</TableRow>
-						<TableRow key={'1'}>
+						<TableRow key={'17'}>
 							<TableCell sx={{ fontWeight: 700 }}>Descrition</TableCell>
 							<TableCell>{viewTask.description}</TableCell>
 						</TableRow>
-						<TableRow key={'1'}>
+						<TableRow key={'18'}>
 							<TableCell sx={{ fontWeight: 700 }}>Task Status</TableCell>
-							<TableCell> <Chip label={viewTask.task_status} color="primary" variant="outlined" />
-								</TableCell>
-						</TableRow>
-						<TableRow key={'1'}>
-							<TableCell sx={{ fontWeight: 700 }}>Change Status</TableCell>
-							{viewTask.task_status=== 'Compleated'? <TableCell>Compleated</TableCell>:
 							<TableCell>
-								
-								<TextField
-                                    onChange={changeStatus}
-									color="secondary"
-									fullWidth
-									id="outlined-select-currency"
-									select
-									defaultValue={viewTask.task_status}>
-									<MenuItem value={'Pending'}> 
-                                   
-									Pending
-                                    </MenuItem>
-									<MenuItem value={'Task varifying'}>Compleated</MenuItem>
-								</TextField>
+								{' '}
+								<Chip label={viewTask.task_status} color="primary" variant="outlined" />
 							</TableCell>
-}
+						</TableRow>
+						<TableRow key={'19'}>
+							<TableCell sx={{ fontWeight: 700 }}>Change Status</TableCell>
+							{viewTask.task_status === 'Completed' ? (
+								<TableCell>Compleated</TableCell>
+							) : (
+								<TableCell>
+									<TextField
+										onChange={changeStatus}
+										color="secondary"
+										fullWidth
+										id="outlined-select-currency"
+										select
+										defaultValue={viewTask.task_status}>
+										<MenuItem value={'Pending'}>Pending</MenuItem>
+										<MenuItem value={'Task varifying'}>Completed</MenuItem>
+									</TextField>
+								</TableCell>
+							)}
+						</TableRow>
+
+						<TableRow key={'20'}>
+							<TableCell sx={{ fontWeight: 700 }}>Upload file</TableCell>
+							<TableCell sx={{ fontWeight: 700 }}>
+								<form onSubmit={submitHandler}>
+									<input className="custom-file-input" onChange={handleChange} type="file" />
+									<Button
+										type="submit"
+										variant="contained"
+										sx={{
+											backgroundColor: 'black',
+											color: 'white',
+											height: '30px',
+											marginTop: '10px',
+											width: '80px'
+										}}>
+										Save
+									</Button>
+								</form>
+							</TableCell>
 						</TableRow>
 					</TableBody>
 				</Table>
+
+				<div class="files__entity">
+					<i class="files__icon fa fa-file-text" aria-hidden="true"></i>
+					{file ? <img src={`${URL.createObjectURL(file)}`} alt="g" /> : ''}
+
+					<p>Files</p>
+					<a href=""></a>
+
+					<a href={`${process.env.REACT_APP_SERVER_URL}/public/${viewTask.file}`}>
+						{' '}
+						<img
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png"
+							style={{ width: '100px', height: '100px' }}
+							alt=""
+						/>
+					</a>
+					{/* <img src={`${process.env.REACT_APP_SERVER_URL}/public/${viewTask.file}`} alt="not available" /> */}
+					{/* <embed src={`${process.env.REACT_APP_SERVER_URL}/public/${viewTask.file}`} type='application/pdf' width="180px" height="130px" /> */}
+				</div>
 			</TableContainer>
 		</Box>
 	);

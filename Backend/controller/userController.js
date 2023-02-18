@@ -1,7 +1,11 @@
 import asyncHandler from 'express-async-handler';
 import User from '../Model/userModel.js';
+import * as authService from '../Services/authService.js';
+
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import Mailgen from 'mailgen';
 
 //------------- userSignup---------
 //Method - POST
@@ -60,13 +64,11 @@ export const userLogin = asyncHandler(async (req, res) => {
 				res.status(401);
 				throw new Error('Temporarly blocked by admin');
 			} else {
-				res
-					.status(200)
-					.json({
-						message: 'Loggin Success',
-						token: generateToken(userExist._id),
-						username: userExist.username
-					});
+				res.status(200).json({
+					message: 'Loggin Success',
+					token: generateToken(userExist._id),
+					username: userExist.username
+				});
 			}
 		} else {
 			res.status(401);
@@ -75,19 +77,131 @@ export const userLogin = asyncHandler(async (req, res) => {
 	}
 });
 
+//---------------otp Login----------
+//method-POST
+//NODE MAILER SETUP
+
+export const otpLogin = asyncHandler(async (req, res) => {
+	console.log(req.body);
+	const { email } = req.body;
+	if (!email) {
+		res.status(400);
+		throw new Error('Please enter Email');
+	} else {
+		const userExist = await User.findOne({ email: email });
+		if (!userExist) {
+			res.status(400).json({ message: 'email not exist' });
+			//throw new Error('user not exist');
+		} else {
+			//Creating random otp number
+			const OTP = Math.floor(1000 + Math.random() * 9000).toString();
+
+			//configuring nodemailer sender data
+			const config = {
+				service: 'gmail',
+				auth: {
+					user: process.env.EMAIL,
+					pass: process.env.PASSWORD
+				}
+			};
+
+			// create reusable transporter object using the default SMTP transport
+			let transporter = nodemailer.createTransport(config);
+			// Using mailgen creating a better mail format
+			const MailGenerator = new Mailgen({
+				theme: 'default',
+				product: {
+					name: 'CRM',
+					link: 'https://mailgen.js/'
+				}
+			});
+
+			const response = {
+				body: {
+					intro: `Enter ${OTP} to varify your email address and sign in to your account`
+				}
+			};
+
+			const mail = MailGenerator.generate(response);
+
+			const message = {
+				from: process.env.EMAIL, // sender address
+				to: email, // list of receivers
+				subject: 'OTP for login', // Subject line
+				html: mail
+			};
+
+			// sending mail
+			const result = await transporter.sendMail(message);
+			console.log(result);
+			//storing the otp details
+			const otpDetails = {
+				email: email,
+				otp: OTP
+			};
+
+			//inserting otp details to the database
+			const insertedData = await authService.emailOtpLogin(otpDetails);
+			if (insertedData) {
+				res.status(200).json({
+					message: 'Mail send successfully',
+					info: result.messageId,
+					preview: nodemailer.getTestMessageUrl(result)
+				});
+			} else {
+				res.status(404);
+				throw new Error('Failed to sent otp');
+			}
+
+			// transporter
+			// 	.sendMail(message)
+			// 	.then((info) => {
+
+			// 		return res.status(200).json({
+			// 			message: 'Mail send successfully',
+			// 			info: info.messageId,
+			// 			preview: nodemailer.getTestMessageUrl(info)
+			// 		});
+			// 	})
+			// 	.catch((err) => {
+			// 		return res.status(500).json(err);
+			// 	});
+		}
+	}
+});
+
+//varify otp and do singin
+export const varifyOtp = asyncHandler(async (req, res) => {
+	try {
+		const {otp,email} = req.body;
+		console.log({otp})
+		const otpDetails =await authService.varifyEmailOtp(email)
+		console.log(otpDetails)
+		const existOtp=otpDetails.otp
+		console.log({existOtp})
+		if(existOtp==otp){	
+			res.status(200).json({message:"Login success"})
+		}else{
+			res.status(401)
+			res.json("Incorrect otp")
+			// throw new Error('Incorrect otp')
+
+		}
+
+	} catch (err) {
+		console.log(err);
+	}
+});
+
 //--------------User Logout-------------
 //Method - GET
 
 export const userLogOut = async () => {
 	try {
-		
 	} catch (err) {
 		console.log(err);
 	}
 };
-
-
-
 
 //--------- Generate jwt Token ----------------
 export const generateToken = (id) => {

@@ -29,6 +29,10 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import GroupIcon from '@mui/icons-material/Group';
 import './Sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import { Menu, MenuItem } from '@mui/material';
+import { useState } from 'react';
+import *as adminService from '../../../services/adminService'
 
 const drawerWidth = 240;
 
@@ -105,7 +109,8 @@ export default function Sidebar() {
 	const navigate = useNavigate();
 
 	const theme = useTheme();
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
+	const [avatar, setAvatar] = useState(false);
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -113,6 +118,24 @@ export default function Sidebar() {
 
 	const handleDrawerClose = () => {
 		setOpen(false);
+	};
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const opens = Boolean(anchorEl);
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	//logOut
+	const logoutAdmin = async () => {
+		const res =await adminService.adminLogout()
+		if(res){
+			navigate('/admin/login');
+			handleClose();
+		}
+		
 	};
 
 	return (
@@ -131,10 +154,25 @@ export default function Sidebar() {
 						}}>
 						<MenuIcon />
 					</IconButton>
-					<Typography variant="h6" noWrap component="div">
-						CRM
-					</Typography>
+					<Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+						<Typography variant="h6" noWrap component="div">
+							CRM
+						</Typography>
+
+						<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" onClick={handleClick} />
+					</Box>
 				</Toolbar>
+				<Menu
+					aid="basic-menu"
+					anchorEl={anchorEl}
+					open={opens}
+					onClose={handleClose}
+					MenuListProps={{
+						'aria-labelledby': 'basic-button'
+					}}>
+					<MenuItem onClick={handleClose}>Profile</MenuItem>
+					<MenuItem onClick={logoutAdmin}>Logout</MenuItem>
+				</Menu>
 			</AppBar>
 			<Box sx={{ backgroundColor: 'blue' }}>
 				<Drawer variant="permanent" open={open} sx={{ backgroundColor: 'blue' }}>
@@ -146,20 +184,18 @@ export default function Sidebar() {
 					<Divider />
 					<List>
 						{[
-							{name:'Users',icon:<GroupIcon/>},
-							{name:'Conversation',icon:<ChatIcon/>},
-							{name:'Deals',icon:<ListAltIcon/>},
-							{name:'Task',icon:<TaskIcon/>},
-							{name:'Contacts',icon:<PermContactCalendarIcon/>},
-							{name:'Meatings',icon:<GroupsIcon/>},
-							{name:'Settings',icon:<SettingsIcon/>},
-							
+							{ name: 'Users', icon: <GroupIcon /> },
+							{ name: 'Conversation', icon: <ChatIcon /> },
+							{ name: 'Deals', icon: <ListAltIcon /> },
+							{ name: 'Task', icon: <TaskIcon /> },
+							{ name: 'Contacts', icon: <PermContactCalendarIcon /> },
+							{ name: 'Meatings', icon: <GroupsIcon /> },
+							{ name: 'Settings', icon: <SettingsIcon /> }
 						].map((text, index) => (
 							<ListItem
 								key={text.name}
 								disablePadding
-								sx={{ display: 'block',backgroundColor:'' }}
-								>
+								sx={{ display: 'block', backgroundColor: '' }}>
 								<ListItemButton
 									sx={{
 										minHeight: 48,
@@ -174,12 +210,15 @@ export default function Sidebar() {
 										}}>
 										{text.icon}
 									</ListItemIcon>
-									<ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} onClick={() => {
-										let text2=text.name.toLowerCase()
-										console.log(text2)
-										text2==='users'?navigate('/admin'):
-									navigate(`/admin/${text2}`);
-								}} />
+									<ListItemText
+										primary={text.name}
+										sx={{ opacity: open ? 1 : 0 }}
+										onClick={() => {
+											let text2 = text.name.toLowerCase();
+											console.log(text2);
+											text2 === 'users' ? navigate('/admin') : navigate(`/admin/${text2}`);
+										}}
+									/>
 								</ListItemButton>
 							</ListItem>
 						))}

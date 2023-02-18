@@ -17,9 +17,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { setAdminToken } from '../../features/auth/adminAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import *as authService from '../../services/authService'
-
-
+import * as authService from '../../services/authService';
+import { setUserToken } from '../../features/auth/userAuthSlice';
 
 const theme = createTheme();
 
@@ -31,29 +30,32 @@ export default function Register() {
 	const schema = yup.object().shape({
 		username: yup.string().required('Username is required'),
 		email: yup.string().email().required('Email is required'),
-		mobile: yup.number().min(10).positive().integer().required('Mobile is required'),
-		password: yup.string().min(3).required('Password is required'),
+		mobile: yup.string().required().matches(/^[789]\d{9}$/,'Is not in correct format'),
+		password: yup.string().min(3,'Password must be at least 3 characters').required('Password is required'),
 		confirmPassword: yup
 			.string()
-			.oneOf([yup.ref('password'), null], "Password Don't Match")
+			.oneOf([yup.ref('password'), null], "Password Didn't Match")
 			.required('Confirm Password is required')
 	});
-
+    
 	//setting schema
-	const {register,handleSubmit,formState: { errors }} = useForm({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm({
 		resolver: yupResolver(schema)
 	});
 
 	//form on submit function
 	const onSubmit = async (data) => {
 		console.log(data);
-		const  response = await authService.userRegister(data)
-		console.log(response)
-		if(response){
-
-			dispatch(setAdminToken({ user: response.token}));
-			navigate('/contacts')
-			
+		const response = await authService.userRegister(data);
+		console.log("this is response")
+		console.log(response);
+		if (response) {
+			dispatch(setUserToken({ token: response.token,username:response.username }));
+			navigate('/contacts');
 		}
 	};
 
@@ -78,7 +80,7 @@ export default function Register() {
 						Sign Up
 					</Typography>
 					<Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
-						<p style={{color:'red'}}>{errors.username?.message}</p>
+						
 						<TextField
 							margin="normal"
 							required
@@ -87,10 +89,10 @@ export default function Register() {
 							label="User Name"
 							autoComplete="username"
 							autoFocus
+							error={!!errors.username}
+							helperText={errors.username ? errors.username.message : ''}
 							{...register('username')}
 						/>
-						
-						<p>{errors.email?.message}</p>
 						<TextField
 							margin="normal"
 							required
@@ -99,9 +101,10 @@ export default function Register() {
 							label="Email Address"
 							autoComplete="email"
 							autoFocus
+							error={!!errors.email}
+							helperText={errors.email ? errors.email.message : ''}
 							{...register('email')}
 						/>
-						<p style={{color:'red'}}>{errors.mobile?.message}</p>
 						<TextField
 							margin="normal"
 							required
@@ -111,9 +114,11 @@ export default function Register() {
 							label="Mobile"
 							autoComplete="mobile"
 							autoFocus
+							error={!!errors.mobile}
+							helperText={errors.mobile ? errors.mobile.message : ''}
 							{...register('mobile')}
 						/>
-						<p style={{color:'red'}}> {errors.password?.message}</p>
+                      
 						<TextField
 							margin="normal"
 							required
@@ -122,9 +127,12 @@ export default function Register() {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							error={!!errors.password}
+							helperText={errors.password ? errors.password.message : ''}
 							{...register('password')}
+							
 						/>
-						<p style={{color:'red'}}>{errors.confirmPassword?.message}</p>
+
 						<TextField
 							margin="normal"
 							required
@@ -133,6 +141,8 @@ export default function Register() {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							error={!!errors.confirmPassword}
+							helperText={errors.confirmPassword ? errors.confirmPassword.message : ''}
 							{...register('confirmPassword')}
 						/>
 
@@ -140,7 +150,6 @@ export default function Register() {
 							Sign In
 						</Button>
 						<Grid container>
-							
 							<Grid item sx={{ mt: 3, mb: 2 }}>
 								<Link to="/">You have an account? Sign In</Link>
 								{/* <Linke href="#" variant="body2">
@@ -150,7 +159,6 @@ export default function Register() {
 						</Grid>
 					</Box>
 				</Box>
-				
 			</Container>
 		</ThemeProvider>
 	);

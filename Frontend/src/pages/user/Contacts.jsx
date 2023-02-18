@@ -8,16 +8,22 @@ import {
 	ListItem,
 	ListItemButton,
 	ListItemIcon,
-	ListItemText
+	ListItemText,
+	Menu,
+	MenuItem,
+	Typography
 } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { useState } from 'react';
 import Popup from '../../components/User/Popup/Popup.jsx';
-
+import * as userService from '../../services/userService';
+import { useNavigate } from 'react-router-dom';
+import Header from '../../components/User/Header/Header';
+import { Container } from '@mui/system';
 
 function Contacts() {
 	const [rightSIde, setRightSide] = useState(false);
-	
+	const navigate = useNavigate();
 
 	const toggleDrawer = (status) => {
 		console.log('status');
@@ -48,13 +54,41 @@ function Contacts() {
 		);
 	}
 
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const opens = Boolean(anchorEl);
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	//logOut user
+	const logoutUser = async () => {
+		const res = await userService.userLogOut();
+		console.log(res);
+		if (res) {
+			navigate('/');
+			handleClose();
+		}
+	};
+
 	return (
 		<div>
-			<Box sx={{ backgroundColor: 'White', width: '100%', height: '65px' }}>
+			<Header />
+			<Container maxWidth="xl">
+				<Typography component="div" variant="h6" marginTop="10px">
+					Contacts
+				</Typography>
+
+				<ContactsTable />
+			</Container>
+			{/* <Box sx={{ backgroundColor: 'White', width: '100%', height: '65px' }}>
 				<Avatar
 					sx={{ float: 'right', margin: '10px', marginRight: '30px' }}
 					alt="Travis Howard"
 					src="/static/images/avatar/2.jpg"
+					onClick={handleClick}
 				/>
 				<CircleNotificationsIcon
 					sx={{
@@ -65,9 +99,20 @@ function Contacts() {
 						marginRight: '30px'
 					}}
 				/>
-			</Box>
-			<Box sx={{ display: 'flex' }}>
-				<Sidebar />
+				<Menu
+					aid="basic-menu"
+					anchorEl={anchorEl}
+					open={opens}
+					onClose={handleClose}
+					MenuListProps={{
+						'aria-labelledby': 'basic-button'
+					}}>
+					<MenuItem onClick={handleClose}>Profile</MenuItem>
+					<MenuItem onClick={logoutUser}>Logout</MenuItem>
+				</Menu>
+			</Box> */}
+			{/* <Box sx={{ display: 'flex' }}>
+				
 				<Box>
 					<Box
 						component="main"
@@ -80,10 +125,9 @@ function Contacts() {
 					<h3>Contacts</h3>
 					
 				
-					<ContactsTable />
+					
 				</Box>
-			</Box>
-			
+			</Box> */}
 		</div>
 	);
 }

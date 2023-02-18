@@ -16,6 +16,11 @@ import './App.css'
 import Contacts from './pages/user/Contacts';
 import DealsPage from './pages/user/DealsPage';
 import Conversation from './pages/user/Conversation';
+import PendingTask from './pages/user/PendingTask';
+import CompletedTask from './pages/user/CompletedTask';
+import OtpEmail from './pages/user/OtpEmail';
+import VarifyOTP from './pages/user/VarifyOTP';
+
 
 
 // 	return (
@@ -54,12 +59,21 @@ function App() {
 					<Route path="/admin/login" element={<Login />} />
 					<Route path="/admin/register" element={<Register />} />
 					<Route path='/' element={<UserLogin/>}/>
+					<Route path='/otp-login' element={<OtpEmail/>}/>
+					<Route path='/verify-otp' element={<VarifyOTP/>}/>
+
 					<Route path='/signup' element={<UserRegister/>}/>
 					<Route path='/home' element={<Home/>}/>
 					<Route path='/contacts' element={<Contacts/>}/>
 					<Route path='/task' element={<TasksPage/>}/>
+
 					<Route path='/deals' element={<DealsPage/>}/>
+					
 					<Route path='/conversation' element={<Conversation/>}/>
+					<Route path='/task/pending-task' element={<PendingTask/>}/>
+					<Route path='/task/completed-task' element={<CompletedTask/>}/>
+
+
 
 				{/* </Routes>
 			

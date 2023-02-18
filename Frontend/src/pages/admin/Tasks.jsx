@@ -15,7 +15,7 @@ function Tasks() {
 		} else {
 			navigate('/admin/login');
 		}
-	}, [token]);
+	}, [token]);	
 
 	return (
 		<>
@@ -23,6 +23,7 @@ function Tasks() {
 				<Sidebar />
 				<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
 					<DrawerHeader />
+					
 					<AdminTaskTable />
 				</Box>
 			</Box>

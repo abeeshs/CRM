@@ -1,0 +1,48 @@
+.login-btn {
+	background-color: rgba(0, 0, 0, 0.803) !important;
+}
+.login-btn:hover {
+	background-color: black !important;
+	color: white;
+}
+
+
+div[data-testid="otp-input-root"] input{
+	border: none;
+	border-bottom: 4px solid black;
+	font-weight: 600;
+}
+
+div[data-testid="otp-input-root"] input:focus{
+	border: none;
+	outline: none;
+	border-bottom: 4px solid green;
+}
+.validation-error {
+	
+	animation: vibrateError .6s ease-in-out forwards;
+}
+.validation-error input{
+	text-decoration-color: red;
+	color:red;
+	border: none;
+	
+}
+
+@keyframes vibrateError {
+	0% {
+		transform: translateX(0px)
+	}
+	25% {
+		transform: translateX(10px);
+	}
+	50% {
+		transform: translateX(-20px);
+	}
+	75% {
+		transform: translateX(20px);
+	}
+	100% {
+		transform: translateX(0px);
+	}
+}

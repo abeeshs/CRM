@@ -17,12 +17,21 @@ import FormControl from '@mui/material/FormControl';
 import { Box } from '@mui/system';
 import ClearIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Typography
+} from '@mui/material';
 import Popup from '../../User/Popup/Popup';
 import EditTaskForm from '../AdminForm/TaskForm/EditTaskForm';
 import * as contactService from '../../../services/contactService';
 import { useSelector } from 'react-redux';
 import DeleteModal from '../../Extra Components/DeleteModal';
+import AdminTaskView from './AdminTaskView';
 
 // const columns = [
 // 	{ field: 'slNo', headerName: 'NO', width: 100 },
@@ -37,7 +46,6 @@ import DeleteModal from '../../Extra Components/DeleteModal';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
-
 export default function AdminTaskTable() {
 	const [rows, setRows] = useState([]);
 	const [deleteTask, setDeleteTask] = useState('');
@@ -45,7 +53,8 @@ export default function AdminTaskTable() {
 	const [editTask, setEditTask] = useState({});
 	const [openPopup, setOpenPopup] = useState(false);
 	const [allContacts, setAllContacts] = useState([]);
-	const [openModal,setOpenModal]=useState(false)
+	const [openModal, setOpenModal] = useState(false);
+	const [buttonDesable, setButtonDesable] = useState(false);
 
 	//modal state
 	const [open, setOpen] = useState(false);
@@ -71,15 +80,14 @@ export default function AdminTaskTable() {
 	//userData
 	const [users, setUsers] = useState([]);
 	const { token } = useSelector((state) => state.adminAuth);
+
 	const handleClickOpen = async () => {
 		setOpen(true);
 		//get user data to display in input field
 		const userData = await userService.getAllUser();
-		
 		console.log(userData);
 		if (userData) {
 			setUsers(userData);
-			
 		}
 	};
 
@@ -108,8 +116,7 @@ export default function AdminTaskTable() {
 		e.preventDefault();
 		console.log(newTask);
 		const data = await taskService.createTask(newTask);
-		if(data){
-
+		if (data) {
 			handleClose();
 			getAllTasks();
 		}
@@ -119,27 +126,45 @@ export default function AdminTaskTable() {
 		setEditTask(data);
 		setOpenPopup(true);
 	};
+	//select box
+	const [status, setStatus] = useState('');
+	const handleChange = (event) => {
+		setStatus(event.target.value);
+	};
 
-	const deleteHandler =(id)=>{
-		setDeleteTask(id)
-		setOpenModal(true)
+	const deleteHandler = (id) => {
+		setDeleteTask(id);
+		setOpenModal(true);
+	};
+	const confirmDeleteTask = async () => {
+		try {
+			const response = await taskService.deleteTaskAdmin(token, deleteTask);
+			if (response) {
+				setOpenModal(false);
+				getAllTasks();
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
-	}
-	const confirmDeleteTask=async()=>{
-		try{
-			const response =await taskService.deleteTaskAdmin(token,deleteTask)
+	//Change Status
+	const changeStatus = async (taskId) => {
+		try {
+			
+			console.log(token);
+			const response =await taskService.changeTaskStatusAdmin(token,taskId)
 			if(response){
-				setOpenModal(false)
-				getAllTasks()
+
+				setButtonDesable(true);
+				getAllTasks();
 			}
 
-		}catch(err){
+		} catch (err) {
+
 			console.log(err)
 		}
-	}
-
-	
-
+	};
 	return (
 		<div style={{ height: 400, width: '100%' }}>
 			<Button className="create-task-btn" variant="contained" onClick={handleClickOpen}>
@@ -158,6 +183,7 @@ export default function AdminTaskTable() {
 							<TableCell>Due Date</TableCell>
 							<TableCell>Task Status</TableCell>
 							<TableCell>Action</TableCell>
+							<TableCell>Action</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -165,7 +191,7 @@ export default function AdminTaskTable() {
 							<TableRow key={item._id}>
 								<TableCell>{item.title}</TableCell>
 								<TableCell>{item.task_type}</TableCell>
-								<TableCell>{item.assigned_to.username}</TableCell>
+								<TableCell>{item.assigned_to?.username}</TableCell>
 								<TableCell>{item.priority}</TableCell>
 								<TableCell>{item.due_date}</TableCell>
 								<TableCell>{item.task_status}</TableCell>
@@ -176,9 +202,25 @@ export default function AdminTaskTable() {
 										onClick={() => editHandler(item)}>
 										<EditIcon />
 									</Button>
-									<Button variant="outlined" color="error" onClick={()=>deleteHandler(item._id)}>
+									<Button variant="outlined" color="error" onClick={() => deleteHandler(item._id)}>
 										<ClearIcon />{' '}
 									</Button>
+								</TableCell>
+								<TableCell>
+									{item.task_status == 'Completed'?<Button
+										variant="outlined"
+										style={{ textTransform: 'Capitalize ' }}
+										disabled
+										onClick={()=>changeStatus(item._id)}>
+										Mark Completed
+									</Button>:<Button
+										variant="outlined"
+										style={{ textTransform: 'Capitalize ' }}
+										disabled={buttonDesable}
+										onClick={()=>changeStatus(item._id)}>
+										Mark Completed
+									</Button>}
+									
 								</TableCell>
 							</TableRow>
 						))}
@@ -214,7 +256,7 @@ export default function AdminTaskTable() {
 								Type
 							</InputLabel>
 							<Select
-								sx={{ m: 1, minWidth: 280,width:'482px' }}
+								sx={{ m: 1, minWidth: 280, width: '482px' }}
 								labelId="demo-simple-select-autowidth-label"
 								id="demo-simple-select-autowidth"
 								value={type}
@@ -232,7 +274,7 @@ export default function AdminTaskTable() {
 								Priority
 							</InputLabel>
 							<Select
-								sx={{ m: 1, minWidth: 280 ,width:'482px' }}
+								sx={{ m: 1, minWidth: 280, width: '482px' }}
 								labelId="demo-simple-select-autowidth-label"
 								id="demo-simple-select-autowidth"
 								value={priority}
@@ -247,10 +289,10 @@ export default function AdminTaskTable() {
 								<MenuItem value={'High'}>High</MenuItem>
 							</Select>
 							<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
-							Associated with records
+								Associated with records
 							</InputLabel>
 							<Select
-								sx={{ m: 1, minWidth: 280 ,width:'482px'}}
+								sx={{ m: 1, minWidth: 280, width: '482px' }}
 								labelId="demo-simple-select-autowidth-label"
 								id="demo-simple-select-autowidth"
 								value={associated}
@@ -263,8 +305,6 @@ export default function AdminTaskTable() {
 								{allContacts.map((item) => {
 									return <MenuItem value={item._id}>{item.firstname}</MenuItem>;
 								})}
-
-								
 							</Select>
 
 							{/* <TextField
@@ -281,13 +321,12 @@ export default function AdminTaskTable() {
 								Assigned to
 							</InputLabel>
 							<Select
-								sx={{ m: 1, minWidth: 280,width:'482px' }}
+								sx={{ m: 1, minWidth: 280, width: '482px' }}
 								labelId="demo-simple-select-autowidth-label"
 								id="demo-simple-select-autowidth"
 								value={assignedTo}
 								onChange={onchange}
-								name="assignedTo"
-								>
+								name="assignedTo">
 								<MenuItem value="">
 									<em>None</em>
 								</MenuItem>
@@ -350,25 +389,26 @@ export default function AdminTaskTable() {
 					allContacts={allContacts}
 				/>
 			</Popup>
-			<DeleteModal  openModal={openModal} setOpenModal={setOpenModal} confirmDeleteTask={confirmDeleteTask}>
-				
-								<ModalBody/>
+			<DeleteModal
+				openModal={openModal}
+				setOpenModal={setOpenModal}
+				confirmDeleteTask={confirmDeleteTask}>
+				<ModalBody />
 			</DeleteModal>
-			
-			
+
+			<Popup>
+				<AdminTaskView />
+			</Popup>
 		</div>
 	);
 }
 
-function ModalBody(){
-	return(
+function ModalBody() {
+	return (
 		<Box>
-			<Typography >
-			Do you want to delete?
-			</Typography>
-			
+			<Typography>Do you want to delete?</Typography>
 		</Box>
-	)
+	);
 }
 // function Priority() {
 // 	const [age, setAge] = React.useState('');

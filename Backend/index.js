@@ -23,7 +23,7 @@ app.use(cors());
 connectDB();
 app.use(express.static('public')); 
 app.use('/public', express.static('public'));
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 app.use('/',userRouter) 
 app.use('/admin', adminRouter)

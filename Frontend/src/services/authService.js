@@ -1,7 +1,5 @@
 import axios from 'axios';
-import {toast} from 'react-toastify'
-
-
+import { toast } from 'react-toastify';
 
 //admin register
 export const adminRegister = async (data) => {
@@ -15,16 +13,16 @@ export const adminRegister = async (data) => {
 			(error.response && error.response.data && error.response.data.message) ||
 			error.message ||
 			error.toString();
-            toast(message, {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: true,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'dark'
-			});
+		toast(message, {
+			position: 'top-center',
+			autoClose: 5000,
+			hideProgressBar: true,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: 'dark'
+		});
 	}
 };
 
@@ -40,19 +38,18 @@ export const adminLogin = async (data) => {
 			(error.response && error.response.data && error.response.data.message) ||
 			error.message ||
 			error.toString();
-            toast(message, {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: true,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'dark'
-			});
+		toast(message, {
+			position: 'top-center',
+			autoClose: 5000,
+			hideProgressBar: true,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: 'dark'
+		});
 	}
 };
-
 
 //User login
 export const userLogin = async (data) => {
@@ -66,16 +63,16 @@ export const userLogin = async (data) => {
 			(error.response && error.response.data && error.response.data.message) ||
 			error.message ||
 			error.toString();
-            toast(message, {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: true,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'dark'
-			});
+		toast(message, {
+			position: 'top-center',
+			autoClose: 5000,
+			hideProgressBar: true,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: 'dark'
+		});
 	}
 };
 
@@ -91,15 +88,36 @@ export const userRegister = async (data) => {
 			(error.response && error.response.data && error.response.data.message) ||
 			error.message ||
 			error.toString();
-            toast(message, {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: true,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'dark'
-			});
+		toast(message, {
+			position: 'top-center',
+			autoClose: 5000,
+			hideProgressBar: true,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: 'dark'
+		});
 	}
 };
+
+//User OTP Login
+export const userOtpLogin = async (data) => {
+	try {
+		const res = await axios.post('http://localhost:8000/otp-login', data);
+		return res.data
+		
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+export const userVerifyOTP = async(otp,email)=>{
+	try{
+		const res = await axios.post('http://localhost:8000/varify-otp', {otp,email})
+		console.log(res)
+	}catch(err){
+		console.log(err.response.data)
+		return err.response.data
+	}
+}

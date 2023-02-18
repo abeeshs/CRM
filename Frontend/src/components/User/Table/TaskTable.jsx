@@ -22,17 +22,19 @@ function TaskTable(props) {
 
 	return (
 		<>
+		
+		
 			<TableContainer>
 				<Table sx={{ minWidth: 650 }}>
-					<TableHead>
-						<TableRow sx={{ fontSize: '25px', fontWeight: 500 }}>
-							<TableCell>Title</TableCell>
-							<TableCell>Task Type</TableCell>
-							<TableCell>Created By</TableCell>
-							<TableCell>Priority</TableCell>
-							<TableCell>Due Date</TableCell>
-							<TableCell>Task Status</TableCell>
-							<TableCell>Action</TableCell>
+					<TableHead  sx={{ backgroundColor: 'black', fontWeight: '900' ,fontWeight: 500}}>
+						<TableRow sx={{ fontSize: '25px',  }}>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} >Title</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>Task Type</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>Created By</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>Priority</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>Due Date</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>Task Status</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>Action</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -40,11 +42,12 @@ function TaskTable(props) {
 							<TableRow key={item._id}>
 								<TableCell>{item.title}</TableCell>
 								<TableCell>{item.task_type}</TableCell>
-								<TableCell>{item.created_by}</TableCell>
+								<TableCell>{item.created_by.firstname}</TableCell>
 								<TableCell>{item.priority}</TableCell>
 								<TableCell>{item.due_date}</TableCell>
 								<TableCell>{item.task_status}</TableCell>
 								<TableCell>
+									
 									<Button variant="outlined" color="secondary" onClick={()=>handleOpen(item)}>
 										<OpenInBrowserIcon /> Open
 									</Button>

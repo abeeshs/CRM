@@ -3,16 +3,16 @@ import { Box } from '@mui/system';
 import React from 'react';
 
 
-function DeleteModal(props) {
-	const { title, children, openModal, setOpenModal, confirmDeleteTask } = props;
+function ContactDeleteModal(props) {
+	const {  openDeleteModal,setOpenDeleteModal,confirmDeleteContact } = props;
 
 	return (
 		<div>
-			<Dialog open={openModal}  maxWidth="xs" fullWidth>
+			<Dialog open={openDeleteModal}  maxWidth="xs" fullWidth>
 				<DialogTitle>
 					<div style={{ display: 'flex' }}>
 						<Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-							{title}
+							Delete
 						</Typography>
 					</div>
 				</DialogTitle>
@@ -22,13 +22,13 @@ function DeleteModal(props) {
 					</Button>
 				</Box>
 				<DialogContent>
-					<Typography>some message here</Typography>
+					<Typography>Do you want to delete this contact ?</Typography>
 				</DialogContent>
 				<DialogActions>
-					<Button color="primary" variant="contained" onClick={()=>setOpenModal(false)}>
+					<Button color="primary" variant="contained" onClick={()=>setOpenDeleteModal(false)}>
 						Cancel
 					</Button>
-					<Button color="secondary" variant="contained" onClick={()=>confirmDeleteTask()}>
+					<Button color="secondary" variant="contained" onClick={()=>confirmDeleteContact()}>
 						Confirm
 					</Button>
 				</DialogActions>
@@ -38,4 +38,4 @@ function DeleteModal(props) {
 	);
 }
 
-export default DeleteModal;
+export default ContactDeleteModal

@@ -6,9 +6,15 @@ import *as taskController from '../controller/taskController.js'
 import { userProtect } from '../middleware/authMiddleware.js';
 import multer from 'multer'
 // router.get('/',userController.userLogin)
+
+//================== SIGNUP ================
 router.post('/',userController.userLogin)
 router.post ('/signup',userController.userRegister)
 router.post ('/logout',userController.userLogOut)
+router.post ('/otp-login',userController.otpLogin)
+router.post ('/varify-otp',userController.varifyOtp)
+
+
 //==================== TASK =====================
 
 //View task

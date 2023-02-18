@@ -27,7 +27,8 @@ import EditContactForm from '../Forms/Contacts/EditContactForm.jsx';
 import RightSideBar from './RightSideBar.jsx';
 import Popup from '../Popup/Popup.jsx';
 import Notification from '../../Extra Components/Notification.js';
-
+import { Box } from '@mui/system';
+import ContactDeleteModal from '../Popup/ContactDeleteModal.jsx';
 function createData(name, calories, fat, carbs, protein) {
 	return { name, calories, fat, carbs, protein };
 }
@@ -44,14 +45,14 @@ export default function ContactsTable() {
 	const [rows, setRows] = useState([]);
 	const [openPopup, setOpenPopup] = useState(false);
 	const [updateContact, setUpdateContact] = useState({});
-	const [notify,setNotify]=useState({isOpen:false,message:'',type:''})
-	const closePopup=()=>{
-
-	}
+	const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
+	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [deleteContactId, setDeleteContactId] = useState('');
+	const closePopup = () => {};
 
 	const getEditContact = (contact) => {
-		setOpenPopup(true);
 		setUpdateContact(contact);
+		setOpenPopup(true);
 	};
 	//modal state
 	const [open, setOpen] = useState(false);
@@ -77,31 +78,42 @@ export default function ContactsTable() {
 		getAllcontacts();
 	}, [updateContact]);
 
+	const deleteContactHandler = (id) => {
+		setDeleteContactId(id);
+	};
+	const confirmDeleteContact = async() => {
+		try {
+			const res= await contactService.deleteContact(deleteContactId)
+		} catch (err) {
+			
+		}
+	};
+
 	return (
 		<>
 			<RightSideBar getAllContacts={getAllcontacts} />
 			<TableContainer component={Paper}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
-					<TableHead sx={{ backgroundColor: '#bcaaca', fontWeight: '900' }}>
+					<TableHead sx={{ backgroundColor: 'black', fontWeight: '900' ,fontWeight: 500}}>
 						<TableRow>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500' }}>SL NO</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500' }}>NAME</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500' }} align="center">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>SL NO</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>NAME</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="center">
 								EMAIL
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500' }} align="right">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right">
 								PHONE NUMBER
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500' }} align="right">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right">
 								CONTACT OWNER
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500' }} align="right">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right">
 								CREATED AT
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500' }} align="right">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right">
 								OPTIONS
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500' }} align="right"></TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right"></TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -117,11 +129,18 @@ export default function ContactsTable() {
 								<TableCell align="right">{row.mobile}</TableCell>
 								<TableCell align="right">{row.contact_owner.username}</TableCell>
 								<TableCell align="right">{row.createdAt}</TableCell>
-								<TableCell align="right" onClick={() => getEditContact(row)} >
-									<Button sx={{width:'10px'}} variant="outlined" >
+								<TableCell align="right" sx={{ display: 'flex', justifyContent: 'space-between' }}>
+									<Button
+										sx={{ width: '10px' }}
+										variant="outlined"
+										onClick={() => getEditContact(row)}>
 										<EditIcon />
 									</Button>
-									<Button variant="outlined" color="error">
+									<Box sx={{ width: '5px' }}></Box>
+									<Button
+										variant="outlined"
+										color="error"
+										onClick={() => deleteContactHandler(row._id)}>
 										<ClearIcon />{' '}
 									</Button>
 								</TableCell>
@@ -131,7 +150,7 @@ export default function ContactsTable() {
 				</Table>
 			</TableContainer>
 
-			<Dialog
+			{/* <Dialog
 				open={open}
 				onClose={handleClose}
 				aria-labelledby="alert-dialog-title"
@@ -201,11 +220,20 @@ export default function ContactsTable() {
 					<Button onClick={handleClose}>Close</Button>
 				</DialogContent>
 				<DialogActions></DialogActions>
-			</Dialog>
+			</Dialog> */}
 			<Popup title={'Edit Contact'} openPopup={openPopup} setOpenPopup={setOpenPopup}>
-				<EditContactForm setOpenPopup={setOpenPopup} updateContact={updateContact} getAllContacts={getAllcontacts} />
+				<EditContactForm
+					setOpenPopup={setOpenPopup}
+					updateContact={updateContact}
+					getAllContacts={getAllcontacts}
+				/>
 			</Popup>
-			<Notification notify={notify} setNotify={setNotify}/>
+			<Notification notify={notify} setNotify={setNotify} />
+			<ContactDeleteModal
+				openDeleteModal={openDeleteModal}
+				setOpenDeleteModal={setOpenDeleteModal}
+				confirmDeleteContact={confirmDeleteContact}
+			/>
 		</>
 	);
 }
