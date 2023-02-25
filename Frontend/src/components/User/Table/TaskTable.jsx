@@ -38,7 +38,7 @@ function TaskTable(props) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{userTask.map((item) => (
+						{userTask?.map((item) => (
 							<TableRow key={item._id}>
 								<TableCell>{item.title}</TableCell>
 								<TableCell>{item.task_type}</TableCell>

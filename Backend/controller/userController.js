@@ -1,6 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import User from '../Model/userModel.js';
 import * as authService from '../Services/authService.js';
+import * as dealService from '../Services/dealService.js';
+
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -173,21 +175,31 @@ export const otpLogin = asyncHandler(async (req, res) => {
 //varify otp and do singin
 export const varifyOtp = asyncHandler(async (req, res) => {
 	try {
-		const {otp,email} = req.body;
-		console.log({otp})
-		const otpDetails =await authService.varifyEmailOtp(email)
-		console.log(otpDetails)
-		const existOtp=otpDetails.otp
-		console.log({existOtp})
-		if(existOtp==otp){	
-			res.status(200).json({message:"Login success"})
-		}else{
-			res.status(401)
-			res.json("Incorrect otp")
+		const { otp, email } = req.body;
+		console.log({ otp });
+		const otpDetails = await authService.varifyEmailOtp(email);
+		console.log(otpDetails);
+		const existOtp = otpDetails?.otp;
+		console.log({ existOtp });
+		console.log({ otp });
+		if (existOtp == otp) {
+			const userExist = await User.findOne({ email: email });
+
+			if (userExist?.is_block) {
+				res.status(401);
+				throw new Error('Temporarly blocked by admin');
+			} else {
+				res.status(200).json({
+					message: 'Loggin Success',
+					token: generateToken(userExist._id),
+					username: userExist.username
+				});
+			}
+		} else {
+			res.status(401);
+			res.json('Incorrect otp');
 			// throw new Error('Incorrect otp')
-
 		}
-
 	} catch (err) {
 		console.log(err);
 	}
@@ -221,3 +233,28 @@ export const viewAllUser = asyncHandler(async (req, res) => {
 		throw new Error('Users not found');
 	}
 });
+
+//View all deals
+
+export const getAllDeals = asyncHandler(async(req,res)=>{
+	//db code goes here
+})
+
+//Create new Deals
+
+export const addNewDeal= asyncHandler(async(req,res)=>{
+	const {dealName,pipeline,amount,closeDate,dealOwner,dealType,priority,contact}= req.body
+
+	const dealObj = {
+		deal_name:dealName,
+		pipeline:pipeline,
+		amount:amount,
+		close_date:closeDate,
+		deal_owner:dealOwner,
+		deal_type:dealType,
+		priority:priority,
+		deal_with_contact:contact
+	}
+
+	const createdDeal =await dealService.dealCreateService()
+})

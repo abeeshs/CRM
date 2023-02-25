@@ -3,21 +3,23 @@ import { toast } from 'react-toastify';
 
 export const adminLogout = async () => {
 	try {
-		const adminToken = JSON.parse(localStorage.getItem('admin-auth'));
-		if (adminToken) {
-            const token = adminToken.token;
-			const res = await axios.get('http://localhost:8000/admin/logout', {
-				headers: { Authorization: `Bearer ${token}` }
-			});
-			console.log(res.data);
-			if (res.data.logout) {
-				localStorage.removeItem('admin-auth');
-				return res.data;
-			}
-			return res.data;
-		}else{
-           toast.error('Please login again')
-        }
+		localStorage.removeItem('admin-auth');
+				return true;
+		// const adminToken = JSON.parse(localStorage.getItem('admin-auth'));
+		// if (adminToken) {
+        //     const token = adminToken.token;
+		// 	const res = await axios.get('http://localhost:8000/admin/logout', {
+		// 		headers: { Authorization: `Bearer ${token}` }
+		// 	});
+		// 	console.log(res.data);
+		// 	if (res.data.logout) {
+		// 		localStorage.removeItem('admin-auth');
+		// 		return res.data;
+		// 	}
+		// 	return res.data;
+		// }else{
+        //    toast.error('Please login again')
+        // }
 	} catch (error) {
 		
             const message =

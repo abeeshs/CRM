@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import { useState, useEffect } from 'react';
 import * as taskService from '../../../services/taskService';
 import Button from '@mui/material/Button';
@@ -9,7 +11,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
+//import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import * as userService from '../../../services/userService';
@@ -24,6 +26,7 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	TableSortLabel,
 	Typography
 } from '@mui/material';
 import Popup from '../../User/Popup/Popup';
@@ -32,19 +35,21 @@ import * as contactService from '../../../services/contactService';
 import { useSelector } from 'react-redux';
 import DeleteModal from '../../Extra Components/DeleteModal';
 import AdminTaskView from './AdminTaskView';
+import { grey } from '@mui/material/colors';
 
-// const columns = [
-// 	{ field: 'slNo', headerName: 'NO', width: 100 },
-// 	{ field: 'task_status', headerName: 'Status', width: 200 },
-// 	{ field: 'title', headerName: 'Title', width: 200 },
-// 	{ field: '', headerName: 'Associated Contact', width: 200 },
-// 	{ field: 'task_type', headerName: 'Task Type', width: 200 },
-// 	{ field: 'priority', headerName: 'Priority', width: 200 },
-// 	{ field: 'due_date', headerName: 'Due Date', width: 200 },
-
-// ];
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+
+const taskType = [
+	{ value: 'To-do', label: 'To-do' },
+	{ value: 'Call', label: 'Call' },
+	{ value: 'Email', label: 'Email' }
+];
+const priorityy = [
+	{ value: 'Low', label: 'Low' },
+	{ value: 'Medium', label: 'Medium' },
+	{ value: 'High', label: 'High' }
+];
 
 export default function AdminTaskTable() {
 	const [rows, setRows] = useState([]);
@@ -55,21 +60,25 @@ export default function AdminTaskTable() {
 	const [allContacts, setAllContacts] = useState([]);
 	const [openModal, setOpenModal] = useState(false);
 	const [buttonDesable, setButtonDesable] = useState(false);
-
+	const [assignedUser, setAssignedUser] = useState([]);
+	const [priority, setPriority] = useState([]);
+	const [types, setType] = useState([]);
+	const [associated, setAssociated] = useState({});
 	//modal state
+	const [status, setStatus] = useState('');
 	const [open, setOpen] = useState(false);
+	const [users, setUsers] = useState([]);
+
 	const [newTask, setNewTask] = useState({
 		title: '',
-		type: '',
-		associated: '',
-		assignedTo: '',
-		priority: '',
 		dueDate: '',
 		time: '',
 		description: ''
 	});
-	const { title, priority, dueDate, type, associated, assignedTo, time, description } = newTask;
-	//onchange
+
+	const animatedComponents = makeAnimated();
+	const { title, dueDate, time, description } = newTask;
+	//onchange function
 	const onchange = (e) => {
 		setNewTask((prevState) => ({
 			...prevState,
@@ -77,18 +86,11 @@ export default function AdminTaskTable() {
 		}));
 	};
 
-	//userData
-	const [users, setUsers] = useState([]);
+	//to get all user data
 	const { token } = useSelector((state) => state.adminAuth);
 
 	const handleClickOpen = async () => {
 		setOpen(true);
-		//get user data to display in input field
-		const userData = await userService.getAllUser();
-		console.log(userData);
-		if (userData) {
-			setUsers(userData);
-		}
 	};
 
 	const handleClose = () => {
@@ -99,10 +101,34 @@ export default function AdminTaskTable() {
 	const getAllTasks = async () => {
 		const response = await taskService.getAllTask();
 		const contacts = await contactService.getAllContactAdmin(token);
-		console.log(response);
+		console.log(contacts);
+
 		if (response) {
 			setTasks(response);
-			setAllContacts(contacts);
+
+			console.log(response);
+		}
+		if (contacts) {
+			let arrObj = contacts.map((item) => {
+				return {
+					label: item.firstname,
+					value: item._id
+				};
+			});
+			setAllContacts(arrObj);
+		}
+		//get user data to display in input field
+		const userData = await userService.getAllUser();
+
+		if (userData) {
+			let arrObj = userData.map((item) => {
+				return {
+					label: item.username,
+					value: item._id
+				};
+			});
+
+			setUsers(arrObj);
 		}
 	};
 
@@ -114,6 +140,19 @@ export default function AdminTaskTable() {
 
 	const createTask = async (e) => {
 		e.preventDefault();
+		if (newTask) {
+		}
+		let taskAssingnedTo = assignedUser.map((item) => {
+			return {
+				name: item.label,
+				id: item.value
+			};
+		});
+		newTask.assignedTo = taskAssingnedTo;
+		newTask.priority = priority.value;
+		newTask.type = types.value;
+		newTask.associated = associated.value;
+
 		console.log(newTask);
 		const data = await taskService.createTask(newTask);
 		if (data) {
@@ -127,9 +166,22 @@ export default function AdminTaskTable() {
 		setOpenPopup(true);
 	};
 	//select box
-	const [status, setStatus] = useState('');
+
 	const handleChange = (event) => {
 		setStatus(event.target.value);
+	};
+	//select multippile option
+	const selectMulti = (assignedUser) => {
+		setAssignedUser(assignedUser);
+	};
+	const selectPriority = (priority) => {
+		setPriority(priority);
+	};
+	const selectType = (types) => {
+		setType(types);
+	};
+	const selectAssociated = (associated) => {
+		setAssociated(associated);
 	};
 
 	const deleteHandler = (id) => {
@@ -151,18 +203,14 @@ export default function AdminTaskTable() {
 	//Change Status
 	const changeStatus = async (taskId) => {
 		try {
-			
 			console.log(token);
-			const response =await taskService.changeTaskStatusAdmin(token,taskId)
-			if(response){
-
+			const response = await taskService.changeTaskStatusAdmin(token, taskId);
+			if (response) {
 				setButtonDesable(true);
 				getAllTasks();
 			}
-
 		} catch (err) {
-
-			console.log(err)
+			console.log(err);
 		}
 	};
 	return (
@@ -170,28 +218,35 @@ export default function AdminTaskTable() {
 			<Button className="create-task-btn" variant="contained" onClick={handleClickOpen}>
 				Create Task
 			</Button>
+
 			<h2>Task</h2>
 			<Box sx={{ width: '100%', height: '50px', backgroundColor: '' }}></Box>
 			<TableContainer>
 				<Table sx={{ minWidth: 650 }}>
 					<TableHead>
 						<TableRow sx={{ fontSize: '25px30px', fontWeight: '900', backgroundColor: '#9e9e9e' }}>
-							<TableCell>Title</TableCell>
-							<TableCell>Task Type</TableCell>
-							<TableCell>Assigned To</TableCell>
-							<TableCell>Priority</TableCell>
-							<TableCell>Due Date</TableCell>
-							<TableCell>Task Status</TableCell>
+							<TableCell>
+								<TableSortLabel>Title</TableSortLabel>
+							</TableCell>
+							<TableCell> <TableSortLabel>Task Type</TableSortLabel></TableCell>
+							<TableCell><TableSortLabel>Assigned To</TableSortLabel></TableCell>
+							<TableCell><TableSortLabel>Priority</TableSortLabel></TableCell>
+							<TableCell><TableSortLabel>Due Date</TableSortLabel></TableCell>
+							<TableCell><TableSortLabel>Task Status</TableSortLabel></TableCell>
 							<TableCell>Action</TableCell>
 							<TableCell>Action</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{tasks.map((item) => (
+						{tasks?.map((item) => (
 							<TableRow key={item._id}>
 								<TableCell>{item.title}</TableCell>
 								<TableCell>{item.task_type}</TableCell>
-								<TableCell>{item.assigned_to?.username}</TableCell>
+								<TableCell>
+									{item.assigned_to.map((ele) => {
+										return <p>{ele.name}</p>;
+									})}
+								</TableCell>
 								<TableCell>{item.priority}</TableCell>
 								<TableCell>{item.due_date}</TableCell>
 								<TableCell>{item.task_status}</TableCell>
@@ -207,20 +262,23 @@ export default function AdminTaskTable() {
 									</Button>
 								</TableCell>
 								<TableCell>
-									{item.task_status == 'Completed'?<Button
-										variant="outlined"
-										style={{ textTransform: 'Capitalize ' }}
-										disabled
-										onClick={()=>changeStatus(item._id)}>
-										Mark Completed
-									</Button>:<Button
-										variant="outlined"
-										style={{ textTransform: 'Capitalize ' }}
-										disabled={buttonDesable}
-										onClick={()=>changeStatus(item._id)}>
-										Mark Completed
-									</Button>}
-									
+									{item.task_status === 'Completed' ? (
+										<Button
+											variant="outlined"
+											style={{ textTransform: 'Capitalize ' }}
+											disabled
+											onClick={() => changeStatus(item._id)}>
+											Mark Completed
+										</Button>
+									) : (
+										<Button
+											variant="outlined"
+											style={{ textTransform: 'Capitalize ' }}
+											disabled={buttonDesable}
+											onClick={() => changeStatus(item._id)}>
+											Mark Completed
+										</Button>
+									)}
 								</TableCell>
 							</TableRow>
 						))}
@@ -239,142 +297,145 @@ export default function AdminTaskTable() {
 				onClose={handleClose}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">{'Create Task'}</DialogTitle>
+				<Box
+					sx={{
+						display: 'flex',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						paddingRight: '26px'
+					}}>
+					<DialogTitle id="alert-dialog-title">{'Create Task'}</DialogTitle>
+					<Button className="close-btn" variant="contained" onClick={handleClose}>
+						X
+					</Button>
+				</Box>
 				<DialogContent>
 					<DialogContentText id="alert-dialog-description">
-						<form onSubmit={(e) => createTask(e)}>
+						<form
+							onSubmit={(e) => createTask(e)}
+							style={{ display: 'flex', flexDirection: 'column' }}>
+							<InputLabel
+								id="demo-simple-select-autowidth-label"
+								style={{ marginLeft: '10px', paddingTop: '10px', color: 'black' }}>
+								Title
+							</InputLabel>
 							<TextField
 								id="outlined-basic"
 								className="outlined-basic1"
-								label="Title *"
+								fullWidth
 								variant="outlined"
 								name="title"
 								value={title}
 								onChange={onchange}
 							/>
-							<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+							<InputLabel
+								id="demo-simple-select-autowidth-label"
+								style={{ marginLeft: '10px', paddingTop: '10px', color: 'black' }}>
 								Type
 							</InputLabel>
 							<Select
-								sx={{ m: 1, minWidth: 280, width: '482px' }}
-								labelId="demo-simple-select-autowidth-label"
-								id="demo-simple-select-autowidth"
-								value={type}
-								onChange={onchange}
-								name="type">
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								<MenuItem value={'To-do'}>To-do</MenuItem>
-								<MenuItem value={'Call'}>Call</MenuItem>
-								<MenuItem value={'Email'}>Email</MenuItem>
-							</Select>
-
-							<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+								className="basic-single"
+								value={types}
+								onChange={selectType}
+								options={taskType}
+							/>
+							<InputLabel
+								id="demo-simple-select-autowidth-label"
+								style={{ marginLeft: '10px', paddingTop: '10px', color: 'black' }}>
 								Priority
 							</InputLabel>
 							<Select
-								sx={{ m: 1, minWidth: 280, width: '482px' }}
-								labelId="demo-simple-select-autowidth-label"
-								id="demo-simple-select-autowidth"
+								className="basic-single"
 								value={priority}
-								onChange={onchange}
-								name="priority"
-								autoWidth>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								<MenuItem value={'Low'}>Low</MenuItem>
-								<MenuItem value={'Medium'}>Medium</MenuItem>
-								<MenuItem value={'High'}>High</MenuItem>
-							</Select>
-							<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+								onChange={selectPriority}
+								options={priorityy}
+							/>
+							<InputLabel
+								id="demo-simple-select-autowidth-label"
+								style={{ marginLeft: '10px', paddingTop: '10px', color: 'black' }}>
 								Associated with records
 							</InputLabel>
 							<Select
-								sx={{ m: 1, minWidth: 280, width: '482px' }}
-								labelId="demo-simple-select-autowidth-label"
-								id="demo-simple-select-autowidth"
+								className="basic-single"
 								value={associated}
-								onChange={onchange}
-								name="associated"
-								autoWidth>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								{allContacts.map((item) => {
-									return <MenuItem value={item._id}>{item.firstname}</MenuItem>;
-								})}
-							</Select>
+								onChange={selectAssociated}
+								options={allContacts}
+							/>
 
-							{/* <TextField
-								id="outlined-basic"
-								className="outlined-basic1"
-								label="Associated with records"
-								variant="outlined"
-								name="associated"
-								value={associated}
-								onChange={onchange}
-							/> */}
-
-							<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+							<InputLabel
+								id="demo-simple-select-autowidth-label"
+								style={{ marginLeft: '10px', paddingTop: '10px', color: 'black' }}>
 								Assigned to
 							</InputLabel>
 							<Select
-								sx={{ m: 1, minWidth: 280, width: '482px' }}
-								labelId="demo-simple-select-autowidth-label"
-								id="demo-simple-select-autowidth"
-								value={assignedTo}
-								onChange={onchange}
-								name="assignedTo">
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								{users.map((user) => {
-									return <MenuItem value={user._id}>{user.username}</MenuItem>;
-								})}
-								{/* <MenuItem value={'Low'}>Low</MenuItem>
-								<MenuItem value={'Medium'}>Medium</MenuItem>
-								<MenuItem value={'High'}>High</MenuItem> */}
-							</Select>
-							<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+								isMulti
+								value={assignedUser}
+								components={animatedComponents}
+								onChange={selectMulti}
+								options={users}
+							/>
+
+							<InputLabel
+								id="demo-simple-select-autowidth-label"
+								style={{ width: '100px', paddingTop: '10px', color: 'black' }}>
 								Due Date
 							</InputLabel>
 							<TextField
 								id="outlined-basic"
 								className="outlined-basic"
 								variant="outlined"
+								fullWidth
 								type="date"
 								name="dueDate"
 								value={dueDate}
 								onChange={onchange}
 							/>
+							<InputLabel
+								id="demo-simple-select-autowidth-label"
+								style={{ marginLeft: '10px', width: '100px', paddingTop: '10px', color: 'black' }}>
+								Time
+							</InputLabel>
 							<TextField
 								id="outlined-basic"
 								className="outlined-basic"
-								label="Time"
 								type="time"
 								variant="outlined"
 								name="time"
+								fullWidth
 								value={time}
 								onChange={onchange}
 							/>
-							<TextField
-								name="description"
-								id="outlined-basic"
-								className="note"
-								label="Note *"
-								variant="outlined"
-								value={description}
-								onChange={onchange}
-							/>
+							<Box>
+								<InputLabel
+									id="demo-simple-select-autowidth-label"
+									style={{ marginLeft: '10px', width: '100px', color: 'black' }}>
+									Note
+								</InputLabel>
+
+								<TextField
+									sx={{
+										paddingTop: '20px',
+										marginBottom: '10px',
+										maxHeight: '100px',
+										overflowY: 'scroll'
+									}}
+									multiline
+									name="description"
+									fullWidth
+									id="outlined-basic"
+									className="note"
+									variant="outlined"
+									value={description}
+									onChange={onchange}
+								/>
+							</Box>
 
 							<Button type="submit" className="create-task-btn" variant="contained" autoFocus>
 								Create
 							</Button>
 						</form>
 					</DialogContentText>
-					<Button onClick={handleClose}>Close</Button>
+					{/* <Button onClick={handleClose}>Close</Button> */}
 				</DialogContent>
 				<DialogActions></DialogActions>
 			</Dialog>
@@ -387,6 +448,8 @@ export default function AdminTaskTable() {
 					setOpenPopup={setOpenPopup}
 					getAllTasks={getAllTasks}
 					allContacts={allContacts}
+					taskType={taskType}
+					priorityy={priorityy}
 				/>
 			</Popup>
 			<DeleteModal

@@ -105,19 +105,26 @@ export const userRegister = async (data) => {
 export const userOtpLogin = async (data) => {
 	try {
 		const res = await axios.post('http://localhost:8000/otp-login', data);
-		return res.data
-		
+		return res.data;
 	} catch (err) {
 		console.log(err);
 	}
 };
 
-export const userVerifyOTP = async(otp,email)=>{
-	try{
-		const res = await axios.post('http://localhost:8000/varify-otp', {otp,email})
-		console.log(res)
-	}catch(err){
-		console.log(err.response.data)
-		return err.response.data
+export const userVerifyOTP = async (otp, email) => {
+	try {
+		const res = await axios.post('http://localhost:8000/varify-otp', { otp, email });
+		return res.data;
+	} catch (err) {
+		console.log(err.response.data);
+		return err.response.data;
 	}
-}
+};
+export const userLogout = async () => {
+	try {
+		localStorage.removeItem('user');
+		return true;
+	} catch (err) {
+		console.log(err);
+	}
+};

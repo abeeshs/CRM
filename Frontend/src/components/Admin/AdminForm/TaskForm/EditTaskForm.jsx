@@ -1,5 +1,6 @@
-import { Button, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import React from 'react';
+import { Button, InputLabel, MenuItem, TextField } from '@mui/material';
+import Select from 'react-select';
+import React, { useState } from 'react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,10 +9,40 @@ import { Box } from '@mui/system';
 import { useEffect } from 'react';
 import * as taskService from '../../../../services/taskService';
 import { useSelector } from 'react-redux';
+import makeAnimated from 'react-select/animated';
 
 function EditTaskForm(props) {
-	const { editTask, setEditTask, openPopup, setOpenPopup, getAllTasks, users, allContacts } = props;
+	const test = { label: 'no text', value: 'tes55t' };
+	const {
+		editTask,
+		setEditTask,
+		openPopup,
+		setOpenPopup,
+		getAllTasks,
+		users,
+		allContacts,
+		taskType,
+		priorityy
+	} = props;
+	const animatedComponents = makeAnimated();
+	const [priority, setPriority] = useState([]);
+	const [types, setType] = useState([]);
+	const [associated, setAssociated] = useState([]);
+	const [assignedUser, setAssignedUser] = useState([]);
 	console.log(editTask);
+
+	const selectType = (types) => {
+		setType(types);
+	};
+	const selectPriority = (priority) => {
+		setPriority(priority);
+	};
+	const selectAssociated = (associated) => {
+		setAssociated(associated);
+	};
+	const selectMulti = (assignedUser) => {
+		setAssignedUser(assignedUser);
+	};
 
 	useEffect(() => {
 		reset(editTask);
@@ -56,18 +87,29 @@ function EditTaskForm(props) {
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<p style={{ fontSize: '15px', color: 'red' }}>{errors.title?.message}</p>
+
 			<TextField
 				id="outlined-basic"
+				fullWidth
 				className="outlined-basic1"
 				label="Title *"
 				variant="outlined"
 				name="title"
 				{...register('title')}
 			/>
-			<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+			<InputLabel
+				id="demo-simple-select-autowidth-label"
+				style={{ marginLeft: '10px', marginTop: '10px' }}>
 				Type
 			</InputLabel>
 			<Select
+				className="basic-single"
+				defaultValue={{ label: editTask.priority, value: 0 }}
+				value={types}
+				onChange={selectType}
+				options={taskType}
+			/>
+			{/* <Select
 				sx={{ m: 1, minWidth: 280, width: '482px' }}
 				labelId="demo-simple-select-autowidth-label"
 				id="demo-simple-select-autowidth"
@@ -81,12 +123,21 @@ function EditTaskForm(props) {
 				<MenuItem value={'To-do'}>To-do</MenuItem>
 				<MenuItem value={'Call'}>Call</MenuItem>
 				<MenuItem value={'Email'}>Email</MenuItem>
-			</Select>
+			</Select> */}
 
-			<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+			<InputLabel
+				id="demo-simple-select-autowidth-label"
+				style={{ marginLeft: '10px', marginTop: '10px' }}>
 				Priority
 			</InputLabel>
 			<Select
+				className="basic-single"
+				value={priority}
+				defaultValue={test[0]}
+				onChange={selectPriority}
+				options={priorityy}
+			/>
+			{/* <Select
 				sx={{ m: 1, minWidth: 280, width: '482px' }}
 				labelId="demo-simple-select-autowidth-label"
 				id="demo-simple-select-autowidth"
@@ -100,27 +151,37 @@ function EditTaskForm(props) {
 				<MenuItem value={'Low'}>Low</MenuItem>
 				<MenuItem value={'Medium'}>Medium</MenuItem>
 				<MenuItem value={'High'}>High</MenuItem>
-			</Select>
+			</Select> */}
 
-			<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+			<InputLabel
+				id="demo-simple-select-autowidth-label"
+				style={{ marginLeft: '10px', marginTop: '10px' }}>
 				Associated with
 			</InputLabel>
 			<Select
+				className="basic-single"
+				value={associated}
+				onChange={selectAssociated}
+				options={allContacts}
+				defaultValue={{ label: "vishnu", value: "vishnu" }}
+			/>
+
+			{/* <Select
 				sx={{ m: 1, minWidth: 280, width: '482px' }}
 				labelId="demo-simple-select-autowidth-label"
 				id="demo-simple-select"
-				defaultValue={editTask.title
-                }
+				defaultValue={editTask.title}
 				name="associated"
 				autoWidth
 				{...register('associated')}>
 				<MenuItem value="">
 					<em>None</em>
 				</MenuItem>
-				{allContacts.map((item) => {
+				{allContacts?.map((item) => {
+					<p>{item}</p>;
 					return <MenuItem value={item._id}>{item.firstname}</MenuItem>;
 				})}
-			</Select>
+			</Select> */}
 
 			{/* <TextField
 				id="outlined-basic"
@@ -132,29 +193,37 @@ function EditTaskForm(props) {
                 {...register('associated')}
 			/> */}
 
-			<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+			<InputLabel
+				id="demo-simple-select-autowidth-label"
+				style={{ marginLeft: '10px', marginTop: '10px' }}>
 				Assigned to
 			</InputLabel>
 			<Select
+				isMulti
+				value={assignedUser}
+				components={animatedComponents}
+				onChange={selectMulti}
+				options={users}
+				defaultValue={{ label: 2002, value: 2002 }}
+			/>
+			{/* <Select
 				sx={{ m: 1, minWidth: 280, width: '482px' }}
 				labelId="demo-simple-select-autowidth-label"
 				id="demo-simple-select-autowidth"
 				name="assignedTo"
 				autoWidth
-                defaultValue={editTask.assigned_to.username}
+				defaultValue={editTask?.assigned_to?.username}
 				{...register('assignedTo')}>
 				<MenuItem value="">
 					<em>None</em>
 				</MenuItem>
-				{users.map((user) => {
+				{users?.map((user) => {
 					return <MenuItem value={user._id}>{user.username}</MenuItem>;
 				})}
-
-				{/* <MenuItem value={'Low'}>Low</MenuItem>
-        <MenuItem value={'Medium'}>Medium</MenuItem>
-        <MenuItem value={'High'}>High</MenuItem> */}
-			</Select>
-			<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
+			</Select> */}
+			<InputLabel
+				id="demo-simple-select-autowidth-label"
+				style={{ marginLeft: '10px', marginTop: '10px' }}>
 				Due Date
 			</InputLabel>
 			<TextField
@@ -176,8 +245,9 @@ function EditTaskForm(props) {
 				{...register('time')}
 			/>
 			<TextField
-				sx={{ height: '86px' }}
+				sx={{ height: '86px', marginTop: '10px' }}
 				name="description"
+				fullWidth
 				id="outlined-basic"
 				className="note"
 				label="Note *"

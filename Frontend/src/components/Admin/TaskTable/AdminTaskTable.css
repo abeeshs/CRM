@@ -25,3 +25,13 @@
     height: 150px ;
 
 }
+div[class="MuiInputBase-root"] fieldset legend span {
+z-index: 0 !important;
+background-color: #000 !important;
+}
+.close-btn{
+	background-color: rgba(189, 57, 57, 0.648) !important;
+	width:'30px';
+	height:'2rem';
+	
+}

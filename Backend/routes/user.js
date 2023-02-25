@@ -64,4 +64,11 @@ router.get('/users',userProtect,userController.viewAllUser)
 //Edit contacts
 router.put('/contacts/edit-contact/:id',userProtect,contactController.editContact)
 
+// ================= DEALS =======================
+
+//View all deals
+router.get('/deals',userProtect,userController.getAllDeals)
+//Create deals
+router.post('/deals/create-deal',userProtect,userController.addNewDeal)
+
 export default router;

@@ -133,7 +133,7 @@ export const getAllUser = asyncHandler(async (req, res) => {
 //Method -GET
 
 export const getAllTask = asyncHandler(async (req, res) => {
-	const task = await Tasks.find().populate('assigned_to').populate('associated_with');
+	const task = await Tasks.find()
 	console.log(task);
 	if (task) {
 		res.status(200).json(task);

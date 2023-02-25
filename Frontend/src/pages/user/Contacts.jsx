@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from '../../components/User/Sidebar/Sidebar';
 import ContactsTable from '../../components/User/ContactsTable/ContactsTable';
 import Box from '@mui/material/Box';
@@ -20,6 +20,7 @@ import * as userService from '../../services/userService';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/User/Header/Header';
 import { Container } from '@mui/system';
+import { useSelector } from 'react-redux';
 
 function Contacts() {
 	const [rightSIde, setRightSide] = useState(false);
@@ -29,6 +30,18 @@ function Contacts() {
 		console.log('status');
 		// setRightSide(status);
 	};
+	
+	const token= useSelector((state)=>state.userAuth.token)||JSON.parse(localStorage.getItem('user'))
+	console.log("thsd hdgdgg")
+	
+	console.log(token)
+
+	useEffect(()=>{
+		if(!token){
+			navigate('/')
+		}
+		
+	},[])
 
 	//right sidebar
 	function List({ anchor }) {

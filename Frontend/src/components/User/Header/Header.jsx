@@ -11,16 +11,26 @@ import {
 	Typography
 } from '@mui/material';
 import { Box } from '@mui/system';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
 import './Header.css';
+import * as authService from '../../../services/authService';
 
 function Header() {
 	const navigate = useNavigate();
 	const [tableType, setTableType] = useState('');
+	const [open, setOpen] = useState(false);
 
 	const tableHandle = (type) => {
 		setTableType(type);
+	};
+	const signOutHandler = async () => {
+		let res = await authService.userLogout();
+		if (res) {
+			navigate('/');
+		}
 	};
 	return (
 		<Box>
@@ -141,6 +151,51 @@ function Header() {
 						}}>
 						Reports
 					</Typography>
+
+					<div onClick={() => setOpen(!open)} style={{ marginLeft: '60%' }}>
+						<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+					</div>
+					<div className="menu-container">
+						<div className="menu-trigger"></div>
+						<div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
+							<div className="profile-image">
+								<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+
+								<h3>
+									Abeesh
+									<br />
+									<span>abiabeesh@gmail.com</span>
+								</h3>
+							</div>
+							<ul>
+								<li className="dropdownItem">
+									<AccountCircleIcon />
+									<p>Account</p>
+								</li>
+								<li className="dropdownItem">
+									<AccountCircleIcon />
+									<p>General</p>
+								</li>
+								<li className="dropdownItem">
+									<AccountCircleIcon />
+									<p>Notification</p>
+								</li>
+								<li className="dropdownItem">
+									<AccountCircleIcon />
+									<p>Privacy</p>
+								</li>
+								<li className="dropdownItem">
+									<AccountCircleIcon />
+									<p>setting</p>
+								</li>
+							</ul>
+							<div className="sign-out">
+								<h3 className="logout" onClick={() => signOutHandler()}>
+									Sign out
+								</h3>
+							</div>
+						</div>
+					</div>
 				</Toolbar>
 			</AppBar>
 		</Box>

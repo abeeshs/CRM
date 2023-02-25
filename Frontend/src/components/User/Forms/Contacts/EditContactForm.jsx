@@ -154,7 +154,7 @@ function EditContactForm(props) {
 							select
 							label="Contact Owner"
 							defaultValue={updateContact.contact_owner.username}>
-							{users.map((option) => (
+							{users?.map((option) => (
 								<MenuItem key={option._id} value={option.username}>
 									{option.username}
 								</MenuItem>

@@ -12,7 +12,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as authService from '../../services/authService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserToken } from '../../features/auth/userAuthSlice';
 import { useEffect } from 'react';
 
@@ -21,7 +21,9 @@ const theme = createTheme();
 export default function SignIn() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const token = JSON.parse(localStorage.getItem('user'));
+	const { token } = useSelector((state) => state.userAuth);
+
+	console.log({ token });
 	useEffect(() => {
 		if (token) {
 			navigate('/contacts');

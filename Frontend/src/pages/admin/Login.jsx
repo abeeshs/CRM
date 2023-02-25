@@ -38,7 +38,7 @@ export default function SignIn() {
   //Admin login form schema
 	const schema = yup.object().shape({	
 		email: yup.string().email().required('Email is required'),	
-		password: yup.string().min(3).required('Password is required'),
+		password: yup.string().required('Password is required'),
 	});
 
 	//setting schema
@@ -83,7 +83,7 @@ export default function SignIn() {
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
-          <p>{errors.email?.message}</p>
+          {/* <p>{errors.email?.message}</p> */}
             <TextField
               margin="normal"
               required
@@ -97,7 +97,7 @@ export default function SignIn() {
 							helperText={errors.email ? errors.email.message : ''}
               {...register('email')}
             />
-             <p>{errors.password?.message}</p>
+             {/* <p>{errors.password?.message}</p> */}
             <TextField
               margin="normal"
               required

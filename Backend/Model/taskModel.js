@@ -22,8 +22,9 @@ const taskSchema = new mongoose.Schema(
 			// ref: 'Contact'
 		},
 		assigned_to: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User'
+			type: Array,
+			ref: 'User',
+			
 		},
 		priority: {
 			type: String,

@@ -20,6 +20,8 @@ import PendingTask from './pages/user/PendingTask';
 import CompletedTask from './pages/user/CompletedTask';
 import OtpEmail from './pages/user/OtpEmail';
 import VarifyOTP from './pages/user/VarifyOTP';
+import Deals from './pages/user/Deals';
+
 
 
 
@@ -67,7 +69,7 @@ function App() {
 					<Route path='/contacts' element={<Contacts/>}/>
 					<Route path='/task' element={<TasksPage/>}/>
 
-					<Route path='/deals' element={<DealsPage/>}/>
+					<Route path='/deals' element={<Deals/>}/>
 					
 					<Route path='/conversation' element={<Conversation/>}/>
 					<Route path='/task/pending-task' element={<PendingTask/>}/>

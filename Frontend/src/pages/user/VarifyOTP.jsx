@@ -2,40 +2,67 @@ import React, { useEffect, useState } from 'react';
 import OTPInput, { ResendOTP } from 'otp-input-react';
 import { Box, Container } from '@mui/system';
 import { Button } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as authService from '../../services/authService';
 import { authSlice } from '../../features/auth/adminAuthSlice';
 import { useNavigate } from 'react-router-dom';
-
+import { setUserToken } from '../../features/auth/userAuthSlice';
 
 function VarifyOTP() {
+	const dispatch = useDispatch();
 	const [OTP, setOTP] = useState('');
 	const [userEmail, setUserEmail] = useState();
 	const [error, setError] = useState('');
-	const navigate = useNavigate()
+	const [desableButton, setDesableButton] = useState('');
+	const navigate = useNavigate();
 
 	const { otpEmail } = useSelector((state) => state.userOTPLogin);
 	console.log(otpEmail);
 	const getUserEmail = () => {
 		setUserEmail(otpEmail);
 	};
+	//submit otp 
 	const handleSubmit = async () => {
 		if (OTP > 3) {
 			const response = await authService.userVerifyOTP(OTP, userEmail);
-			console.log({response})
-			if (response == 'Incorrect otp') {
-				console.log({response})
+			console.log(response);
+			if (response.message === 'Loggin Success') {
+				dispatch(setUserToken({ token: response.token, username: response.username }));
+				navigate('/contacts');
+				console.log({ response });
+			} else if (response == 'Incorrect otp') {
+				console.log({ response });
 				setError(response);
 				setTimeout(() => {
 					setError(null);
-					setOTP('')
+					setOTP('');
 				}, 4000);
+			} else {
 			}
 		} else {
 			setError('Please enter OTP');
 			console.log('Enter valid otp');
 		}
 	};
+
+	//resend otp
+	const resendOTP = async()=>{
+		const response = await authService.userVerifyOTP(OTP, userEmail);
+		if (response.message === 'Loggin Success') {
+			dispatch(setUserToken({ token: response.token, username: response.username }));
+			navigate('/contacts');
+			console.log({ response });
+		} else if (response == 'Incorrect otp') {
+			console.log({ response });
+			setError(response);
+			setTimeout(() => {
+				setError(null);
+				setOTP('');
+			}, 4000);
+		} else {
+		}
+
+	}
 
 	useEffect(() => {
 		getUserEmail();
@@ -66,7 +93,7 @@ function VarifyOTP() {
 							textAlign: 'center',
 							fontSize: '14px'
 						}}>
-							<p style={{color:'red'}}>{error? error:''}</p>
+						<p style={{ color: 'red' }}>{error ? error : ''}</p>
 						<p>
 							An OTP has been sent to your entered email <b>{userEmail}</b>
 						</p>
@@ -75,7 +102,7 @@ function VarifyOTP() {
 
 					<div className="verifyDiv">
 						<div className="otpElements">
-							<div className={error? 'validation-error' : ''} style={{width:'fit-content'}}>
+							<div className={error ? 'validation-error' : ''} style={{ width: 'fit-content' }}>
 								<OTPInput
 									value={OTP}
 									onChange={setOTP}
@@ -87,12 +114,13 @@ function VarifyOTP() {
 								/>
 							</div>
 							<p className="p3">Didn't receive the code?</p>
-							<ResendOTP onResendClick={() => console.log('Resend clicked')} />
+							<ResendOTP onResendClick={() => resendOTP()} />
 							{/* <p className="resend">Resend</p> */}
 						</div>
 						{/* <button type="submit">Verify</button> */}
 						<Button
 							onClick={() => handleSubmit()}
+							disabled={desableButton}
 							sx={{ mt: 3 }}
 							className="login-btn"
 							type="submit"
@@ -101,7 +129,7 @@ function VarifyOTP() {
 							Verify
 						</Button>
 						<Box sx={{ textAlign: 'center', cursor: 'pointer' }}>
-							<p onClick={()=>navigate('/')}>Cancel</p>
+							<p onClick={() => navigate('/')}>Cancel</p>
 						</Box>
 					</div>
 				</Box>

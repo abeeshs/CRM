@@ -11,6 +11,7 @@ export const emailOtpLogin = asyncHandler(async (data) => {
 // Varify OTP
 export const varifyEmailOtp = asyncHandler(async (email) => {
 	const otpData = await Otp.findOne({ email: email }).sort({ createdAt: -1 });
+	console.log(otpData)
 
 	
 	if (otpData) {
