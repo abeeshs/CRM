@@ -189,7 +189,7 @@ export default function Sidebar() {
 							{ name: 'Deals', icon: <ListAltIcon /> },
 							{ name: 'Task', icon: <TaskIcon /> },
 							{ name: 'Contacts', icon: <PermContactCalendarIcon /> },
-							{ name: 'Meatings', icon: <GroupsIcon /> },
+							{ name: 'Meetings', icon: <GroupsIcon /> },
 							{ name: 'Settings', icon: <SettingsIcon /> }
 						].map((text, index) => (
 							<ListItem
@@ -206,7 +206,8 @@ export default function Sidebar() {
 										sx={{
 											minWidth: 0,
 											mr: open ? 3 : 'auto',
-											justifyContent: 'center'
+											justifyContent: 'center',
+											color:'white'
 										}}>
 										{text.icon}
 									</ListItemIcon>

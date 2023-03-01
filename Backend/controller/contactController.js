@@ -11,7 +11,7 @@ import Contact from '../Model/contactModel.js'
 
 export const getAllContact = asyncHandler(async(req,res)=>{
     const allContacts = await Contact.find().populate('contact_owner');
-    console.log(allContacts)
+    
    
     if(allContacts){
         res.status(200).json(allContacts)

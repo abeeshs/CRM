@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-//admin register
+//-----------------Admin register----------------
+
 export const adminRegister = async (data) => {
-	console.log({ data });
 	try {
-		const res = await axios.post('http://localhost:8000/admin/signup', data);
-		console.log(res);
+		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/admin/signup`, data);
+
 		return res.data;
 	} catch (error) {
 		const message =
@@ -26,12 +26,12 @@ export const adminRegister = async (data) => {
 	}
 };
 
-//admin login
+//-------------------------Admin login-----------------------
+
 export const adminLogin = async (data) => {
-	console.log({ data });
 	try {
-		const res = await axios.post('http://localhost:8000/admin', data);
-		console.log(res.data);
+		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/admin`, data);
+
 		return res.data;
 	} catch (error) {
 		const message =
@@ -51,12 +51,11 @@ export const adminLogin = async (data) => {
 	}
 };
 
-//User login
+//----------------------------- User login ---------------------
 export const userLogin = async (data) => {
-	console.log({ data });
 	try {
-		const res = await axios.post('http://localhost:8000', data);
-		console.log(res);
+		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}`, data);
+
 		return res.data;
 	} catch (error) {
 		const message =
@@ -76,12 +75,12 @@ export const userLogin = async (data) => {
 	}
 };
 
-//User register
+//-------------------------- User register ----------------------------
+
 export const userRegister = async (data) => {
-	console.log({ data });
 	try {
-		const res = await axios.post('http://localhost:8000/signup', data);
-		console.log(res);
+		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/signup`, data);
+
 		return res.data;
 	} catch (error) {
 		const message =
@@ -101,25 +100,30 @@ export const userRegister = async (data) => {
 	}
 };
 
-//User OTP Login
+//-------------------------- User OTP Login ---------------------
+
 export const userOtpLogin = async (data) => {
 	try {
-		const res = await axios.post('http://localhost:8000/otp-login', data);
+		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/otp-login`, data);
 		return res.data;
 	} catch (err) {
 		console.log(err);
 	}
 };
 
+//-------------------------- Verify OTP Login ---------------------
+
 export const userVerifyOTP = async (otp, email) => {
 	try {
-		const res = await axios.post('http://localhost:8000/varify-otp', { otp, email });
+		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/varify-otp`, { otp, email });
 		return res.data;
 	} catch (err) {
 		console.log(err.response.data);
 		return err.response.data;
 	}
 };
+//-------------------------- Logout User ---------------------
+
 export const userLogout = async () => {
 	try {
 		localStorage.removeItem('user');

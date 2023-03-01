@@ -21,36 +21,10 @@ import CompletedTask from './pages/user/CompletedTask';
 import OtpEmail from './pages/user/OtpEmail';
 import VarifyOTP from './pages/user/VarifyOTP';
 import Deals from './pages/user/Deals';
+import Meetings from './pages/user/Meetings'
+import MeetingPage from './pages/admin/MeetingPage';
+import NewMeeting from './pages/admin/NewMeeting';
 
-
-
-
-// 	return (
-// 		<>
-// 			<Router>
-// 				<Routes>
-// 					<Route path="/admin/login" element={<Login />} />
-// 					<Route path="/admin/register" element={<Register />} />
-// 				</Routes>
-// 				<Box sx={{ display: 'flex' }}>
-// 					<Sidebar />
-// 					<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-// 						<DrawerHeader />
-
-// 						<Routes>
-// 							<Route path="/admin">
-// 								<Route path="/admin" element={<Dashboard />} />
-
-// 								<Route path="/admin/task" element={<Tasks />} />
-// 							</Route>
-// 						</Routes>
-// 					</Box>
-// 				</Box>
-// 			</Router>
-// 			<ToastContainer />
-// 		</>
-// 	);
-// }
 
 // export default App;
 function App() {
@@ -74,6 +48,8 @@ function App() {
 					<Route path='/conversation' element={<Conversation/>}/>
 					<Route path='/task/pending-task' element={<PendingTask/>}/>
 					<Route path='/task/completed-task' element={<CompletedTask/>}/>
+					<Route path='/meetings' element={<Meetings/>}/>
+
 
 
 
@@ -85,6 +61,10 @@ function App() {
 					<Route path="/admin" element={<Dashboard />} />
 
 					<Route path="/admin/task" element={<Tasks />} />
+					<Route path="/admin/meetings" element={<MeetingPage />} />
+					<Route path='/admin/meetings/new-meeting' element={<NewMeeting/>}/>
+
+
 					
 				</Routes>
 			</Router>

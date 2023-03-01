@@ -4,7 +4,7 @@ import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import User from '../Model/userModel.js';
 import Tasks from '../Model/taskModel.js';
-
+import *as authService from '../Services/authService.js'
 //-------------Admin Register-------------
 //method = POST
 export const adminRegister = asyncHandler(async (req, res) => {
@@ -160,6 +160,15 @@ export const blockUser = asyncHandler(async (req, res) => {
 	}
 });
 
+export const getProfile= asyncHandler(async(req,res)=>{
+	const adminData=await authService.getAdminDetails(req.user._id)
+	console.log(adminData)
+	if(adminData){
+		res.status(200).json(adminData)
+	}else{
+		throw new Error("Unable to find admin details")
+	}
+})
 //------------JWT token generate-----------
 export const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {

@@ -1,5 +1,6 @@
 import Otp from '../Model/otpModel.js';
 import asyncHandler from 'express-async-handler';
+import Admin from '../Model/adminModel.js'
 
 // otp login
 export const emailOtpLogin = asyncHandler(async (data) => {
@@ -19,3 +20,9 @@ export const varifyEmailOtp = asyncHandler(async (email) => {
 	}
 	return false;
 });
+
+export const getAdminDetails =asyncHandler(async(id)=>{
+	const result = await Admin.findById(id)
+	console.log(result)
+	return result
+})

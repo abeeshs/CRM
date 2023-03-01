@@ -3,6 +3,7 @@ import *as contactController from '../controller/contactController.js'
 import * as adminController from '../controller/adminController.js';
 import * as taskController from '../controller/taskController.js';
 import { adminProtect } from '../middleware/authMiddleware.js';
+import * as meetingController from '../controller/meetingController.js'
 const router = Router();
 //=============== LOGIN/REGISTER ===============
 
@@ -10,6 +11,7 @@ const router = Router();
 router.post('/signup', adminController.adminRegister);
 //admin login
 router.post('/', adminController.adminLogin);
+router.get('/admin-data',adminProtect,adminController.getProfile)
 
 router.get('/logout',adminProtect,adminController.logOut)
 
@@ -49,5 +51,10 @@ router.post('/contacts/add-contact',adminProtect,contactController.addNewContact
 router.delete('/contacts/delete-contact/:id',adminProtect,contactController.deleteContact)
 //Edit contacts
 router.put('/contacts/edit-contact/:id',adminProtect,contactController.editContact)
+
+//=================== MEETINGS ====================
+
+router.post('/meetings/new-meeting',adminProtect,meetingController.addNewMeeting)
+router.get('/meetings/members',adminProtect,meetingController.getMembers)
 
 export default router;

@@ -1,18 +1,17 @@
 import axios from 'axios';
-import { useTransition } from 'react';
 import { toast } from 'react-toastify';
 
-//get All contacts -User
+//---------------Get All contacts -User -----------------------
 
 export const getAllContact = async () => {
 	const userToken = JSON.parse(localStorage.getItem('user'));
 	const token = userToken?.token;
 
 	try {
-		const res = await axios.get('http://localhost:8000/contacts', {
+		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/contacts`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
-		console.log(res);
+
 		return res.data;
 	} catch (error) {
 		const message =
@@ -32,17 +31,20 @@ export const getAllContact = async () => {
 	}
 };
 
-//create contact
+//----------------------- Create contact -----------------------
+
 export const createContact = async (data) => {
 	try {
-		console.log({data})
 		const userToken = JSON.parse(localStorage.getItem('user'));
-		
 		const token = userToken?.token;
-		const res = await axios.post('http://localhost:8000/contacts/add-contact', {data}, {
-			headers: { Authorization: `Bearer ${token}` }
-		});
-		console.log(res);
+		const res = await axios.post(
+			`${process.env.REACT_APP_SERVER_URL}/contacts/add-contact`,
+			{ data },
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
+
 		return res.data;
 	} catch (error) {
 		const message =
@@ -62,33 +64,34 @@ export const createContact = async (data) => {
 	}
 };
 
-//Update contact -USER
+//-----------------------Update contact -USER -----------------------
+
 export const updateContact = async (data) => {
 	try {
-		console.log("data")
-		console.log(data._id)
-		console.log(data)
 		const userToken = JSON.parse(localStorage.getItem('user'));
 		const token = userToken.token;
-		const res = await axios.put(`http://localhost:8000/contacts/edit-contact/${data._id}`, data, {
-			headers: { Authorization: `Bearer ${token}` }
-		});
-		console.log(res);
+		const res = await axios.put(
+			`${process.env.REACT_APP_SERVER_URL}/contacts/edit-contact/${data._id}`,
+			data,
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
+
 		return res.data;
 	} catch (err) {
 		console.log(err);
 	}
 };
 
-//get All contact admin
-export const getAllContactAdmin = async (token) => {
-	
+//-----------------------Get All contact for admin -----------------------
 
+export const getAllContactAdmin = async (token) => {
 	try {
-		const res = await axios.get('http://localhost:8000/admin/contacts', {
+		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/admin/contacts`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
-		console.log(res);
+
 		return res.data;
 	} catch (error) {
 		const message =
@@ -108,11 +111,12 @@ export const getAllContactAdmin = async (token) => {
 	}
 };
 
-//Delete contact by user
-export const deleteContact =async (id)=>{
+//-----------------------Delete contact by user-----------------------
+
+export const deleteContact = async (id) => {
 	try {
-		const res = await axios.get('http://localhost:8000/contacts/delete-contact');
-		console.log(res);
+		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/contacts/delete-contact`);
+
 		return res.data;
 	} catch (error) {
 		const message =
@@ -130,4 +134,4 @@ export const deleteContact =async (id)=>{
 			theme: 'dark'
 		});
 	}
-}
+};

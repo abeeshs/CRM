@@ -36,166 +36,191 @@ function Header() {
 		<Box>
 			<AppBar position="static">
 				<Toolbar sx={{ backgroundColor: 'white' }}>
-					<Typography
-						variant="h6"
-						noWrap
-						component="a"
-						href="/"
-						sx={{
-							mr: 2,
-							display: { xs: 'none', md: 'flex' },
-							fontFamily: 'monospace',
-							fontWeight: 700,
-							letterSpacing: '.3rem',
-							color: 'black',
-							textDecoration: 'none'
-						}}>
-						LOGO
-					</Typography>
+					<Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+						<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+							<Typography
+								variant="h6"
+								noWrap
+								component="a"
+								href="/"
+								sx={{
+									mr: 2,
+									display: { xs: 'none', md: 'flex' },
+									fontFamily: 'monospace',
+									fontWeight: 700,
+									letterSpacing: '.3rem',
+									color: 'black',
+									textDecoration: 'none'
+								}}>
+								LOGO
+							</Typography>
 
-					<Typography
-						className="dropdown"
-						variant="h6"
-						noWrap
-						component="div"
-						onClick={() => navigate('/contacts')}
-						sx={{
-							color: 'black',
-							height: '28px',
-							fontFamily: '',
-							fontSize: '16px',
-							fontFamily: 'sans-serif',
-							paddingLeft: '40px'
-						}}>
-						Contacts
-					</Typography>
+							<Typography
+								className="dropdown"
+								variant="h6"
+								noWrap
+								component="div"
+								onClick={() => navigate('/contacts')}
+								sx={{
+									color: 'black',
+									height: '28px',
+									fontFamily: '',
+									fontSize: '16px',
+									fontFamily: 'sans-serif',
+									paddingLeft: '40px',
+									cursor: 'pointer'
+								}}>
+								Contacts
+							</Typography>
 
-					<div class="dropdown">
-						<Typography
-							className="dropdown"
-							variant="h6"
-							noWrap
-							component="div"
-							onClick={() => navigate('/task')}
-							sx={{
-								color: 'black',
-								height: '28px',
-								fontFamily: '',
-								fontSize: '16px',
-								fontFamily: 'sans-serif',
-								paddingLeft: '40px'
-							}}>
-							Task
-						</Typography>
+							<Box class="dropdown">
+								<Typography
+									className="dropdown"
+									variant="h6"
+									noWrap
+									component="div"
+									onClick={() => navigate('/task')}
+									sx={{
+										color: 'black',
+										height: '28px',
+										fontFamily: '',
+										fontSize: '16px',
+										fontFamily: 'sans-serif',
+										paddingLeft: '40px',
+										cursor: 'pointer'
+									}}>
+									Task
+								</Typography>
 
-						<div className="dropdown-content">
-							<List>
-								<ListItem disablePadding>
-									<ListItemButton onClick={() => navigate('/task/pending-task')}>
-										<Typography sx={{ color: 'Black', fontSize: '15px', paddingLeft: '7px' }}>
-											{' '}
-											Pending Task
-										</Typography>
-									</ListItemButton>
-								</ListItem>
+								<div className="dropdown-content">
+									<List>
+										<ListItem disablePadding>
+											<ListItemButton onClick={() => navigate('/task/pending-task')}>
+												<Typography sx={{ color: 'Black', fontSize: '15px', paddingLeft: '7px' }}>
+													{' '}
+													Pending Task
+												</Typography>
+											</ListItemButton>
+										</ListItem>
 
-								<ListItem disablePadding>
-									<ListItemButton onClick={() => navigate('/task/completed-task')}>
-										<Typography sx={{ color: 'Black', fontSize: '15px' }}>
-											{' '}
-											Completed Task
-										</Typography>
-									</ListItemButton>
-								</ListItem>
-							</List>
-						</div>
-					</div>
-					<Typography
-						variant="h6"
-						noWrap
-						component="div"
-						sx={{
-							color: 'black',
-							fontFamily: '',
-							fontSize: '16px',
-							fontFamily: 'sans-serif',
-							paddingLeft: '30px'
-						}}>
-						Conversation
-					</Typography>
-					<Typography
-						variant="h6"
-						noWrap
-						component="div"
-						onClick={() => navigate('/deals')}
-						sx={{
-							color: 'black',
-							fontFamily: '',
-							fontSize: '16px',
-							fontFamily: 'sans-serif',
-							paddingLeft: '30px'
-						}}>
-						Deals
-					</Typography>
+										<ListItem disablePadding>
+											<ListItemButton onClick={() => navigate('/task/completed-task')}>
+												<Typography sx={{ color: 'Black', fontSize: '15px' }}>
+													{' '}
+													Completed Task
+												</Typography>
+											</ListItemButton>
+										</ListItem>
+									</List>
+								</div>
+							</Box>
+							<Typography
+								variant="h6"
+								noWrap
+								component="div"
+								sx={{
+									color: 'black',
+									fontFamily: '',
+									fontSize: '16px',
+									fontFamily: 'sans-serif',
+									paddingLeft: '30px',
+									cursor: 'pointer'
+								}}>
+								Conversation
+							</Typography>
+							<Typography
+								variant="h6"
+								noWrap
+								component="div"
+								onClick={() => navigate('/deals')}
+								sx={{
+									color: 'black',
+									fontFamily: '',
+									fontSize: '16px',
+									fontFamily: 'sans-serif',
+									paddingLeft: '30px',
+									cursor: 'pointer'
+								}}>
+								Deals
+							</Typography>
 
-					<Typography
-						variant="h6"
-						noWrap
-						component="div"
-						sx={{
-							color: 'black',
-							fontFamily: '',
-							fontSize: '16px',
-							fontFamily: 'sans-serif',
-							paddingLeft: '30px'
-						}}>
-						Reports
-					</Typography>
-
-					<div onClick={() => setOpen(!open)} style={{ marginLeft: '60%' }}>
-						<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-					</div>
-					<div className="menu-container">
-						<div className="menu-trigger"></div>
-						<div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
-							<div className="profile-image">
+							<Typography
+								variant="h6"
+								noWrap
+								component="div"
+								sx={{
+									color: 'black',
+									fontFamily: '',
+									fontSize: '16px',
+									fontFamily: 'sans-serif',
+									paddingLeft: '30px',
+									cursor: 'pointer'
+								}}>
+								Reports
+							</Typography>
+							<Typography
+								variant="h6"
+								noWrap
+								component="div"
+								onClick={() => navigate('/meetings')}
+								sx={{
+									color: 'black',
+									fontFamily: '',
+									fontSize: '16px',
+									fontFamily: 'sans-serif',
+									paddingLeft: '30px',
+									cursor: 'pointer'
+								}}>
+								Meetings
+							</Typography>
+						</Box>
+						<Box>
+							<div onClick={() => setOpen(!open)} style={{ float: 'right' }}>
 								<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+							</div>
+							<div className="menu-container">
+								<div className="menu-trigger"></div>
+								<div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
+									<div className="profile-image">
+										<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
 
-								<h3>
-									Abeesh
-									<br />
-									<span>abiabeesh@gmail.com</span>
-								</h3>
+										<h3>
+											Abeesh
+											<br />
+											<span>abiabeesh@gmail.com</span>
+										</h3>
+									</div>
+									<ul>
+										<li className="dropdownItem">
+											<AccountCircleIcon />
+											<p>Account</p>
+										</li>
+										<li className="dropdownItem">
+											<AccountCircleIcon />
+											<p>General</p>
+										</li>
+										<li className="dropdownItem">
+											<AccountCircleIcon />
+											<p>Notification</p>
+										</li>
+										<li className="dropdownItem">
+											<AccountCircleIcon />
+											<p>Privacy</p>
+										</li>
+										<li className="dropdownItem">
+											<AccountCircleIcon />
+											<p>setting</p>
+										</li>
+									</ul>
+									<div className="sign-out">
+										<h3 className="logout" onClick={() => signOutHandler()}>
+											Sign out
+										</h3>
+									</div>
+								</div>
 							</div>
-							<ul>
-								<li className="dropdownItem">
-									<AccountCircleIcon />
-									<p>Account</p>
-								</li>
-								<li className="dropdownItem">
-									<AccountCircleIcon />
-									<p>General</p>
-								</li>
-								<li className="dropdownItem">
-									<AccountCircleIcon />
-									<p>Notification</p>
-								</li>
-								<li className="dropdownItem">
-									<AccountCircleIcon />
-									<p>Privacy</p>
-								</li>
-								<li className="dropdownItem">
-									<AccountCircleIcon />
-									<p>setting</p>
-								</li>
-							</ul>
-							<div className="sign-out">
-								<h3 className="logout" onClick={() => signOutHandler()}>
-									Sign out
-								</h3>
-							</div>
-						</div>
-					</div>
+						</Box>
+					</Box>
 				</Toolbar>
 			</AppBar>
 		</Box>

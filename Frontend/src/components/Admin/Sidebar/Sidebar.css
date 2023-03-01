@@ -1,5 +1,5 @@
 .sidebar{
-    background-color: blue;
+    background-color:#2e3f50 !important;
     color: white;
 }
 .css-i4bv87-MuiSvgIcon{
@@ -9,4 +9,10 @@
     float: right;
     background-color:#ff5722cc !important;
     color: orange;
+}
+.MuiDrawer-paper {
+    background-color:#2e3f50 !important;
+}
+.MuiAppBar-root{
+    background-color:#2e3f50 !important;
 }

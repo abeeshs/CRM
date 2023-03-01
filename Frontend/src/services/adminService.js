@@ -4,25 +4,9 @@ import { toast } from 'react-toastify';
 export const adminLogout = async () => {
 	try {
 		localStorage.removeItem('admin-auth');
-				return true;
-		// const adminToken = JSON.parse(localStorage.getItem('admin-auth'));
-		// if (adminToken) {
-        //     const token = adminToken.token;
-		// 	const res = await axios.get('http://localhost:8000/admin/logout', {
-		// 		headers: { Authorization: `Bearer ${token}` }
-		// 	});
-		// 	console.log(res.data);
-		// 	if (res.data.logout) {
-		// 		localStorage.removeItem('admin-auth');
-		// 		return res.data;
-		// 	}
-		// 	return res.data;
-		// }else{
-        //    toast.error('Please login again')
-        // }
+		return true;
 	} catch (error) {
-		
-            const message =
+		const message =
 			(error.response && error.response.data && error.response.data.message) ||
 			error.message ||
 			error.toString();
@@ -36,5 +20,19 @@ export const adminLogout = async () => {
 			progress: undefined,
 			theme: 'dark'
 		});
+	}
+};
+
+export const getAdminDetails = async () => {
+	try {
+		const { token } = JSON.parse(localStorage.getItem('admin-auth'));
+		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/admin/admin-data`, {
+			headers: { Authorization: `Bearer ${token}` }
+		});
+		console.log(res);
+
+		return res.data;
+	} catch (err) {
+		console.log(err);
 	}
 };

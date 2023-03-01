@@ -3,7 +3,8 @@ import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import LensIcon from '@mui/icons-material/Lens';
 
-function Item({ text, index }) {
+function Item({ text, value, index }) {
+	console.log(text);
 	return (
 		<Draggable draggableId={text} index={index}>
 			{(provided) => (
@@ -23,16 +24,19 @@ function Item({ text, index }) {
 						<span
 							className="commen-font"
 							style={{ float: 'right', fontSize: '12px', padding: '5px' }}>
-								<LensIcon sx={{fill:'green',fontSize:'10px'}}/>
-							Low
+							{value.priority === 'low' ? <LensIcon sx={{ fill: 'green', fontSize: '10px' }} /> :value.priority === 'Medium' ? <LensIcon sx={{ fill: 'orange', fontSize: '10px' }} />:<LensIcon sx={{ fill: 'red', fontSize: '10px' }} />
+							}
+							
+							{value.priority}
 						</span>
-						<p style={{ color: '#0091ae',fontWeight:'700' }}>{text}</p>
+						<p style={{ color: '#0091ae', fontWeight: '700' }}>{text}</p>
 						<span style={{ color: '#33475B' }}>
-							<b>Amount:</b> ₹4,4550.45
+							<b>Amount:₹</b> {value.amount}
 						</span>{' '}
 						<br />
 						<span style={{ color: '#33475B' }}>
-							<b>Close Date:</b>12/2/2022{' '}
+							<b>Close Date:</b>
+							{value.close_date}{' '}
 						</span>
 					</div>
 				</div>

@@ -3,6 +3,7 @@ const router = express.Router();
 import *as userController from '../controller/userController.js'
 import *as contactController from '../controller/contactController.js'
 import *as taskController from '../controller/taskController.js'
+import *as dealController from  '../controller/dealController.js'
 import { userProtect } from '../middleware/authMiddleware.js';
 import multer from 'multer'
 // router.get('/',userController.userLogin)
@@ -67,8 +68,12 @@ router.put('/contacts/edit-contact/:id',userProtect,contactController.editContac
 // ================= DEALS =======================
 
 //View all deals
-router.get('/deals',userProtect,userController.getAllDeals)
+router.get('/deals',userProtect,dealController.getAllDeals)
 //Create deals
-router.post('/deals/create-deal',userProtect,userController.addNewDeal)
+router.post('/deals/create-deal',userProtect,dealController.addNewDeal)
+
+//Update Deal
+router.put('/deals/update-deal/:id',userProtect,dealController.updateDeal)
+
 
 export default router;

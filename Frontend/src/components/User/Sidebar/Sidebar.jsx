@@ -74,7 +74,7 @@ export default function Sidebar(props) {
 						{ name: 'Contacts', icon: <PermContactCalendarIcon /> },
 						{ name: 'Dashboard', icon: <DashboardIcon /> },
 						{ name: 'Conversation', icon: <ChatIcon /> },
-						{ name: 'Deals', icon: <ListIcon /> }
+						{ name: 'Deals', icon: <ListIcon /> },
 					].map((text, index) => (
 						<ListItem key={text.name} disablePadding>
 							<ListItemButton

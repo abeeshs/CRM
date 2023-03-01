@@ -1,12 +1,11 @@
 import axios from 'axios';
-
 import { toast } from 'react-toastify';
 
-//ciew all users for - admin
+//--------------- View all users for - admin ---------------
+
 export const getAllUser = async () => {
 	try {
-		const res = await axios.get('http://localhost:8000/admin/users');
-		console.log(res);
+		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/admin/users`);
 		return res.data;
 	} catch (error) {
 		const message =
@@ -26,14 +25,13 @@ export const getAllUser = async () => {
 	}
 };
 
-//view users -for users
+//--------------- View users -for users ----------------
 
 export const viwAllusers = async (token) => {
 	try {
-		const res = await axios.get('http://localhost:8000/users', {
+		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
-		console.log(res);
 		return res.data;
 	} catch (error) {
 		const message =
@@ -53,14 +51,16 @@ export const viwAllusers = async (token) => {
 	}
 };
 
-//Block User
+//--------------- Block User ---------------
+
 export const blockUsers = async (userId, status) => {
 	try {
 		const admintoken = JSON.parse(localStorage.getItem('admin-auth'));
-		console.log(admintoken)
-		const token= admintoken.token
-		const res = await axios.patch(`http://localhost:8000/admin/Users/block-user/${userId}`,{status})
-		console.log(res);
+		const token = admintoken.token;
+		const res = await axios.patch(
+			`${process.env.REACT_APP_SERVER_URL}/admin/Users/block-user/${userId}`,
+			{ status }
+		);
 		return res.data;
 	} catch (error) {
 		const message =
@@ -80,13 +80,16 @@ export const blockUsers = async (userId, status) => {
 	}
 };
 
-//Delete users
+//--------------- Delete users ---------------
+
 export const deleteUser = async (token, userId) => {
 	try {
-		const res = await axios.delete(`http://localhost:8000/admin/Users/delete-user/${userId}`, {
-			headers: { Authorization: `Bearer ${token}` }
-		});
-		console.log(res);
+		const res = await axios.delete(
+			`${process.env.REACT_APP_SERVER_URL}/admin/Users/delete-user/${userId}`,
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
 		return res.data;
 	} catch (error) {
 		const message =
@@ -105,14 +108,13 @@ export const deleteUser = async (token, userId) => {
 		});
 	}
 };
+//--------------- User logout service ---------------
 
 export const userLogOut = async () => {
 	try {
 		const token = JSON.parse(localStorage.getItem('user'));
-		console.log(token)
 		if (token) {
 			localStorage.removeItem('user');
-
 			return true;
 		} else {
 			return false;

@@ -153,3 +153,22 @@ transition: 0.5s ease;
 	font-family:var(--uicomponents-font-family,"Avenir Next W02","Lexend Deca",Helvetica,Arial,sans-serif) ;
 	text-transform: capitalize !important; 
 }
+.meeting-btn{
+	font-family:var(--uicomponents-font-family,"Avenir Next W02","Lexend Deca",Helvetica,Arial,sans-serif) ;
+	text-transform: capitalize !important; 
+	background-color: rgb(0, 145, 174) !important;
+}
+.meet-stage{
+	font-family: "Lexend Deca", Helvetica, Arial, sans-serif;
+	color: #33475b;
+	font-weight: 500;
+	font-size: 11px;
+}
+.input-label-f{
+	font-family: "Lexend Deca", Helvetica, Arial, sans-serif;
+	color: #33475b;
+}
+/* meeting stage */
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed{
+	color: #0091ae !important;
+}

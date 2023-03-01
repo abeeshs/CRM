@@ -1,8 +1,5 @@
-import Admin from '../Model/adminModel.js';
-import bcrypt from 'bcryptjs';
+
 import asyncHandler from 'express-async-handler';
-import jwt from 'jsonwebtoken';
-import User from '../Model/userModel.js';
 import Tasks from '../Model/taskModel.js';
 
 

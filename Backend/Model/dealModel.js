@@ -1,20 +1,45 @@
-import mongoose from "mongoose";
-const dealSchema =new mongoose.Schema(
-    {
-        email:{
-            type:String,
-            
-        },
-        otp:{
-           type:String,
-           unique: true,
-           
-        },
-        
+import mongoose, { mongo } from 'mongoose';
+const dealSchema = new mongoose.Schema(
+	{
+		deal_name: {
+			type: String,
+			required: true
+		},
+		deal_stage: {
+			type: String
+		},
+		amount: {
+			type: Number
+		},
+		close_date: {
+			type: String,
+			required: true
+		},
+		deal_owner: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User'
+		},
+		priority: {
+			type: String
+		},
 
-    },
-    {
-        timestamps:true
-    }
-)
-export default mongoose.model("Deal",dealSchema)
+		deal_with_contact: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Contact'
+		},
+        docModel: {
+			type: String,
+			required: true,
+			enum: ['Admin', 'User']
+		},
+		created_by: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'docModel'
+		},
+      
+	},
+	{
+		timestamps: true
+	}
+);
+export default mongoose.model('Deal', dealSchema);

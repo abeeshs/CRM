@@ -127,7 +127,7 @@ export default function ContactsTable() {
 								</TableCell>
 								<TableCell align="center">{row.email}</TableCell>
 								<TableCell align="right">{row.mobile}</TableCell>
-								<TableCell align="right">{row.contact_owner.username}</TableCell>
+								<TableCell align="right">{row.contact_owner?.username}</TableCell>
 								<TableCell align="right">{row.createdAt}</TableCell>
 								<TableCell align="right" sx={{ display: 'flex', justifyContent: 'space-between' }}>
 									<Button

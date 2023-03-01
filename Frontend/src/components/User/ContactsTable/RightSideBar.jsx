@@ -72,9 +72,8 @@ function RightSideBar({ getAllContacts }) {
 		const response = await contactService.createContact(data);
 
 		if (response) {
-			toggleDrawer("right", false);
-			// toggleDrawer('right', false)
-			//dispatch(setAdminToken({ token: response.token, admin: true }));
+			setState('right', false);
+			
 			getAllContacts();
 		}
 	};
