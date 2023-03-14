@@ -4,7 +4,7 @@ import React from 'react';
 
 
 function DeleteModal(props) {
-	const { title, children, openModal, setOpenModal, confirmDeleteTask } = props;
+	const { title, openModal, setOpenModal, confirmDeleteTask } = props;
 
 	return (
 		<div>

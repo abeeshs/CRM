@@ -13,39 +13,44 @@ export const getAllDeals = asyncHandler(async (req, res) => {
 });
 
 //Create new Deals
-
 export const addNewDeal = asyncHandler(async (req, res) => {
-	console.log(req.body);
 	const { dealName, dealStage, amount, closeDate, dealOwner, priority, contact } = req.body;
+	
+	const isDealExist = await dealService.dealExist(req.body.dealName)
+	if(isDealExist.length>0){
+		throw new Error('Deal name already exist')
+	}else{
 
-	const dealObj = {
-		deal_name: dealName,
-		deal_stage: dealStage,
-		amount: amount,
-		close_date: closeDate,
-		deal_owner: dealOwner,
-		priority: priority,
-		deal_with_contact: contact,
-		created_by: req.user._id,
-		docModel: 'User'
-	};
-	const createdDeal = await dealService.dealCreateService(dealObj);
-
-	if (createdDeal) {
-		res.status(200).json({ message: 'Deal created successfully' });
-	} else {
-		throw new Error();
+		const dealObj = {
+			deal_name: dealName,
+			deal_stage: dealStage,
+			amount: amount,
+			close_date: closeDate,
+			deal_owner: dealOwner,
+			priority: priority,
+			deal_with_contact: contact,
+			created_by: req.user._id,
+			docModel: 'User'
+		};
+	
+		const createdDeal = await dealService.dealCreateService(dealObj);
+	
+		if (createdDeal) {
+			res.status(200).json({ message: 'Deal created successfully' });
+		} else {
+			throw new Error();
+		}
 	}
+	
+
 });
 
 
 //update Deal
 export const updateDeal = asyncHandler(async (req, res) => {
-	console.log(req.body);
     const dealId= req.params.id
 	
 	const updated = await dealService.dealUpdateService(req.body.data,dealId);
-    console.log(updated)
 
 	if (updated) {
 		res.status(200).json({ message: 'Deal created successfully' });

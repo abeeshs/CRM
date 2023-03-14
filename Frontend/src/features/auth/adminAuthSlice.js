@@ -2,13 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 //Get admin from localStorage
 const adminAuth = JSON.parse(localStorage.getItem('admin-auth'));
-console.log("adminAuth")
-console.log(adminAuth)
 const initialState = {
 	admin: adminAuth ? adminAuth.admin : null,
 	token: adminAuth ? adminAuth.token : null
 };
-console.log(initialState)
+
 //Register admin
 export const authSlice = createSlice({
 	name: 'auth',

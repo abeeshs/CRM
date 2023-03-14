@@ -34,10 +34,10 @@ router.patch('/task/change-status/:id',taskController.aproveTask)
 
 //====================== USERS ========================
 //Get all users
-router.get('/Users',adminController.getAllUser);
+router.get('/users',adminController.getAllUser);
 //delete user
 router.delete('/Users/delete-user/:id',adminController.deleteUser);
-router.patch('/Users/block-user/:id',adminController.blockUser);
+router.patch('/Users/block-user/:id',adminController.preventUser);
 
 
 

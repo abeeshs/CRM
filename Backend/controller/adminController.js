@@ -4,16 +4,13 @@ import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import User from '../Model/userModel.js';
 import Tasks from '../Model/taskModel.js';
-import *as authService from '../Services/authService.js'
+import * as authService from '../Services/authService.js';
 //-------------Admin Register-------------
 //method = POST
 export const adminRegister = asyncHandler(async (req, res) => {
-	console.log('object');
-	console.log(req.body);
 	const { firstname, lastname, email, mobile, password, confirmPassword } = req.body;
 
 	if (!firstname || !lastname || !email || !mobile || !password || !confirmPassword) {
-		console.log('........');
 		res.status(400);
 		throw new Error('All fields required');
 	}
@@ -54,8 +51,6 @@ export const adminRegister = asyncHandler(async (req, res) => {
 //method =POST
 
 export const adminLogin = asyncHandler(async (req, res) => {
-	console.log(req.body);
-
 	if (!req.body.email || !req.body.password) {
 		res.status(401);
 		throw new Error('All fields required');
@@ -82,7 +77,6 @@ export const logOut = asyncHandler(async (req, res) => {
 //-------------Create New User------------
 //Method -POST
 export const createUser = asyncHandler(async (req, res) => {
-	console.log(req.body);
 	const email = req.body.email;
 	if (!email) {
 		res.status(400);
@@ -95,7 +89,7 @@ export const createUser = asyncHandler(async (req, res) => {
 			throw new Error('Email already exist');
 		} else {
 			const newUser = await User.create({ email: email });
-			console.log(newUser);
+
 			res.status(200).json({ message: 'User created successfully' });
 		}
 	}
@@ -106,7 +100,6 @@ export const createUser = asyncHandler(async (req, res) => {
 export const deleteUser = asyncHandler(async (req, res) => {
 	const userId = req.params.id;
 	const users = await User.findByIdAndDelete(userId);
-	console.log(users);
 	if (users) {
 		res.status(200).json(users);
 	} else {
@@ -133,8 +126,8 @@ export const getAllUser = asyncHandler(async (req, res) => {
 //Method -GET
 
 export const getAllTask = asyncHandler(async (req, res) => {
-	const task = await Tasks.find()
-	console.log(task);
+	const task = await Tasks.find();
+
 	if (task) {
 		res.status(200).json(task);
 	} else {
@@ -143,14 +136,12 @@ export const getAllTask = asyncHandler(async (req, res) => {
 	}
 });
 
-//------------GET ALL USER----------------
+//------------BLOCK AND UNBLOCK USER----------------
 //Method -GET
 
-export const blockUser = asyncHandler(async (req, res) => {
+export const preventUser = asyncHandler(async (req, res) => {
 	const userId = req.params.id;
-	console.log(req.body);
 	const updatedUser = await User.findByIdAndUpdate(userId, { is_block: req.body.status });
-	console.log(updatedUser);
 
 	if (updatedUser) {
 		res.status(200).json({ message: 'User blocked' });
@@ -160,15 +151,14 @@ export const blockUser = asyncHandler(async (req, res) => {
 	}
 });
 
-export const getProfile= asyncHandler(async(req,res)=>{
-	const adminData=await authService.getAdminDetails(req.user._id)
-	console.log(adminData)
-	if(adminData){
-		res.status(200).json(adminData)
-	}else{
-		throw new Error("Unable to find admin details")
+export const getProfile = asyncHandler(async (req, res) => {
+	const adminData = await authService.getAdminDetails(req.user._id);
+	if (adminData) {
+		res.status(200).json(adminData);
+	} else {
+		throw new Error('Unable to find admin details');
 	}
-})
+});
 //------------JWT token generate-----------
 export const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {

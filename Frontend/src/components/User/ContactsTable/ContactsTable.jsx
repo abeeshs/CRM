@@ -8,18 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
-import {
-	Button,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-	InputLabel,
-	MenuItem,
-	Select,
-	TextField
-} from '@mui/material';
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import * as contactService from '../../../services/contactService.js';
 import { useEffect } from 'react';
@@ -29,17 +18,7 @@ import Popup from '../Popup/Popup.jsx';
 import Notification from '../../Extra Components/Notification.js';
 import { Box } from '@mui/system';
 import ContactDeleteModal from '../Popup/ContactDeleteModal.jsx';
-function createData(name, calories, fat, carbs, protein) {
-	return { name, calories, fat, carbs, protein };
-}
-
-// const rows = [
-// 	createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-// 	createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-// 	createData('Eclair', 262, 16.0, 24, 6.0),
-// 	createData('Cupcake', 305, 3.7, 67, 4.3),
-// 	createData('Gingerbread', 356, 16.0, 49, 3.9)
-// ];
+import DeleteModal from '../../Extra Components/DeleteModal.jsx';
 
 export default function ContactsTable() {
 	const [rows, setRows] = useState([]);
@@ -76,16 +55,23 @@ export default function ContactsTable() {
 	};
 	useEffect(() => {
 		getAllcontacts();
-	}, [updateContact]);
+	}, []);
 
 	const deleteContactHandler = (id) => {
 		setDeleteContactId(id);
+		setOpenDeleteModal(true)
+		
 	};
-	const confirmDeleteContact = async() => {
+	const confirmDeleteContact = async () => {
 		try {
-			const res= await contactService.deleteContact(deleteContactId)
+			const res = await contactService.deleteContact(deleteContactId);
+			if(res){
+				setOpenDeleteModal(false)
+				getAllcontacts()
+
+			}
 		} catch (err) {
-			
+			console.log(err)
 		}
 	};
 
@@ -94,26 +80,34 @@ export default function ContactsTable() {
 			<RightSideBar getAllContacts={getAllcontacts} />
 			<TableContainer component={Paper}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
-					<TableHead sx={{ backgroundColor: 'black', fontWeight: '900' ,fontWeight: 500}}>
+					<TableHead sx={{ backgroundColor: 'black', fontWeight: '900', fontWeight: 500 }}>
 						<TableRow>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>SL NO</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>NAME</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="center">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }}>
+								SL NO
+							</TableCell>
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }}>
+								NAME
+							</TableCell>
+							<TableCell
+								sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }}
+								align="center">
 								EMAIL
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }} align="right">
 								PHONE NUMBER
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }} align="right">
 								CONTACT OWNER
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }} align="right">
 								CREATED AT
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right">
+							<TableCell sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }} align="right">
 								OPTIONS
 							</TableCell>
-							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }} align="right"></TableCell>
+							<TableCell
+								sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }}
+								align="right"></TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -149,78 +143,6 @@ export default function ContactsTable() {
 					</TableBody>
 				</Table>
 			</TableContainer>
-
-			{/* <Dialog
-				open={open}
-				onClose={handleClose}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">{'Create Task'}</DialogTitle>
-				<DialogContent>
-					<DialogContentText id="alert-dialog-description">
-						<form>
-							<TextField
-								id="outlined-basic"
-								className="outlined-basic1"
-								label="Title *"
-								variant="outlined"
-								name="title"
-								onChange={onchange}
-							/>
-							<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
-								Type
-							</InputLabel>
-							<Select
-								sx={{ m: 1, minWidth: 280 }}
-								labelId="demo-simple-select-autowidth-label"
-								id="demo-simple-select-autowidth"
-								onChange={onchange}
-								autoWidth
-								name="type">
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								<MenuItem value={'To-do'}>To-do</MenuItem>
-								<MenuItem value={'Call'}>Call</MenuItem>
-								<MenuItem value={'Email'}>Email</MenuItem>
-							</Select>
-
-							<InputLabel id="demo-simple-select-autowidth-label" style={{ marginLeft: '10px' }}>
-								Priority
-							</InputLabel>
-							<Select
-								sx={{ m: 1, minWidth: 280 }}
-								labelId="demo-simple-select-autowidth-label"
-								id="demo-simple-select-autowidth"
-								onChange={onchange}
-								name="priority"
-								autoWidth>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								<MenuItem value={'Low'}>Low</MenuItem>
-								<MenuItem value={'Medium'}>Medium</MenuItem>
-								<MenuItem value={'High'}>High</MenuItem>
-							</Select>
-
-							<TextField
-								id="outlined-basic"
-								className="outlined-basic1"
-								label="Associated with records"
-								variant="outlined"
-								name="associated"
-								onChange={onchange}
-							/>
-
-							<Button type="submit" className="create-task-btn" variant="contained" autoFocus>
-								Create
-							</Button>
-						</form>
-					</DialogContentText>
-					<Button onClick={handleClose}>Close</Button>
-				</DialogContent>
-				<DialogActions></DialogActions>
-			</Dialog> */}
 			<Popup title={'Edit Contact'} openPopup={openPopup} setOpenPopup={setOpenPopup}>
 				<EditContactForm
 					setOpenPopup={setOpenPopup}
@@ -233,6 +155,7 @@ export default function ContactsTable() {
 				openDeleteModal={openDeleteModal}
 				setOpenDeleteModal={setOpenDeleteModal}
 				confirmDeleteContact={confirmDeleteContact}
+				
 			/>
 		</>
 	);

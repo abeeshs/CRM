@@ -5,11 +5,8 @@ import Table from '@mui/material/Table';
 import { useState } from 'react';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import TaskViewTable from './TaskViewTable';
-import { set } from 'react-hook-form';
 import * as taskService from '../../../services/taskService';
 import { useSelector } from 'react-redux';
-
-
 
 function PendingTaskTable() {
 	const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -18,9 +15,9 @@ function PendingTaskTable() {
 	const [pendingTask, setPendingTask] = useState([]);
 
 	const { token } = useSelector((state) => state.userAuth);
-	useEffect(()=>{
-		getPendingTask()
-	},[])
+	useEffect(() => {
+		getPendingTask();
+	}, []);
 	const getPendingTask = async () => {
 		try {
 			const response = await taskService.getPendingTask(token);
@@ -42,15 +39,15 @@ function PendingTaskTable() {
 		<>
 			<TableContainer>
 				<Table sx={{ minWidth: 650 }}>
-					<TableHead sx={{backgroundColor:'black'}}>
+					<TableHead sx={{ backgroundColor: 'black' }}>
 						<TableRow sx={{ fontSize: '25px', fontWeight: 500 }}>
-							<TableCell sx={{color:'white'}}>Title</TableCell>
-							<TableCell sx={{color:'white'}}>Task Type</TableCell>
-							<TableCell sx={{color:'white'}}>Created By</TableCell>
-							<TableCell sx={{color:'white'}}>Priority</TableCell>
-							<TableCell sx={{color:'white'}}>Due Date</TableCell>
-							<TableCell sx={{color:'white'}}>Task Status</TableCell>
-							<TableCell sx={{color:'white'}}>Action</TableCell>
+							<TableCell sx={{ color: 'white' }}>Title</TableCell>
+							<TableCell sx={{ color: 'white' }}>Task Type</TableCell>
+							<TableCell sx={{ color: 'white' }}>Created By</TableCell>
+							<TableCell sx={{ color: 'white' }}>Priority</TableCell>
+							<TableCell sx={{ color: 'white' }}>Due Date</TableCell>
+							<TableCell sx={{ color: 'white' }}>Task Status</TableCell>
+							<TableCell sx={{ color: 'white' }}>Action</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>

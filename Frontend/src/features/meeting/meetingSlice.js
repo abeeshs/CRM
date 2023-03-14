@@ -13,7 +13,6 @@ export const adminMeetingSlice = createSlice({
 	reducers: {
 		setNewMeeting(state, action) {
 			state.meetings = {...state.meetings,...action.payload}
-            console.log(state.meetings)
 		},
 
 		deleteMeeting(state) {

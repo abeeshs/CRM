@@ -48,12 +48,16 @@ export default function SignIn() {
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
-		const response = await authService.userLogin(data);
-		console.log({ response });
-		if (response) {
-			dispatch(setUserToken({ token: response.token, username: response.username }));
-			navigate('/contacts');
+		try {
+			const response = await authService.userLogin(data);
+			console.log(response);
+
+			if (response) {
+				dispatch(setUserToken({ token: response.token, username: response.username }));
+				navigate('/contacts');
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
@@ -72,7 +76,7 @@ export default function SignIn() {
 							boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
 						}}>
 						<Typography component="h3" variant="p">
-							Welcome to CRM
+							Welcome to Stezga
 						</Typography>
 						<Typography component="h1" variant="h5">
 							Sign in
@@ -145,12 +149,7 @@ export default function SignIn() {
 							</p>
 						</Box>
 						<Grid container>
-							<Grid item>
-								{' '}
-								{/* <Linke href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Linke> */}
-							</Grid>
+							<Grid item></Grid>
 						</Grid>
 					</Box>
 				</Container>

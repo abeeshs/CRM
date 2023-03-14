@@ -24,14 +24,12 @@ router.get('/task',userProtect,taskController.getAllTask)
 router.get('/task/pending-task',userProtect,taskController.getPendingTask)
 //completed task
 router.get('/task/completed-task',userProtect,taskController.getAllCompletedTask)
-
 //Create tasks
 router.post('/task/add-task',taskController.createNewTask);
 //Delete Task
 router.delete('/task/delete-task/:id',taskController.deleteTask);
 //Edit Task
 router.put('/task/edit-task/:id',taskController.editTask);
-
 //Change Task Status
 router.put('/task/change-status/:id',userProtect,taskController.changeTaskStatus)
 //Upload file
@@ -43,7 +41,7 @@ const storage=multer.diskStorage({
 		cb(null,Date.now()+'-'+file.originalname)
 	}
 })
- const upload = multer({storage})
+const upload = multer({storage})
 router.post('/task/upload-file/:id',userProtect,upload.single('file'),taskController.uploadTaskFile)
 
 
@@ -71,7 +69,6 @@ router.put('/contacts/edit-contact/:id',userProtect,contactController.editContac
 router.get('/deals',userProtect,dealController.getAllDeals)
 //Create deals
 router.post('/deals/create-deal',userProtect,dealController.addNewDeal)
-
 //Update Deal
 router.put('/deals/update-deal/:id',userProtect,dealController.updateDeal)
 

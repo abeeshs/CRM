@@ -1,8 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import User from '../Model/userModel.js';
 import * as authService from '../Services/authService.js';
-import * as dealService from '../Services/dealService.js';
-
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
@@ -10,13 +8,13 @@ import Mailgen from 'mailgen';
 
 //------------- userSignup---------
 //Method - POST
+
 export const userRegister = asyncHandler(async (req, res) => {
-	console.log(req.body);
 	const { username, email, mobile, password, confirmPassword } = req.body;
 
 	if (!username || !email || !mobile || !password || !confirmPassword) {
 		res.status(400);
-		throw new Error('all fields required');
+		throw new Error('All fields required');
 	}
 	//check email or user already exist
 
@@ -24,7 +22,7 @@ export const userRegister = asyncHandler(async (req, res) => {
 
 	if (emailExist) {
 		res.status(404);
-		throw new Error('email already exist');
+		throw new Error('Email already exists');
 	} else {
 		//password bcrypt
 		const salt = await bcrypt.genSalt(10);
@@ -52,19 +50,24 @@ export const userRegister = asyncHandler(async (req, res) => {
 
 //---------------userLogin----------
 //method-POST
+
 export const userLogin = asyncHandler(async (req, res) => {
-	console.log(req.body);
 	const { email, password } = req.body;
+	console.log(req.body)
+	console.log("1")
 	if (!email || !password) {
 		res.status(400);
 		throw new Error('All fields required');
 	} else {
-		const userExist = await User.findOne({ email: email });
+		const userExist = await User.findOne({ email: email }).select('+password');
+		console.log(userExist)
 		if (userExist && (await bcrypt.compare(req.body.password, userExist.password))) {
 			if (userExist.is_block) {
+				console.log("2")
 				res.status(401);
 				throw new Error('Temporarly blocked by admin');
 			} else {
+				console.log("3")
 				res.status(200).json({
 					message: 'Loggin Success',
 					token: generateToken(userExist._id),
@@ -72,18 +75,18 @@ export const userLogin = asyncHandler(async (req, res) => {
 				});
 			}
 		} else {
+			console.log("4")
 			res.status(401);
 			throw new Error('Incorrect email or password');
 		}
 	}
 });
 
-//---------------otp Login----------
+//--------------- otp Login ----------------
 //method-POST
 //NODE MAILER SETUP
 
 export const otpLogin = asyncHandler(async (req, res) => {
-	console.log(req.body);
 	const { email } = req.body;
 	if (!email) {
 		res.status(400);
@@ -108,6 +111,7 @@ export const otpLogin = asyncHandler(async (req, res) => {
 
 			// create reusable transporter object using the default SMTP transport
 			let transporter = nodemailer.createTransport(config);
+
 			// Using mailgen creating a better mail format
 			const MailGenerator = new Mailgen({
 				theme: 'default',
@@ -134,7 +138,7 @@ export const otpLogin = asyncHandler(async (req, res) => {
 
 			// sending mail
 			const result = await transporter.sendMail(message);
-			
+
 			//storing the otp details
 			const otpDetails = {
 				email: email,
@@ -153,41 +157,30 @@ export const otpLogin = asyncHandler(async (req, res) => {
 				res.status(404);
 				throw new Error('Failed to sent otp');
 			}
-
-			
 		}
 	}
 });
 
-//varify otp and do singin
-export const varifyOtp = asyncHandler(async (req, res) => {
-	try {
-		const { otp, email } = req.body;
-		
-		const otpDetails = await authService.varifyEmailOtp(email);
-		
-		const existOtp = otpDetails?.otp;
-	
-		if (existOtp == otp) {
-			const userExist = await User.findOne({ email: email });
+//---------------- varify otp and do singin ----------------
 
-			if (userExist?.is_block) {
-				res.status(401);
-				throw new Error('Temporarly blocked by admin');
-			} else {
-				res.status(200).json({
-					message: 'Loggin Success',
-					token: generateToken(userExist._id),
-					username: userExist.username
-				});
-			}
-		} else {
+export const varifyOtp = asyncHandler(async (req, res) => {
+	const { otp, email } = req.body;
+	const otpDetails = await authService.varifyEmailOtp(email);
+	const existOtp = otpDetails?.otp;
+	if (existOtp == otp) {
+		const userExist = await User.findOne({ email: email });
+		if (userExist?.is_block) {
 			res.status(401);
-			res.json('Incorrect otp');
-			// throw new Error('Incorrect otp')
+			throw new Error('Temporarly blocked by admin');
+		} else {
+			res.status(200).json({
+				message: 'Loggin Success',
+				token: generateToken(userExist._id),
+				username: userExist.username
+			});
 		}
-	} catch (err) {
-		console.log(err);
+	} else {
+		throw new Error('Incorrect otp');
 	}
 });
 
@@ -208,7 +201,7 @@ export const generateToken = (id) => {
 	});
 };
 
-//view all users
+//---------------- view all users ----------------
 
 export const viewAllUser = asyncHandler(async (req, res) => {
 	const users = await User.find();
@@ -219,5 +212,3 @@ export const viewAllUser = asyncHandler(async (req, res) => {
 		throw new Error('Users not found');
 	}
 });
-
-

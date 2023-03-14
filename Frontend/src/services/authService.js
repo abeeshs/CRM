@@ -55,7 +55,7 @@ export const adminLogin = async (data) => {
 export const userLogin = async (data) => {
 	try {
 		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}`, data);
-
+		console.log(res)
 		return res.data;
 	} catch (error) {
 		const message =

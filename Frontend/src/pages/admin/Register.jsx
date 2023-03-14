@@ -47,9 +47,7 @@ export default function Register() {
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
 		const  response = await authService.adminRegister(data)
-		console.log(response)
 		if(response){
 
 			dispatch(setAdminToken({ token: response.token, admin: true }));
@@ -155,9 +153,7 @@ export default function Register() {
 							</Grid>
 							<Grid item>
 								<Link to="/admin/register">Already have account? Sign In</Link>
-								{/* <Linke href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Linke> */}
+								
 							</Grid>
 						</Grid>
 					</Box>

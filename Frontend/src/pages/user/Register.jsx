@@ -49,10 +49,9 @@ export default function Register() {
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
+		
 		const response = await authService.userRegister(data);
-		console.log("this is response")
-		console.log(response);
+		
 		if (response) {
 			dispatch(setUserToken({ token: response.token,username:response.username }));
 			navigate('/contacts');
@@ -152,9 +151,7 @@ export default function Register() {
 						<Grid container>
 							<Grid item sx={{ mt: 3, mb: 2 }}>
 								<Link to="/">You have an account? Sign In</Link>
-								{/* <Linke href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Linke> */}
+								
 							</Grid>
 						</Grid>
 					</Box>

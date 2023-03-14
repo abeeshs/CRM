@@ -6,8 +6,14 @@ import asyncHandler from 'express-async-handler';
 
 export const getDealService =asyncHandler(async()=>{
 	const result = await Deals.find()
-	console.log(result)
 	return result
+})
+
+//Check the deal is already exist or not
+export const dealExist = asyncHandler(async(dealName)=>{
+	const isExist = await Deals.find({deal_name:dealName})
+	return isExist
+	
 })
 
 // Create new deals

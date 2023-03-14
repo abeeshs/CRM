@@ -19,14 +19,8 @@ function Invitation() {
 	
 	// const data = useSelector((state) => state.newMeeting.meetings);
 	const  data = JSON
-	console.log(data);
 	setMembers();
 
-	
-
-	// useEffect(() => {
-	// 	userGetData();
-	// }, []);
 
 	return (
 		<Box

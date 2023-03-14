@@ -29,7 +29,7 @@ function CreateDeal({ getAllDeals }) {
 		dealStage: yup.string().required('Pipeline is required'),
 		closeDate: yup.string().required('Close Date is required'),
 		amount: yup.number().typeError('Amount must be a number').required('Amount is required'),
-		deal_owner: yup.string(),
+		deal_owner: yup.string().required(),
 		priority: yup.string(),
 		contact: yup.string()
 	});
@@ -46,6 +46,7 @@ function CreateDeal({ getAllDeals }) {
 	const [state, setState] = useState({ right: false });
 	const [users, setUsers] = useState([]);
 	const [contacts, setContacts] = useState([]);
+	const [error,setErrors]=useState('')
 
 	const { token } = useSelector((state) => state.userAuth);
 	const toggleDrawer = (anchor, open) => async (event) => {
@@ -68,15 +69,20 @@ function CreateDeal({ getAllDeals }) {
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
-		const response = await dealService.createDeal(data);
-		console.log(response);
+		try{
 
-		if (response) {
-			setState('right', false);
-			getAllDeals();
+			console.log(data);
+			const response = await dealService.createDeal(data);
+			console.log(response);
+	
+			if (response) {
+				setState('right', false);
+				getAllDeals();
+	
+				
+			}
+		}catch(err){
 
-			//dispatch(setAdminToken({ token: response.token, admin: true }));
 		}
 	};
 
@@ -96,7 +102,7 @@ function CreateDeal({ getAllDeals }) {
 					/>
 				</Stack>
 			</Box>
-			<Box>
+			<Box sx={{backgroundColor:'white'}}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
 						<InputLabel className="label" htmlFor="my-input">
@@ -104,7 +110,7 @@ function CreateDeal({ getAllDeals }) {
 						</InputLabel>
 						<TextField
 							sx={{ width: 500 }}
-							name="dealName"
+							
 							{...register('dealName')}
 							error={!!errors.dealName}
 							helperText={errors.dealName ? errors.dealName.message : ''}
@@ -119,7 +125,7 @@ function CreateDeal({ getAllDeals }) {
 							id="dealStage"
 							onChange={onchange}
 							autoWidth
-							name="dealStage"
+							
 							error={!!errors.dealStage}
 							helperText={errors.dealStage ? errors.dealStage.message : ''}
 							{...register('dealStage')}>

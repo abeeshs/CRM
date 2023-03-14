@@ -153,10 +153,10 @@ function EditContactForm(props) {
 							id="outlined-select-currency"
 							select
 							label="Contact Owner"
-							defaultValue={updateContact.contact_owner.username}>
+							defaultValue={updateContact?.contact_owner.username}>
 							{users?.map((option) => (
-								<MenuItem key={option._id} value={option.username}>
-									{option.username}
+								<MenuItem key={option?._id} value={option?.username}>
+									{option?.username}
 								</MenuItem>
 							))}
 						</TextField>

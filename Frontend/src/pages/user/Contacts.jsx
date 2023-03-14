@@ -3,16 +3,7 @@ import Sidebar from '../../components/User/Sidebar/Sidebar';
 import ContactsTable from '../../components/User/ContactsTable/ContactsTable';
 import Box from '@mui/material/Box';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
-import {
-	Avatar,
-	ListItem,
-	ListItemButton,
-	ListItemIcon,
-	ListItemText,
-	Menu,
-	MenuItem,
-	Typography
-} from '@mui/material';
+import { ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { useState } from 'react';
 import Popup from '../../components/User/Popup/Popup.jsx';
@@ -23,35 +14,39 @@ import { Container } from '@mui/system';
 import { useSelector } from 'react-redux';
 
 function Contacts() {
-	const [rightSIde, setRightSide] = useState(false);
 	const navigate = useNavigate();
+	const user =
+		useSelector((state) => state.userAuth.token) || JSON.parse(localStorage.getItem('user'));
+	const token = user?.token;
+
+	if (!token) {
+		
+		navigate('/');
+	}
+	const [rightSIde, setRightSide] = useState(false);
 
 	const toggleDrawer = (status) => {
 		console.log('status');
 		// setRightSide(status);
 	};
-	
-	const token= useSelector((state)=>state.userAuth.token)||JSON.parse(localStorage.getItem('user'))
-	console.log("thsd hdgdgg")
-	
-	console.log(token)
 
-	useEffect(()=>{
-		if(!token){
-			navigate('/')
-		}
-		
-	},[])
+	console.log('thsd hdgdgg');
+
+	console.log(token);
+
+	// useEffect(()=>{
+	// 	if(!token){
+	// 		navigate('/')
+	// 	}
+
+	// },[])
 
 	//right sidebar
 	function List({ anchor }) {
 		return (
 			<Box
 				sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-				role="presentation"
-				// onClick={() => toggleDrawer(false)}
-				// onKeyDown={() => toggleDrawer(false)}
-			>
+				role="presentation">
 				<List>
 					{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text) => (
 						<ListItem key={text} disablePadding>
@@ -96,51 +91,6 @@ function Contacts() {
 
 				<ContactsTable />
 			</Container>
-			{/* <Box sx={{ backgroundColor: 'White', width: '100%', height: '65px' }}>
-				<Avatar
-					sx={{ float: 'right', margin: '10px', marginRight: '30px' }}
-					alt="Travis Howard"
-					src="/static/images/avatar/2.jpg"
-					onClick={handleClick}
-				/>
-				<CircleNotificationsIcon
-					sx={{
-						float: 'right',
-						margin: '15px',
-						color: 'grey',
-						fontSize: '30px',
-						marginRight: '30px'
-					}}
-				/>
-				<Menu
-					aid="basic-menu"
-					anchorEl={anchorEl}
-					open={opens}
-					onClose={handleClose}
-					MenuListProps={{
-						'aria-labelledby': 'basic-button'
-					}}>
-					<MenuItem onClick={handleClose}>Profile</MenuItem>
-					<MenuItem onClick={logoutUser}>Logout</MenuItem>
-				</Menu>
-			</Box> */}
-			{/* <Box sx={{ display: 'flex' }}>
-				
-				<Box>
-					<Box
-						component="main"
-						sx={{
-							flexGrow: 1,
-							bgcolor: 'background.default',
-							marginTop: '50px',
-							marginRight: '15px'
-						}}></Box>
-					<h3>Contacts</h3>
-					
-				
-					
-				</Box>
-			</Box> */}
 		</div>
 	);
 }

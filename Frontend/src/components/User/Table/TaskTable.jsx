@@ -5,13 +5,9 @@ import Table from '@mui/material/Table';
 import { useState } from 'react';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import TaskViewTable from './TaskViewTable';
-import { set } from 'react-hook-form';
+
 function TaskTable(props) {
 	const { userTask } = props;
-	console.log(userTask);
-	const pages = [5, 10, 25];
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openPopup, setOpenPopup] = useState(false);
 	const [viewTask,setViewTask]=useState({})
 

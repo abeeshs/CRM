@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Sidebar, { DrawerHeader } from './components/Admin/Sidebar/Sidebar';
 import Dashboard from './pages/admin/Dashboard';
 import Login from './pages/admin/Login';
 import Register from './pages/admin/Register';
@@ -14,7 +13,6 @@ import Home from './pages/user/Home'
 import TasksPage from './pages/user/TasksPage'
 import './App.css'
 import Contacts from './pages/user/Contacts';
-import DealsPage from './pages/user/DealsPage';
 import Conversation from './pages/user/Conversation';
 import PendingTask from './pages/user/PendingTask';
 import CompletedTask from './pages/user/CompletedTask';
@@ -24,6 +22,7 @@ import Deals from './pages/user/Deals';
 import Meetings from './pages/user/Meetings'
 import MeetingPage from './pages/admin/MeetingPage';
 import NewMeeting from './pages/admin/NewMeeting';
+import AdminContacts from './pages/admin/AdminContacts';
 
 
 // export default App;
@@ -61,6 +60,8 @@ function App() {
 					<Route path="/admin" element={<Dashboard />} />
 
 					<Route path="/admin/task" element={<Tasks />} />
+					<Route path="/admin/contacts" element={<AdminContacts />} />
+
 					<Route path="/admin/meetings" element={<MeetingPage />} />
 					<Route path='/admin/meetings/new-meeting' element={<NewMeeting/>}/>
 

@@ -28,7 +28,7 @@ function OtpEmail() {
 	});
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log('dfghjk',data);
+	
 		
 		const response = await authService.userOtpLogin(data)
 		if (response) {

@@ -29,15 +29,12 @@ function Overview({ setMeetings }) {
 	});
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
 		dispatch(setNewMeeting(data));
-		//setMeetings(data)
 	};
 	
 
 	const getAdminData = async () => {
 		const response = await adminService.getAdminDetails();
-		console.log(response);
 		if (response) {
 			setAdmin(response);
 		}
@@ -84,16 +81,7 @@ function Overview({ setMeetings }) {
 						onSubmit={handleSubmit(onSubmit)}
 						style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 						<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
-							{/* <InputLabel className="label" htmlFor="my-input">
-									Deal Name *
-								</InputLabel>
-								<TextField
-									sx={{ width: 500 }}
-									name="dealName"
-									{...register('dealName')}
-									error={!!errors.dealName}
-									helperText={errors.dealName ? errors.dealName.message : ''}
-								/> */}
+							
 
 							<InputLabel className="input-label-f" htmlFor="my-input">
 								Organizer *
@@ -150,48 +138,7 @@ function Overview({ setMeetings }) {
 								helperText={errors.description ? errors.description.message : ''}
 								{...register('description')}
 							/>
-							{/* <InputLabel className="label" htmlFor="my-input">
-									Deal Owner
-								</InputLabel>
-								<Select
-									sx={{ m: 1, minWidth: 280 }}
-									labelId="demo-simple-select-autowidth-label"
-									id="dealOwner"
-									onChange={onchange}
-									autoWidth
-									name="dealOwner"
-									error={!!errors.dealOwner}
-									helperText={errors.dealOwner ? errors.dealOwner.message : ''}
-									{...register('dealOwner')}>
-									<MenuItem value="">
-										<em>None</em>
-									</MenuItem>
-
-									{users?.map((user) => {
-										return <MenuItem value={user._id}>{user?.username}</MenuItem>;
-									})}
-								</Select> */}
-
-							{/* <InputLabel className="label" htmlFor="my-input">
-									Priority
-								</InputLabel>
-								<Select
-									sx={{ m: 1, minWidth: 280 }}
-									labelId="demo-simple-select-autowidth-label"
-									id="priority"
-									onChange={onchange}
-									autoWidth
-									name="priority"
-									error={!!errors.priority}
-									helperText={errors.priority ? errors.priority.message : ''}
-									{...register('priority')}>
-									<MenuItem value="">
-										<em>None</em>
-									</MenuItem>
-									<MenuItem value={'Low'}>Low</MenuItem>
-									<MenuItem value={'Medium'}>Medium</MenuItem>
-									<MenuItem value={'High'}>High</MenuItem>
-								</Select> */}
+							
 						</Stack>
 						<Button
 							type="submit"

@@ -17,7 +17,7 @@ function VarifyOTP() {
 	const navigate = useNavigate();
 
 	const { otpEmail } = useSelector((state) => state.userOTPLogin);
-	console.log(otpEmail);
+	
 	const getUserEmail = () => {
 		setUserEmail(otpEmail);
 	};
@@ -25,13 +25,13 @@ function VarifyOTP() {
 	const handleSubmit = async () => {
 		if (OTP > 3) {
 			const response = await authService.userVerifyOTP(OTP, userEmail);
-			console.log(response);
+			
 			if (response.message === 'Loggin Success') {
 				dispatch(setUserToken({ token: response.token, username: response.username }));
 				navigate('/contacts');
-				console.log({ response });
+				
 			} else if (response == 'Incorrect otp') {
-				console.log({ response });
+				
 				setError(response);
 				setTimeout(() => {
 					setError(null);
@@ -51,9 +51,9 @@ function VarifyOTP() {
 		if (response.message === 'Loggin Success') {
 			dispatch(setUserToken({ token: response.token, username: response.username }));
 			navigate('/contacts');
-			console.log({ response });
+			
 		} else if (response == 'Incorrect otp') {
-			console.log({ response });
+			
 			setError(response);
 			setTimeout(() => {
 				setError(null);
@@ -115,9 +115,9 @@ function VarifyOTP() {
 							</div>
 							<p className="p3">Didn't receive the code?</p>
 							<ResendOTP onResendClick={() => resendOTP()} />
-							{/* <p className="resend">Resend</p> */}
+							
 						</div>
-						{/* <button type="submit">Verify</button> */}
+						
 						<Button
 							onClick={() => handleSubmit()}
 							disabled={desableButton}

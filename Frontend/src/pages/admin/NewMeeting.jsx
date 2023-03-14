@@ -25,12 +25,7 @@ function NewMeeting() {
 			<Box sx={{ width: '100%', height: '100%' }}>
 				<Box
 					sx={{
-						// position:"absolute",
-						// top:"0px",
-						// height:"200px",
-						// overflow:"hidden",
-						// right:"0",
-						// left:"0"
+						
 
 						width: '100%',
 						display: 'flex',

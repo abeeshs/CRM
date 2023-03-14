@@ -1,27 +1,20 @@
-import {
-	AppBar,
-	Collapse,
-	IconButton,
-	List,
-	ListItem,
-	ListItemButton,
-	ListItemIcon,
-	ListItemText,
-	Toolbar,
-	Typography
-} from '@mui/material';
+import { AppBar, List, ListItem, ListItemButton, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+//import image from '../../../../public/images/logo2.jpg'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import './Header.css';
 import * as authService from '../../../services/authService';
+import { useDispatch } from 'react-redux';
+import { deleteUserToken } from '../../../features/auth/userAuthSlice';
 
 function Header() {
 	const navigate = useNavigate();
 	const [tableType, setTableType] = useState('');
 	const [open, setOpen] = useState(false);
+	const dispatch = useDispatch();
 
 	const tableHandle = (type) => {
 		setTableType(type);
@@ -29,6 +22,7 @@ function Header() {
 	const signOutHandler = async () => {
 		let res = await authService.userLogout();
 		if (res) {
+			dispatch(deleteUserToken());
 			navigate('/');
 		}
 	};
@@ -52,7 +46,7 @@ function Header() {
 									color: 'black',
 									textDecoration: 'none'
 								}}>
-								LOGO
+								<img src="/images/logo2.jpg" alt="" style={{ width: '130px', height: '40px' }} />
 							</Typography>
 
 							<Typography
@@ -118,6 +112,7 @@ function Header() {
 								variant="h6"
 								noWrap
 								component="div"
+								onClick={() => navigate('/conversation')}
 								sx={{
 									color: 'black',
 									fontFamily: '',

@@ -1,11 +1,10 @@
-import { positions } from '@mui/system';
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import Item from './Item';
 
 
 function Column({ col: { list, id, name,data } }) {
-	console.log({data});
+	
 	let total=0;
 	return (
 		<Droppable droppableId={id}>
@@ -13,7 +12,6 @@ function Column({ col: { list, id, name,data } }) {
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<div
 						style={{
-							// display: 'flex',
 							display: 'block',
 							width: '100%',
 							minHeight: '30px',

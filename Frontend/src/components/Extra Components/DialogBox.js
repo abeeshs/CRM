@@ -1,11 +1,9 @@
 import { Button, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
 import React from 'react'
 
-
-function Popup(props) {
+function DialogBox(props) {
     const{title,children,openPopup,setOpenPopup} =props;
-  return (
-    <div>
+     <div>
         <Dialog open={openPopup}>
             <DialogTitle>
                 <div style={{display:'flex'}}>
@@ -25,7 +23,28 @@ function Popup(props) {
         </Dialog>
       
     </div>
+  return (
+    <div>
+    <Dialog open={openPopup}>
+        <DialogTitle>
+            <div style={{display:'flex'}}>
+               <Typography variant='h6' component='div' style={{flexGrow:1}}>
+                {title}
+               </Typography>
+              
+            <Button style={{backgroundColor:'#ff000038',color:'red'}} color='secondary' onClick={()=> setOpenPopup(false)}
+            >X</Button>
+            </div>
+        </DialogTitle>
+        <DialogContent dividers>
+            <div>
+                {children}
+            </div>
+        </DialogContent>
+    </Dialog>
+  
+</div>
   )
 }
 
-export default Popup
+export default DialogBox

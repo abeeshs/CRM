@@ -13,7 +13,6 @@ function Dashboard() {
 	// const token  = useSelector((state) => state.adminAuth);
 	const adminToken = JSON.parse(localStorage.getItem('admin-auth'));
 	
-	console.log("ithu tiken")
 	
 	useEffect(() => {
 		if (!adminToken?.token) {

@@ -36,22 +36,7 @@ export default function Sidebar(props) {
 	return (
 		<>
 			<CssBaseline />
-			{/* <Box sx={{ backgroundColor: 'White', width: '100%', height: '65px' }}>
-				<Avatar
-					sx={{ float: 'right', margin: '10px', marginRight: '30px' }}
-					alt="Travis Howard"
-					src="/static/images/avatar/2.jpg"
-				/>
-				<CircleNotificationsIcon
-					sx={{
-						float: 'right',
-						margin: '15px',
-						color: 'grey',
-						fontSize: '30px',
-						marginRight: '30px'
-					}}
-				/>
-			</Box> */}
+			
 			<Drawer
 				sx={{
 					width: drawerWidth,

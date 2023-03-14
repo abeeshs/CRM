@@ -12,11 +12,12 @@ const contactSchema = new mongoose.Schema(
 		},
 		email: {
 			type: String,
-			
-			required: [true, 'Please enter email address']
+			required: [true, 'Please enter email address'],
+			unique:[true,'Email alredy exists']
 		},
 		mobile: {
 			type: Number,
+			unique:[true,'Mobile already exists'],
 			reqiured: [true, 'Pleace enter mobile number']
 		},
 		contact_owner: {

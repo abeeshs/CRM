@@ -1,4 +1,5 @@
 import {
+	Alert,
 	Box,
 	Button,
 	Divider,
@@ -17,25 +18,27 @@ import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAdminToken } from '../../../features/auth/adminAuthSlice.js';
 import { useNavigate } from 'react-router-dom';
 import * as contactService from '../../../services/contactService.js';
 import * as userService from '../../../services/userService.js';
 
 function RightSideBar({ getAllContacts }) {
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
-
 	//schema for create contact form
 	const schema = yup.object().shape({
-		firstname: yup.string().required('First Name is required'),
-		lastname: yup.string().required('Last Name is required'),
+		firstname: yup
+			.string()
+			.required('First Name is required')
+			.matches(/^(\S+$)/g, 'Name not in correct format'),
+		lastname: yup
+			.string()
+			.required('Last Name is required')
+			.matches(/^(\S+$)/g, 'Name not in correct format'),
 		email: yup.string().email().required('Email is required'),
 		mobile: yup
 			.string()
-			.required()
+			.required('Mobile is required')
 			.matches(/^[789]\d{9}$/, 'Is not in correct format'),
-		contactOwner: yup.string().required(),
+		contactOwner: yup.string().required('Select the contact owner'),
 		jobTitle: yup.string(),
 		lifeCycle: yup.string(),
 		leadStatus: yup.string()
@@ -52,6 +55,7 @@ function RightSideBar({ getAllContacts }) {
 
 	const [state, setState] = React.useState({ right: false });
 	const [users, setUsers] = React.useState([]);
+	const [errorMessage,setErrorMessage]=useState('')
 
 	const { token } = useSelector((state) => state.userAuth);
 	const toggleDrawer = (anchor, open) => async (event) => {
@@ -68,14 +72,24 @@ function RightSideBar({ getAllContacts }) {
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
+		try{
+			console.log(data);
 		const response = await contactService.createContact(data);
-
-		if (response) {
+		console.log(response);
+		if(response.status==="success"){
 			setState('right', false);
-			
 			getAllContacts();
+			setErrorMessage('')
+		}else{
+			setErrorMessage(response)
 		}
+		
+
+		}catch(err){
+			console.log(err)
+
+		}
+		
 	};
 
 	const list = (anchor) => (
@@ -92,9 +106,12 @@ function RightSideBar({ getAllContacts }) {
 					/>
 				</Stack>
 			</Box>
-			<Box>
+			<Box sx={{ backgroundColor: 'white !important' }}>
+				{errorMessage?<Alert severity="error">{errorMessage}</Alert>:''}
+			
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
+					
 						<InputLabel className="label" htmlFor="my-input">
 							Email address
 						</InputLabel>
@@ -221,28 +238,6 @@ function RightSideBar({ getAllContacts }) {
 					</Button>
 				</form>
 			</Box>
-
-			{/* <List>
-				{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-					<ListItem key={text} disablePadding>
-						<ListItemButton>
-							<ListItemIcon></ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
-			</List> */}
-			<Divider />
-			{/* <List>
-				{['All mail', 'Trash', 'Spam'].map((text, index) => (
-					<ListItem key={text} disablePadding>
-						<ListItemButton>
-							<ListItemIcon></ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
-			</List> */}
 		</Box>
 	);
 	return (
@@ -258,7 +253,6 @@ function RightSideBar({ getAllContacts }) {
 				<SwipeableDrawer
 					anchor={'right'}
 					open={state['right']}
-					//onClose={toggleDrawer('right', false)}
 					onOpen={toggleDrawer('right', true)}>
 					{list('right')}
 				</SwipeableDrawer>

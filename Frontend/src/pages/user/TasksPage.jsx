@@ -16,11 +16,11 @@ function TasksPage() {
 	const { token } = useSelector((state) => state.userAuth);
 
 	console.log('token');
-	console.log(token);
+	console.log(userTask);
 
 	const getTask = async () => {
 		console.log('first');
-		
+
 		const response = await taskService.getUserTask(token);
 		console.log('response');
 		console.log(response);
@@ -40,38 +40,22 @@ function TasksPage() {
 		<div>
 			<Header />
 			<Container maxWidth="xl">
-				
-			<h3 style={{fontFamily:'Garamond'}}>All Task</h3>
-			<Divider/>
+				<h3 style={{ fontFamily: 'Garamond' }}>All Task</h3>
+				<Divider />
 			</Container>
-			
-			
-			
-			<Container maxWidth="xl" sx={{marginTop:'50px'}}>
-			
-				<TaskTable userTask={userTask} />
+
+			<Container maxWidth="xl" sx={{ marginTop: '50px' }}>
+				{userTask?.length > 0 ? (
+					<TaskTable userTask={userTask} />
+				) : (
+					<div style={{display:'flex', justifyContent:'space-evenly',alignItems:'center'}}>
+						<img src="/images/empty.jpg" style={{ width: '400px',height:'400px' }} alt="" />
+						<h2 className='commen-font' style={{fontWeight:'800',}}>No tasks yet</h2>
+					</div>
+				)}
 			</Container>
-			
 		</div>
 	);
 }
 
 export default TasksPage;
-{
-	/* <TaskTable userTask={userTask} /> */
-}
-{/* <Box sx={{ display: 'flex' }}> */}
-				{/* <Sidebar tableType={tableType} setTableType={setTableType}/> */}
-
-				<h3>Tasks</h3>
-				{/* <Box
-					component="main"
-					sx={{
-						flexGrow: 1,
-						bgcolor: 'background.default',
-						marginTop: '50px',
-						marginRight: '15px'
-					}}>
-					<TaskTable userTask={userTask} />
-				</Box> */}
-			{/* </Box> */}

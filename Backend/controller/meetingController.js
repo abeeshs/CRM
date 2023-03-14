@@ -4,7 +4,6 @@ import * as meetingService from '../Services/meetingService.js';
 export const addNewMeeting = asyncHandler(async (req, res) => {
 	const { organizer, eventTitle, location, description, members, title, date, time, duration } =
 		req.body;
-console.log(req.body)
 	const newMeeting = {
 		created_by: req.user._id,
 		organizer: organizer,

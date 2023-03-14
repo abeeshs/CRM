@@ -3,7 +3,6 @@ import {
 	Box,
 	Button,
 	Chip,
-	FormControl,
 	MenuItem,
 	Table,
 	TableBody,
@@ -28,40 +27,31 @@ function TaskViewTable(props) {
 
 	//change the task status
 	const changeStatus = async (e) => {
-		console.log(e.target.value);
 		viewTask.task_status = e.target.value;
 		setStatus(e.target.value);
 		const response = await taskService.changeTaskStatus(token, e.target.value, viewTask._id);
 	};
 	const handleChange = (e) => {
-		console.log(URL.createObjectURL(e.target.files[0]));
 
 		setFile(e.target.files[0]);
 	};
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		console.log('hiii');
+	
 		const data = new FormData();
-		console.log(data);
+	
 		data.append('file', file);
-		console.log(data);
+		
 		const response = await taskService.uploadFile(token, data, viewTask._id);
 	};
 	if (file) {
-		console.log(URL.createObjectURL(file));
 	}
-	// console.log(file?,file.name:'nofile')
+
 	return (
 		<Box>
 			<TableContainer>
 				<Table sx={{ minWidth: 550 }}>
-					{/* <TableHead>
-					<TableRow sx={{ fontSize: '25px', fontWeight: 500 }}>
-						<TableCell>Title</TableCell>
-						<TableCell>Task Type</TableCell>
-						
-					</TableRow>
-				</TableHead> */}
+					
 					<TableBody>
 						<TableRow key={'12'}>
 							<TableCell sx={{ fontWeight: 700 }}>Title</TableCell>

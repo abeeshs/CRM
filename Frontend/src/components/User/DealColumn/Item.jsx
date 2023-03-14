@@ -1,4 +1,3 @@
-import { padding } from '@mui/system';
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import LensIcon from '@mui/icons-material/Lens';

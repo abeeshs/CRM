@@ -10,7 +10,6 @@ export const otpLoginSlice =createSlice({
     initialState,
     reducers:{
         setUserEmail(state,action){
-            console.log(action.payload)
             state.otpEmail= action.payload;
         }
     },

@@ -1,18 +1,16 @@
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import Admin from '../Model/adminModel.js';
-import User from '../Model/userModel.js'
+import User from '../Model/userModel.js';
 
 export const adminProtect = asyncHandler(async (req, res, next) => {
 	let token;
-	
-	console.log(req.headers)
 
 	if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
 		try {
 			//get the token
 			token = req.headers.authorization.split(' ')[1];
-			console.log(token)
+			console.log(token);
 
 			//varify token
 			const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -33,10 +31,8 @@ export const adminProtect = asyncHandler(async (req, res, next) => {
 	}
 });
 
-
 export const userProtect = asyncHandler(async (req, res, next) => {
 	let token;
-
 
 	if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
 		try {
@@ -50,14 +46,17 @@ export const userProtect = asyncHandler(async (req, res, next) => {
 
 			//get USER from the token
 			const user = await User.findById(decoded.id).select('-password');
-			console.log("This is the user id from jwt"+user)
-			if(user){
-				req.user=user;
-				next();
-			}else{
-				throw new Error('')
+
+			if (user) {
+				if (user.is_block === true) {
+					res.status(400).json({ message: 'User Blocked' });
+				} else {
+					req.user = user;
+					next();
+				}
+			} else {
+				throw new Error('Not authorized');
 			}
-			
 		} catch (err) {
 			console.log(err);
 			res.status(401);

@@ -125,7 +125,7 @@ function Deals() {
 		// If start is the same as end, we're in the same column
 		if (start === end) {
 			console.log({ start });
-			// console.log(source.index)
+			
 			// Move the item within the list
 			// Start by making a new list without the dragged item
 			const newList = [];
@@ -138,8 +138,7 @@ function Deals() {
 
 			// Then insert the item at the right location
 			newList.splice(destination.index, 0, start.list[source.index]);
-			// console.log(newList.splice(destination.index, 0, start.list[source.index]))
-			// console.log(newList)
+			
 
 			// Then create a new copy of the column object
 			const newCol = {
@@ -160,7 +159,7 @@ function Deals() {
 
 			//droping item data
 
-			console.log(start.data[source.index]);
+			
 
 			// Create a new start column
 			const newStartCol = {
@@ -169,7 +168,7 @@ function Deals() {
 				name: start.name,
 				data: newStartData
 			};
-			console.log({ newStartCol });
+			
 
 			// Make a new end list array
 			const newEndList = end.list;
@@ -186,7 +185,7 @@ function Deals() {
 				name: end.name,
 				data: newEndData
 			};
-			console.log({ newEndCol });
+			
 
 			// Update the state
 			setColumns((state) => ({
@@ -296,39 +295,5 @@ function Deals() {
 	);
 }
 
-// function Item(props) {
-// 	console.log(props);
-// 	return <div>{props.text}</div>;
-// }
-// const StyledColumn = styled("div", {
-//     padding: "24px 0",
-//     display: "flex",
-//     flexDirection: "column",
-//     marginTop: 8,
 
-//     h2: {
-//       margin: 0,
-//       padding: "0 16px"
-//     }
-//   });
-
-// function Column(props) {
-//     const list =['item1','item2','item3']
-
-// 	return (
-// 		<Droppable droppableId={id}>
-//       {(provided) => (
-//         <StyledColumn>
-//           <h2>{id}</h2>
-//           <StyledList {...provided.droppableProps} ref={provided.innerRef}>
-//             {list.map((text, index) => (
-//               <Item key={text} text={text} index={index} />
-//             ))}
-//             {provided.placeholder}
-//           </StyledList>
-//         </StyledColumn>
-//       )}
-//     </Droppable>
-// 	);
-// }
 export default Deals;

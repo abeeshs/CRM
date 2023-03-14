@@ -35,14 +35,12 @@ function Scheduling() {
 	});
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
 		let members = assignedUser.map((item) => {
 			return {
 				memberId: item.value,
 				name:item.label
 			};
 		});
-		console.log(members)
 		dispatch(setNewMeeting({data,members}));
 		localStorage.setItem("members",JSON.stringify(members))
 		
@@ -108,20 +106,7 @@ function Scheduling() {
 								onChange={selectMulti}
 								options={users}
 							/>
-							{/* <Select
-								sx={{ backgroundColor: '#f5f8fa' }}
-								labelId="demo-simple-select-autowidth-label"
-								id="member"
-								onChange={onchange}
-								autoWidth
-								name="member"
-								error={!!errors.member}
-								helperText={errors.member ? errors.member.message : ''}
-								{...register('member')}>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-							</Select> */}
+							
 
 							<InputLabel className="input-label-f" htmlFor="my-input">
 								Scheduling Title

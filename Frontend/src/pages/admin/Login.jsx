@@ -50,9 +50,7 @@ export default function SignIn() {
 	const onSubmit = async (data) => {
 	
 		const  response = await authService.adminLogin(data)
-    console.log("ithu")
 		if(response){
-      console.log(response.token)
 
 			dispatch(setAdminToken({ token: response.token, admin: true }));
       
@@ -83,7 +81,7 @@ export default function SignIn() {
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
-          {/* <p>{errors.email?.message}</p> */}
+        
             <TextField
               margin="normal"
               required
@@ -97,7 +95,7 @@ export default function SignIn() {
 							helperText={errors.email ? errors.email.message : ''}
               {...register('email')}
             />
-             {/* <p>{errors.password?.message}</p> */}
+             
             <TextField
               margin="normal"
               required
@@ -129,9 +127,7 @@ export default function SignIn() {
               </Grid>
               <Grid item>
                 <Link to='/admin/register' >Don't have an account? Sign Up</Link>
-                {/* <Linke href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Linke> */}
+                
               </Grid>
             </Grid>
           </Box>

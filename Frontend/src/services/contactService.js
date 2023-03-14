@@ -14,6 +14,10 @@ export const getAllContact = async () => {
 
 		return res.data;
 	} catch (error) {
+		console.log(error);
+		if (error.response.data.message === 'User Blocked') {
+			localStorage.removeItem('user');
+		}
 		const message =
 			(error.response && error.response.data && error.response.data.message) ||
 			error.message ||
@@ -51,16 +55,18 @@ export const createContact = async (data) => {
 			(error.response && error.response.data && error.response.data.message) ||
 			error.message ||
 			error.toString();
-		toast(message, {
-			position: 'top-center',
-			autoClose: 5000,
-			hideProgressBar: true,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: 'dark'
-		});
+			return message
+			toast.error(message)
+		// toast(message, {
+		// 	position: 'top-center',
+		// 	autoClose: 5000,
+		// 	hideProgressBar: true,
+		// 	closeOnClick: true,
+		// 	pauseOnHover: true,
+		// 	draggable: true,
+		// 	progress: undefined,
+		// 	theme: 'dark'
+		// });
 	}
 };
 
@@ -91,6 +97,7 @@ export const getAllContactAdmin = async (token) => {
 		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/admin/contacts`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
+		console.log(res.data);
 
 		return res.data;
 	} catch (error) {
@@ -115,7 +122,9 @@ export const getAllContactAdmin = async (token) => {
 
 export const deleteContact = async (id) => {
 	try {
-		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/contacts/delete-contact`);
+		const res = await axios.delete(
+			`${process.env.REACT_APP_SERVER_URL}/contacts/delete-contact/${id}`
+		);
 
 		return res.data;
 	} catch (error) {
@@ -133,5 +142,26 @@ export const deleteContact = async (id) => {
 			progress: undefined,
 			theme: 'dark'
 		});
+	}
+};
+
+export const adminCreateContact = async (data) => {
+	const { token } = JSON.parse(localStorage.getItem('admin-auth'));
+	try {
+		const response = await axios.post(
+			`${process.env.REACT_APP_SERVER_URL}/admin/contacts/add-contact`,
+			data,
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
+	} catch (error) {
+		
+		const message =
+			(error.response && error.response.data && error.response.data.message) ||
+			error.message ||
+			error.toString();
+			console.log(message)
+		return message;
 	}
 };
