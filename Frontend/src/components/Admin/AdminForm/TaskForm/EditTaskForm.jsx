@@ -109,21 +109,7 @@ function EditTaskForm(props) {
 				onChange={selectType}
 				options={taskType}
 			/>
-			{/* <Select
-				sx={{ m: 1, minWidth: 280, width: '482px' }}
-				labelId="demo-simple-select-autowidth-label"
-				id="demo-simple-select-autowidth"
-				autoWidth
-				name="type"
-				defaultValue={editTask.task_type}
-				{...register('type')}>
-				<MenuItem value="">
-					<em>None</em>
-				</MenuItem>
-				<MenuItem value={'To-do'}>To-do</MenuItem>
-				<MenuItem value={'Call'}>Call</MenuItem>
-				<MenuItem value={'Email'}>Email</MenuItem>
-			</Select> */}
+			
 
 			<InputLabel
 				id="demo-simple-select-autowidth-label"
@@ -137,22 +123,7 @@ function EditTaskForm(props) {
 				onChange={selectPriority}
 				options={priorityy}
 			/>
-			{/* <Select
-				sx={{ m: 1, minWidth: 280, width: '482px' }}
-				labelId="demo-simple-select-autowidth-label"
-				id="demo-simple-select-autowidth"
-				defaultValue={editTask.priority}
-				name="priority"
-				autoWidth
-				{...register('priority')}>
-				<MenuItem value="">
-					<em>None</em>
-				</MenuItem>
-				<MenuItem value={'Low'}>Low</MenuItem>
-				<MenuItem value={'Medium'}>Medium</MenuItem>
-				<MenuItem value={'High'}>High</MenuItem>
-			</Select> */}
-
+			
 			<InputLabel
 				id="demo-simple-select-autowidth-label"
 				style={{ marginLeft: '10px', marginTop: '10px' }}>
@@ -166,32 +137,9 @@ function EditTaskForm(props) {
 				defaultValue={{ label: 'vishnu', value: 'vishnu' }}
 			/>
 
-			{/* <Select
-				sx={{ m: 1, minWidth: 280, width: '482px' }}
-				labelId="demo-simple-select-autowidth-label"
-				id="demo-simple-select"
-				defaultValue={editTask.title}
-				name="associated"
-				autoWidth
-				{...register('associated')}>
-				<MenuItem value="">
-					<em>None</em>
-				</MenuItem>
-				{allContacts?.map((item) => {
-					<p>{item}</p>;
-					return <MenuItem value={item._id}>{item.firstname}</MenuItem>;
-				})}
-			</Select> */}
+			
 
-			{/* <TextField
-				id="outlined-basic"
-				className="outlined-basic1"
-				label="Associated with records"
-				variant="outlined"
-				name="associated"
-				defaultValue={editTask.asociated_contact}
-                {...register('associated')}
-			/> */}
+			
 
 			<InputLabel
 				id="demo-simple-select-autowidth-label"
@@ -206,21 +154,7 @@ function EditTaskForm(props) {
 				options={users}
 				defaultValue={{ label: 2002, value: 2002 }}
 			/>
-			{/* <Select
-				sx={{ m: 1, minWidth: 280, width: '482px' }}
-				labelId="demo-simple-select-autowidth-label"
-				id="demo-simple-select-autowidth"
-				name="assignedTo"
-				autoWidth
-				defaultValue={editTask?.assigned_to?.username}
-				{...register('assignedTo')}>
-				<MenuItem value="">
-					<em>None</em>
-				</MenuItem>
-				{users?.map((user) => {
-					return <MenuItem value={user._id}>{user.username}</MenuItem>;
-				})}
-			</Select> */}
+			
 			<InputLabel
 				id="demo-simple-select-autowidth-label"
 				style={{ marginLeft: '10px', marginTop: '10px' }}>

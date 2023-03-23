@@ -93,12 +93,9 @@ export default function AdminTaskTable() {
 	const getAllTasks = async () => {
 		const response = await taskService.getAllTask();
 		const contacts = await contactService.getAllContactAdmin(token);
-		console.log(contacts);
 
 		if (response) {
 			setTasks(response);
-
-			console.log(response);
 		}
 		if (contacts) {
 			let arrObj = contacts.map((item) => {
@@ -145,7 +142,7 @@ export default function AdminTaskTable() {
 		newTask.type = types.value;
 		newTask.associated = associated.value;
 
-		console.log(newTask);
+		
 		const data = await taskService.createTask(newTask);
 		if (data) {
 			handleClose();
@@ -195,7 +192,7 @@ export default function AdminTaskTable() {
 	//Change Status
 	const changeStatus = async (taskId) => {
 		try {
-			console.log(token);
+			
 			const response = await taskService.changeTaskStatusAdmin(token, taskId);
 			if (response) {
 				setButtonDesable(true);
@@ -432,7 +429,7 @@ export default function AdminTaskTable() {
 							</Button>
 						</form>
 					</DialogContentText>
-					{/* <Button onClick={handleClose}>Close</Button> */}
+					
 				</DialogContent>
 				<DialogActions></DialogActions>
 			</Dialog>

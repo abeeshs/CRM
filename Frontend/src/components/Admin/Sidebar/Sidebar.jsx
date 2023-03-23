@@ -28,7 +28,7 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import { Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
-import *as adminService from '../../../services/adminService'
+import * as adminService from '../../../services/adminService';
 
 const drawerWidth = 240;
 
@@ -61,7 +61,7 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
 	alignItems: 'center',
 	justifyContent: 'flex-end',
 	padding: theme.spacing(0, 1),
-	// necessary for content to be below app bar
+
 	...theme.mixins.toolbar
 }));
 
@@ -126,12 +126,11 @@ export default function Sidebar() {
 
 	//logOut
 	const logoutAdmin = async () => {
-		const res =await adminService.adminLogout()
-		if(res){
+		const res = await adminService.adminLogout();
+		if (res) {
 			navigate('/admin/login');
 			handleClose();
 		}
-		
 	};
 
 	return (
@@ -203,7 +202,7 @@ export default function Sidebar() {
 											minWidth: 0,
 											mr: open ? 3 : 'auto',
 											justifyContent: 'center',
-											color:'white'
+											color: 'white'
 										}}>
 										{text.icon}
 									</ListItemIcon>
@@ -221,7 +220,6 @@ export default function Sidebar() {
 						))}
 					</List>
 					<Divider />
-					
 				</Drawer>
 			</Box>
 		</>

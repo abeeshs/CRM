@@ -1,4 +1,4 @@
-import { Avatar, Box } from '@mui/material';
+import { Avatar, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/User/Header/Header';
 import * as userService from '../../services/userService';
@@ -6,18 +6,17 @@ import * as userService from '../../services/userService';
 function Profile() {
 	const { token } = JSON.parse(localStorage.getItem('user'));
 	const [profileData, setProfileData] = useState({});
-    console.log(profileData.email)
+	console.log(profileData.email);
 	const handleProfile = (e) => {
 		const { name, value } = e.target;
 		var vl = {
 			name: value
 		};
-		console.log(vl);
 	};
 	const getUserProfile = async () => {
 		try {
 			const response = await userService.getUserService(token);
-            console.log(response)
+
 			if (response.status === 'Success') {
 				setProfileData(response.user);
 			}
@@ -67,15 +66,34 @@ function Profile() {
 						display: 'flex',
 						marginTop: '10px',
 
-						backgroundColor: 'green'
+						 backgroundColor: '#26323'
 					}}>
 					<Box
 						sx={{
 							width: '15%',
 							height: '100%',
-							backgroundColor: 'white',
+							backgroundColor: '#263238',
 							border: '1px solid grey'
-						}}></Box>
+						}}>
+							 <List>
+          <ListItem disablePadding>
+            <ListItemButton sx={{backgroundColor:'black',color:'white'}}>
+              <ListItemIcon>
+                {/* <InboxIcon /> */}
+              </ListItemIcon>
+              <ListItemText primary="General" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {/* <DraftsIcon /> */}
+              </ListItemIcon>
+              <ListItemText primary="" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+						</Box>
 					<Box
 						sx={{
 							width: '85%',
@@ -147,7 +165,7 @@ function Profile() {
 												</td>
 												<td className="dview-label">Contact number</td>
 												<td>
-													<input className="profile-input" onBlur={handleProfile} />
+													<input className="profile-input" value={profileData?.mobile} onBlur={handleProfile} />
 												</td>
 											</tr>
 											<tr>
@@ -157,11 +175,12 @@ function Profile() {
 														className="profile-input"
 														name="firstname"
 														onBlur={handleProfile}
+														value={profileData?.firstname}
 													/>
 												</td>
 												<td className="dview-label">Last Name</td>
 												<td>
-													<input className="profile-input" name="lastname" onBlur={handleProfile} />
+													<input className="profile-input" name="lastname" value={profileData?.lastname} onBlur={handleProfile} />
 												</td>
 											</tr>
 										</tbody>
