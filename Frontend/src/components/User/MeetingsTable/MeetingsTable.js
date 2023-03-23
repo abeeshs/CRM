@@ -25,26 +25,7 @@ function MeetingsTable({ meetings, getMeetings, users, setUsers }) {
 	const [singleView, setSingleView] = useState(false);
 	const [selectedMeeting, setSelectedMeeting] = useState({});
 
-	// const [users, setUsers] = useState([]);
-
-	// const getUsersList = async () => {
-	// 	try {
-	// 		const response = await userService.viwAllusers(token);
-
-	// 		if (response.status === 'Success') {
-	// 			let arrObj = response.users.map((item) => {
-	// 				return {
-	// 					label: item.username,
-	// 					value: item._id
-	// 				};
-	// 			});
-
-	// 			setUsers(arrObj);
-	// 		}
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// };
+	
 
 	const handleSearch = () => {};
 
@@ -61,7 +42,6 @@ function MeetingsTable({ meetings, getMeetings, users, setUsers }) {
 	];
 	const confirmDelete = async () => {
 		const response = await meetingService.deleteMeeting(selectedMeeting._id);
-		console.log(response);
 		if (response.status === 'Success') {
 			setSingleView(false);
 			toast.success('Deleted successfully!');
@@ -78,7 +58,7 @@ function MeetingsTable({ meetings, getMeetings, users, setUsers }) {
 			<Toaster />
 			<Container maxWidth="xl" sx={{backgroundColor:'white',marginTop:'10px'}}>
 				<Toolbar>
-					<TextField
+					{/* <TextField
 						fullWidth
 						size="small"
 						label="Search Meetings"
@@ -89,7 +69,7 @@ function MeetingsTable({ meetings, getMeetings, users, setUsers }) {
 									<SearchIcon />
 								</InputAdornment>
 							)
-						}}></TextField>
+						}}></TextField> */}
 					<Button
 						onClick={() => setOpenPopup(true)}
 						variant="outlined"

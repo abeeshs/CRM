@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
 import Column from '../../components/User/DealColumn/Column';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import CreateDeal from '../../components/User/DealColumn/CreateDeal';
 import * as dealService from '../../services/dealService';
-import {
-	Box,
-	Button,
-	Container,
-	IconButton,
-	InputBase,
-	MenuItem,
-	Select
-} from '@mui/material';
+import { Box, Button, Container, IconButton, InputBase, MenuItem, Select } from '@mui/material';
 import Header from '../../components/User/Header/Header';
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -92,25 +83,23 @@ function Deals() {
 				}
 			});
 			setDeals(response);
-			setColumns(initialColumns)
+			setColumns(initialColumns);
 		}
 	};
 
 	useEffect(() => {
 		getAllDeals();
 	}, []);
-	const [deal, setDeal] = React.useState("allDeal");
+	const [deal, setDeal] = React.useState('allDeal');
 
 	const handleChange = (event) => {
 		setDeal(event.target.value);
 	};
 
 	const [columns, setColumns] = useState(initialColumns);
-	console.log(columns);
 
 	const onDragEnd = (DropResult) => {
 		const { source, destination } = DropResult;
-		console.log(DropResult);
 		// Make sure we have a valid destination
 		if (destination === undefined || destination === null) return null;
 
@@ -124,8 +113,6 @@ function Deals() {
 
 		// If start is the same as end, we're in the same column
 		if (start === end) {
-			console.log({ start });
-			
 			// Move the item within the list
 			// Start by making a new list without the dragged item
 			const newList = [];
@@ -134,11 +121,9 @@ function Deals() {
 					newList.push(val);
 				}
 			});
-			console.log(newList);
 
 			// Then insert the item at the right location
 			newList.splice(destination.index, 0, start.list[source.index]);
-			
 
 			// Then create a new copy of the column object
 			const newCol = {
@@ -159,8 +144,6 @@ function Deals() {
 
 			//droping item data
 
-			
-
 			// Create a new start column
 			const newStartCol = {
 				id: start.id,
@@ -168,7 +151,6 @@ function Deals() {
 				name: start.name,
 				data: newStartData
 			};
-			
 
 			// Make a new end list array
 			const newEndList = end.list;
@@ -185,7 +167,6 @@ function Deals() {
 				name: end.name,
 				data: newEndData
 			};
-			
 
 			// Update the state
 			setColumns((state) => ({
@@ -237,17 +218,14 @@ function Deals() {
 							labelId="demo-simple-select-label"
 							id="demo-simple-select"
 							value={deal}
-							
-							defaultValue={"allDeal"}
+							defaultValue={'allDeal'}
 							onChange={handleChange}>
-							<MenuItem value={"allDeal"}>All Deals</MenuItem>
-							<MenuItem value={"myDeal"}>My Deals</MenuItem>
+							<MenuItem value={'allDeal'}>All Deals</MenuItem>
+							<MenuItem value={'myDeal'}>My Deals</MenuItem>
 						</Select>
 					</Box>
-					
 				</Box>
 				<Box sx={{ width: '20rem', height: '2.5rem', mr: '20px' }}>
-					
 					<CreateDeal getAllDeals={getAllDeals} />
 				</Box>
 			</Box>
@@ -294,6 +272,5 @@ function Deals() {
 		</>
 	);
 }
-
 
 export default Deals;

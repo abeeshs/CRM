@@ -65,7 +65,7 @@ export const updateMeeting = asyncHandler(async (req, res, next) => {
 		end_date: endDate,
 		type: type
 	};
-	const updatedMeeting = await meetingService.updateMeetingService(meetingId,meeting );
+	const updatedMeeting = await meetingService.updateMeetingService(meetingId, meeting);
 
 	if (updatedMeeting) {
 		res.status(201).json({ status: 'Success' });

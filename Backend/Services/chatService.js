@@ -47,7 +47,6 @@ export const sendMessageServise = asyncHandler(async (messageData) => {
 	//data = await Message.findById(data._id).populate('sender').populate('chat');
 	data = await data.populate('sender', 'username email');
 	data = await data.populate('chat');
-	console.log({ chat: data });
 	data = await User.populate(data, {
 		path: 'chat.users',
 		select: 'username email'
@@ -63,5 +62,5 @@ export const sendMessageServise = asyncHandler(async (messageData) => {
 export const getMessageService = asyncHandler(async (chatId) => {
 	const allMessages = await Message.find({ chat: chatId }).populate('sender').populate('chat');
 
-	return allMessages
+	return allMessages;
 });

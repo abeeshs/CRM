@@ -7,15 +7,14 @@ import Overview from './Overview';
 import Scheduling from './Scheduling';
 import Invitation from './Invitation';
 
-
 function NewMeeting() {
 	const [users, setUsers] = useState([]);
 	const [activeStep, setActiveStep] = useState(0);
-	const [meetings,setMeetings]=useState()
-	const [NewMeetings,setNewMeetings]=useState([])
+	const [meetings, setMeetings] = useState();
+	const [NewMeetings, setNewMeetings] = useState([]);
 	const steps = ['OVERVIEW', 'SCHEDULING', 'AUTOMATION'];
 	const nextStep = () => {
-		if (activeStep <2) setActiveStep((prev) => prev + 1);
+		if (activeStep < 2) setActiveStep((prev) => prev + 1);
 	};
 	const prevStep = () => {
 		if (activeStep > -1) setActiveStep((prev) => prev - 1);
@@ -26,8 +25,6 @@ function NewMeeting() {
 			<Box sx={{ width: '100%', height: '100%' }}>
 				<Box
 					sx={{
-						
-
 						width: '100%',
 						display: 'flex',
 						justifyContent: 'space-between',
@@ -79,11 +76,16 @@ function NewMeeting() {
 							placeContent: 'center',
 							backgroundColor: 'white'
 						}}>
-						<span style={{ fontSize: '18px' }}>Step {activeStep+1} of 3 </span>
+						<span style={{ fontSize: '18px' }}>Step {activeStep + 1} of 3 </span>
 					</Box>
 				</Box>
-			{activeStep===0?<Overview meetings={meetings} setMeetings={setMeetings}/> :activeStep===1?  <Scheduling meetings={meetings} setMeetings={setMeetings} />:<Invitation meetings={meetings} setMeetings={setMeetings}/>}
-
+				{activeStep === 0 ? (
+					<Overview meetings={meetings} setMeetings={setMeetings} />
+				) : activeStep === 1 ? (
+					<Scheduling meetings={meetings} setMeetings={setMeetings} />
+				) : (
+					<Invitation meetings={meetings} setMeetings={setMeetings} />
+				)}
 			</Box>
 			<footer
 				style={{
@@ -109,11 +111,13 @@ function NewMeeting() {
 							textAlign: 'center'
 						}}>
 						{activeStep > 0 ? (
-							<p onClick={() => prevStep()} style={{ fontSize: '18px',cursor:'pointer',color: "#33475b" }}>
+							<p
+								onClick={() => prevStep()}
+								style={{ fontSize: '18px', cursor: 'pointer', color: '#33475b' }}>
 								Back{' '}
 							</p>
 						) : (
-							<p style={{ fontSize: '18px',cursor:'pointer',color: "#33475b" }}>Cancel </p>
+							<p style={{ fontSize: '18px', cursor: 'pointer', color: '#33475b' }}>Cancel </p>
 						)}
 					</div>
 
@@ -126,7 +130,7 @@ function NewMeeting() {
 						}}>
 						<Button
 							onClick={() => nextStep()}
-							disabled={meetings?false:true}
+							disabled={meetings ? false : true}
 							className="meeting-btn"
 							style={{ color: 'white', margin: '8px' }}
 							varient="contained">

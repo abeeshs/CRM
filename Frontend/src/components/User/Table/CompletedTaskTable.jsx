@@ -3,14 +3,11 @@ import { Button, TableBody, TableCell, TableContainer, TableHead, TableRow } fro
 import Popup from '../Popup/Popup';
 import Table from '@mui/material/Table';
 import { useState } from 'react';
-import * as taskService from '../../../services/taskService';
-import { useSelector } from 'react-redux';
 
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import TaskViewTable from './TaskViewTable'; 
 
 function CompletedTaskTable({completedTask}) {
-	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openPopup, setOpenPopup] = useState(false);
 	const [viewTask, setViewTask] = useState({});
 	

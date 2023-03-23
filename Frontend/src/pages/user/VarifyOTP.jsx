@@ -17,21 +17,19 @@ function VarifyOTP() {
 	const navigate = useNavigate();
 
 	const { otpEmail } = useSelector((state) => state.userOTPLogin);
-	
+
 	const getUserEmail = () => {
 		setUserEmail(otpEmail);
 	};
-	//submit otp 
+	//submit otp
 	const handleSubmit = async () => {
 		if (OTP > 3) {
 			const response = await authService.userVerifyOTP(OTP, userEmail);
-			
+
 			if (response.message === 'Loggin Success') {
 				dispatch(setUserToken({ token: response.token, username: response.username }));
 				navigate('/contacts');
-				
 			} else if (response == 'Incorrect otp') {
-				
 				setError(response);
 				setTimeout(() => {
 					setError(null);
@@ -46,14 +44,12 @@ function VarifyOTP() {
 	};
 
 	//resend otp
-	const resendOTP = async()=>{
+	const resendOTP = async () => {
 		const response = await authService.userVerifyOTP(OTP, userEmail);
 		if (response.message === 'Loggin Success') {
 			dispatch(setUserToken({ token: response.token, username: response.username }));
 			navigate('/contacts');
-			
 		} else if (response == 'Incorrect otp') {
-			
 			setError(response);
 			setTimeout(() => {
 				setError(null);
@@ -61,8 +57,7 @@ function VarifyOTP() {
 			}, 4000);
 		} else {
 		}
-
-	}
+	};
 
 	useEffect(() => {
 		getUserEmail();
@@ -115,9 +110,8 @@ function VarifyOTP() {
 							</div>
 							<p className="p3">Didn't receive the code?</p>
 							<ResendOTP onResendClick={() => resendOTP()} />
-							
 						</div>
-						
+
 						<Button
 							onClick={() => handleSubmit()}
 							disabled={desableButton}

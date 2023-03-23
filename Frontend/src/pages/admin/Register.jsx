@@ -17,9 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { setAdminToken } from '../../features/auth/adminAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import *as authService from '../../services/authService'
-
-
+import * as authService from '../../services/authService';
 
 const theme = createTheme();
 
@@ -41,18 +39,20 @@ export default function Register() {
 	});
 
 	//setting schema
-	const {register,handleSubmit,formState: { errors }} = useForm({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm({
 		resolver: yupResolver(schema)
 	});
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		const  response = await authService.adminRegister(data)
-		if(response){
-
+		const response = await authService.adminRegister(data);
+		if (response) {
 			dispatch(setAdminToken({ token: response.token, admin: true }));
-			navigate('/admin')
-			
+			navigate('/admin');
 		}
 	};
 
@@ -153,12 +153,10 @@ export default function Register() {
 							</Grid>
 							<Grid item>
 								<Link to="/admin/register">Already have account? Sign In</Link>
-								
 							</Grid>
 						</Grid>
 					</Box>
 				</Box>
-				
 			</Container>
 		</ThemeProvider>
 	);

@@ -17,8 +17,6 @@ import * as meetingService from '../../services/meetingService';
 function Invitation() {
 	const [members, setMembers] = useState([]);
 	
-	// const data = useSelector((state) => state.newMeeting.meetings);
-	const  data = JSON
 	setMembers();
 
 

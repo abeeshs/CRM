@@ -6,7 +6,6 @@ import './ViewMeeting.css';
 import { deepPurple } from '@mui/material/colors';
 
 export default function ViewMeeting({ selectedMeeting }) {
-	console.log(selectedMeeting);
 
 	return (
 		<>

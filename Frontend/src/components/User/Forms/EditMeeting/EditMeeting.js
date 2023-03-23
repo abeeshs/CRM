@@ -21,8 +21,7 @@ const types = [
 	{ label: 'High', value: 'High' }
 ];
 
-function EditMeeting({ selectedMeeting,setOpenPopup,getMeetings,setSingleView}) {
-
+function EditMeeting({ selectedMeeting, setOpenPopup, getMeetings, setSingleView }) {
 	const part = selectedMeeting.participands.map((item) => {
 		return {
 			value: item.memberId._id,
@@ -76,7 +75,6 @@ function EditMeeting({ selectedMeeting,setOpenPopup,getMeetings,setSingleView}) 
 	}, []);
 
 	const onSubmit = async (data) => {
-        console.log("object")
 		try {
 			if (dayjs(start) > dayjs(end)) {
 				return setError('Select a valid date');
@@ -98,13 +96,11 @@ function EditMeeting({ selectedMeeting,setOpenPopup,getMeetings,setSingleView}) 
 				type: type.value,
 				description: value
 			};
-            console.log(meetingData)
-			const response = await meetingService.updateMeeting(selectedMeeting._id,meetingData);
-            console.log(response)
+			const response = await meetingService.updateMeeting(selectedMeeting._id, meetingData);
 			if (response.status === 'Success') {
 				setOpenPopup(false);
-				setSingleView()
-				getMeetings()
+				setSingleView();
+				getMeetings();
 
 				toast.success('Meeting created sussessfully !');
 			}

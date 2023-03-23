@@ -34,7 +34,7 @@ export default function ContactsTable() {
 
 	const getAllUsers = async () => {
 		const userlist = await userService.viwAllusers(token);
-		console.log(userlist);
+
 		setUsers(userlist.users);
 	};
 	const closePopup = () => {};

@@ -154,9 +154,7 @@ const storage = multer.diskStorage({
 	}
 });
 
-
 export const uploadTaskFile = asyncHandler(async (req, res) => {
-	
 	const taskId = req.params.id;
 	const uploaded = await taskService.uploadTaskDocument(taskId, req.file.filename);
 	if (uploaded) {

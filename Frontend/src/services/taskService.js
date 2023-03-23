@@ -66,73 +66,83 @@ export const getUserTask = async (token) => {
 		});
 		return res.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 	}
 };
 
 //--------------- Change task status for user ---------------
 
-export const changeTaskStatus = async (token,status,taskId) => {
+export const changeTaskStatus = async (token, status, taskId) => {
 	try {
-		const res = await axios.put(`${process.env.REACT_APP_SERVER_URL}/task/change-status/${taskId}`,{status}, {
-			headers: { Authorization: `Bearer ${token}` }
-		});
+		const res = await axios.put(
+			`${process.env.REACT_APP_SERVER_URL}/task/change-status/${taskId}`,
+			{ status },
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
 		return res.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 	}
 };
-
 
 //--------------- Edit task by admin ---------------
 
-export const editTaskAdmin = async (token,data,taskId) => {
+export const editTaskAdmin = async (token, data, taskId) => {
 	try {
-		const res = await axios.put(`${process.env.REACT_APP_SERVER_URL}/admin/task/edit-task/${taskId}`,{data}, {
-			headers: { Authorization: `Bearer ${token}` }
-		});
+		const res = await axios.put(
+			`${process.env.REACT_APP_SERVER_URL}/admin/task/edit-task/${taskId}`,
+			{ data },
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
 		return res.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 	}
 };
-
 
 // --------------- Delete task by admin ---------------
 
-export const deleteTaskAdmin = async (token,taskId) => {
-	try {	
-		const res = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/admin/task/delete-task/${taskId}`, {
-			headers: { Authorization: `Bearer ${token}` }
-		});
+export const deleteTaskAdmin = async (token, taskId) => {
+	try {
+		const res = await axios.delete(
+			`${process.env.REACT_APP_SERVER_URL}/admin/task/delete-task/${taskId}`,
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
 		return res.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 	}
 };
 
-
 //--------------- Varify task ---------------
 
-export const changeTaskStatusAdmin =async(token,taskId)=>{
-	try{
-		const res = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/admin/task/change-status/${taskId}`);
-		return res
-	}catch(err){
-		console.log(err)
+export const changeTaskStatusAdmin = async (token, taskId) => {
+	try {
+		const res = await axios.patch(
+			`${process.env.REACT_APP_SERVER_URL}/admin/task/change-status/${taskId}`
+		);
+		return res;
+	} catch (err) {
+		console.log(err);
 	}
-}
+};
 
 //--------------- Pending  task by user ---------------
 
 export const getPendingTask = async (token) => {
-	try {		
+	try {
 		const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/task/pending-task`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
 		return res.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 	}
 };
 
@@ -145,20 +155,23 @@ export const completedTask = async (token) => {
 		});
 		return res.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 	}
 };
 
 //--------------- Upload task documents ---------------
 
-export const uploadFile = async (token,data,taskId)=>{
-	try{
-		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/task/upload-file/${taskId}`,data, {
-			headers: { Authorization: `Bearer ${token}` }
-		})
-		return res.data
-	}catch(err){
-		console.log(err)
-
+export const uploadFile = async (token, data, taskId) => {
+	try {
+		const res = await axios.post(
+			`${process.env.REACT_APP_SERVER_URL}/task/upload-file/${taskId}`,
+			data,
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
+		return res.data;
+	} catch (err) {
+		console.log(err);
 	}
-}
+};

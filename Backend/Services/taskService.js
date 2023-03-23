@@ -14,6 +14,5 @@ import Tasks from '../Model/taskModel.js';
 
     export const uploadTaskDocument =asyncHandler(async(taskId,fileName)=>{
         const task = await Tasks.findByIdAndUpdate(taskId,{file:fileName})
-        console.log(task)
         return task
     })

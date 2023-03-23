@@ -46,9 +46,7 @@ function EditContactForm(props) {
 	//form on submit function
 	const onSubmit = async (data) => {
 		try {
-			console.log(data);
 			const response = await contactService.updateContact(data);
-			console.log(response);
 			setOpenPopup(false);
 			getAllContacts();
 		} catch (err) {

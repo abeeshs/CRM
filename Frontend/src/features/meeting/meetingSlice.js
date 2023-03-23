@@ -28,5 +28,4 @@ export const adminMeetingSlice = createSlice({
 	}
 });
 export const { deleteMeeting, setNewMeeting } = adminMeetingSlice.actions;
-// export const meetingData = (state)=>state.newMeeting.meetings
 export default adminMeetingSlice.reducer;

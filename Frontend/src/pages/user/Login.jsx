@@ -23,7 +23,6 @@ export default function SignIn() {
 	const navigate = useNavigate();
 	const { token } = useSelector((state) => state.userAuth);
 
-	console.log({ token });
 	useEffect(() => {
 		if (token) {
 			navigate('/contacts');
@@ -49,10 +48,9 @@ export default function SignIn() {
 	const onSubmit = async (data) => {
 		try {
 			const response = await authService.userLogin(data);
-			console.log(response);
 
 			if (response) {
-				dispatch(setUserToken({ token: response.token, user: response.user}));
+				dispatch(setUserToken({ token: response.token, user: response.user }));
 				navigate('/contacts');
 			}
 		} catch (err) {

@@ -8,7 +8,7 @@ import {
 	TableBody,
 	TableCell,
 	TableContainer,
-	TableHead,
+	
 	TableRow,
 	TextField
 } from '@mui/material';
@@ -16,7 +16,6 @@ import { useState } from 'react';
 import * as taskService from '../../../services/taskService';
 import { useSelector } from 'react-redux';
 import './Table.css';
-// import public from '../../../../public'
 
 function TaskViewTable(props) {
 	const { viewTask, setViewTask } = props;
@@ -32,16 +31,15 @@ function TaskViewTable(props) {
 		const response = await taskService.changeTaskStatus(token, e.target.value, viewTask._id);
 	};
 	const handleChange = (e) => {
-
 		setFile(e.target.files[0]);
 	};
 	const submitHandler = async (e) => {
 		e.preventDefault();
-	
+
 		const data = new FormData();
-	
+
 		data.append('file', file);
-		
+
 		const response = await taskService.uploadFile(token, data, viewTask._id);
 	};
 	if (file) {
@@ -51,7 +49,6 @@ function TaskViewTable(props) {
 		<Box>
 			<TableContainer>
 				<Table sx={{ minWidth: 550 }}>
-					
 					<TableBody>
 						<TableRow key={'12'}>
 							<TableCell sx={{ fontWeight: 700 }}>Title</TableCell>

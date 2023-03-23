@@ -62,7 +62,6 @@ function CreateDeal({ getAllDeals }) {
 	};
 	const getAllUsers = async () => {
 		const userlist = await userService.viwAllusers(token);
-		console.log(userlist);
 		setUsers(userlist.users);
 		
 		
@@ -80,10 +79,8 @@ function CreateDeal({ getAllDeals }) {
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		console.log(data);
 		try {
 			const response = await dealService.createDeal(data);
-			console.log(response);
 
 			if (response.status === 'success') {
 				setState('right', false);
@@ -123,7 +120,7 @@ function CreateDeal({ getAllDeals }) {
 				sx={{ backgroundColor: 'white' }}
 				onSubmit={handleSubmit(onSubmit, onError)}>
 				{error ? <Alert severity="error">{error}</Alert> : ''}
-				{/* <form onSubmit={handleSubmit(onSubmit)}> */}
+				
 				<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
 					<InputLabel className="label" htmlFor="my-input">
 						Deal Name *

@@ -6,7 +6,7 @@ import * as userService from '../../services/userService';
 function Profile() {
 	const { token } = JSON.parse(localStorage.getItem('user'));
 	const [profileData, setProfileData] = useState({});
-    console.log(profileData.email)
+	console.log(profileData.email);
 	const handleProfile = (e) => {
 		const { name, value } = e.target;
 		var vl = {
@@ -17,7 +17,6 @@ function Profile() {
 	const getUserProfile = async () => {
 		try {
 			const response = await userService.getUserService(token);
-            console.log(response)
 			if (response.status === 'Success') {
 				setProfileData(response.user);
 			}
@@ -38,10 +37,6 @@ function Profile() {
 					width: '100%',
 					height: '650px',
 					border: '1px solid rgb(223, 227, 235)'
-					// display: 'flex',
-					// flexDirection:'column',
-					// justifyContent: 'space-between',
-					// alignItems: 'center',
 				}}>
 				<Box
 					sx={{

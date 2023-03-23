@@ -114,17 +114,7 @@ export default function TabsView({ title, description, participands }) {
 							</Box>
 						);
 					})}
-					{/* <Box sx={{ borderRight: '1px solid grey', width: '25%', height: '100%' }}>
-						<Box className="participant">
-							<Box>
-								<label>
-									Name & Email <span style={{ color: 'red' }}>*</span>
-								</label>
-							</Box>
-
-							<span>dsgdfgdfdgfg</span>
-						</Box>
-					</Box> */}
+					
 				</Box>
 			</TabPanel>
 		</Box>

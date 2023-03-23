@@ -8,8 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { meetingData } from '../../features/meeting/meetingSlice';
 import { setNewMeeting } from '../../features/meeting/meetingSlice';
 
-
-function Overview({ setMeetings,meetings }) {
+function Overview({ setMeetings, meetings }) {
 	const [admin, setAdmin] = useState({});
 	const dispatch = useDispatch();
 
@@ -29,10 +28,8 @@ function Overview({ setMeetings,meetings }) {
 	});
 	//form on submit function
 	const onSubmit = async (data) => {
-		// dispatch(setNewMeeting(data));
-		setMeetings(data)
+		setMeetings(data);
 	};
-	
 
 	const getAdminData = async () => {
 		const response = await adminService.getAdminDetails();
@@ -47,12 +44,6 @@ function Overview({ setMeetings,meetings }) {
 	return (
 		<Box
 			sx={{
-				// position:"absolute",
-				// top:"200px",
-				// bottom:"200px",
-				// overflow:"auto",
-				// left:'0',
-				// right:"0"
 				width: '100%',
 				height: '80vh',
 				display: 'flex',
@@ -82,8 +73,6 @@ function Overview({ setMeetings,meetings }) {
 						onSubmit={handleSubmit(onSubmit)}
 						style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 						<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
-							
-
 							<InputLabel className="input-label-f" htmlFor="my-input">
 								Organizer *
 							</InputLabel>
@@ -139,8 +128,8 @@ function Overview({ setMeetings,meetings }) {
 								helperText={errors.description ? errors.description.message : ''}
 								{...register('description')}
 							/>
-							
-						</Stack>{}
+						</Stack>
+						{}
 						<Button
 							type="submit"
 							className="meeting-btn"

@@ -10,8 +10,6 @@ import {
 } from '@mui/material';
 
 function UseTable(records, headCells, filterFn) {
-	// const classes =useStyle()
-
 	const pages = [5, 10, 25];
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPage] = useState(pages[page]);
@@ -29,7 +27,13 @@ function UseTable(records, headCells, filterFn) {
 
 	const TblHead = (props) => (
 		<TableHead sx={{ fontWeight: '800 !important' }}>
-			<TableRow sx={{ fontWeight: '900 !important', color: 'grey',border:'1px solid #EFF0F2',backgroundColor:'#EFF0F2 ' }}>
+			<TableRow
+				sx={{
+					fontWeight: '900 !important',
+					color: 'grey',
+					border: '1px solid #EFF0F2',
+					backgroundColor: '#EFF0F2 '
+				}}>
 				{headCells.map((headCell) => (
 					<TableCell key={headCell.id} sortDirection={orderBy === headCell.id ? order : false}>
 						<TableSortLabel

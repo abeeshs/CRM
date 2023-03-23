@@ -54,21 +54,8 @@ export const createContact = async (data) => {
 	} catch (error) {
 		console.log(error);
 
-		const message =
-			(error.response && error.response.data && error.response.data.message)
+		const message = error.response && error.response.data && error.response.data.message;
 		return message;
-		// 	toast.error(message)
-
-		// toast(message, {
-		// 	position: 'top-center',
-		// 	autoClose: 5000,
-		// 	hideProgressBar: true,
-		// 	closeOnClick: true,
-		// 	pauseOnHover: true,
-		// 	draggable: true,
-		// 	progress: undefined,
-		// 	theme: 'dark'
-		// });
 	}
 };
 
@@ -157,6 +144,7 @@ export const adminCreateContact = async (data) => {
 				headers: { Authorization: `Bearer ${token}` }
 			}
 		);
+		return response.data;
 	} catch (error) {
 		const message =
 			(error.response && error.response.data && error.response.data.message) ||

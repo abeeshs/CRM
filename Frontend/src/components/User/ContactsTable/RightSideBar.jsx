@@ -66,16 +66,13 @@ function RightSideBar({ getAllContacts,users }) {
 
 		setState({ ...state, [anchor]: open });
 
-		
 		getAllContacts();
 	};
 
 	//form on submit function
 	const onSubmit = async (data) => {
 		try {
-			console.log(data);
 			const response = await contactService.createContact(data);
-			console.log(response);
 			if (response && response.status === 'success') {
 				setState('right', false);
 				getAllContacts();

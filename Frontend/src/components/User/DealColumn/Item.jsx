@@ -3,7 +3,6 @@ import { Draggable } from 'react-beautiful-dnd';
 import LensIcon from '@mui/icons-material/Lens';
 
 function Item({ text, value, index }) {
-	console.log(text);
 	return (
 		<Draggable draggableId={text} index={index}>
 			{(provided) => (

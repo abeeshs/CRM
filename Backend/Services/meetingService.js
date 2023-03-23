@@ -22,8 +22,7 @@ export const deleteMeetingService = asyncHandler(async (meetingId) => {
 	return deletedMessage;
 });
 
-export const updateMeetingService = asyncHandler(async (meetingId,meeting) => {
-	const update = await Meetings.findByIdAndUpdate(meetingId,meeting);
+export const updateMeetingService = asyncHandler(async (meetingId, meeting) => {
+	const update = await Meetings.findByIdAndUpdate(meetingId, meeting);
 	return update;
 });
-

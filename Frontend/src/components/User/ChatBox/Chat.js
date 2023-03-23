@@ -10,12 +10,9 @@ import io from 'socket.io-client';
 const ENDPOINT = 'http://localhost:8000';
 var socket;
 var selectedChatCompare;
-// /const socket = io.connect('http://localhost:3001');
 
 function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
-	console.log({ selectedChat });
 	const user = useSelector((state) => state.userAuth.user);
-	//console.log(user);
 
 	useEffect(() => {
 		socket = io(ENDPOINT);
@@ -29,22 +26,17 @@ function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 	const [newMessage, setNewMessage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [socketConnected, setSocketConnected] = useState(false);
-	const [typing,setTyping]=useState(false)
-	const [isTyping,setIsTyping]=useState(false)
-
+	const [typing, setTyping] = useState(false);
+	const [isTyping, setIsTyping] = useState(false);
 
 	const getAllMessages = async () => {
 		try {
-			console.log(selectedChat._id)
 			setLoading(true);
 			const response = await chatService.getMessageService(selectedChat._id);
-			console.log(response)
-			console.log(messages)
 			setLoading(false);
 			socket.emit('join chat', selectedChat._id);
-			if (response.status &&response.status === "success") {
+			if (response.status && response.status === 'success') {
 				setMessages(response.messages);
-				//socket.emit('join chat', selectedChat._id);
 			}
 		} catch (err) {
 			console.log(err);
@@ -63,17 +55,12 @@ function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 					chatId: selectedChat._id
 				};
 				const response = await chatService.sendMessageService(data);
-				console.log(response);
 				if (response.status === 'success') {
-					console.log(messages);
 					if (messages.length > 0) {
-						console.log('/////////////////');
 						setMessages((state) => [...state, response.message]);
 					} else {
-						console.log('*************');
 						setMessages([response.message]);
 					}
-					console.log({ messages });
 				}
 				socket.emit('new message', response.message);
 			}
@@ -104,8 +91,13 @@ function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 					sx={{ width: '40%', border: '1px solid rgb(223, 227, 235)' }}>
 					<Box
 						className="chat-header"
-						sx={{ height: '50px', width: '100%', border: '1px solid rgb(223, 227, 235)',display:'flex',textAlign:'center' }}>
-						
+						sx={{
+							height: '50px',
+							width: '100%',
+							border: '1px solid rgb(223, 227, 235)',
+							display: 'flex',
+							textAlign: 'center'
+						}}>
 						<Box sx={{ display: 'flex', alignItems: 'center', pl: 2 }}>
 							<span style={{ color: 'grey' }}>
 								<AccountCircle />
@@ -132,7 +124,7 @@ function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 										<div className={e.sender._id === user._id ? 'message parker' : 'message stark'}>
 											{e.contend}
 										</div>
-										{/* <div className="message stark">hiiiii</div> */}
+										
 										<div></div>
 									</div>
 								);

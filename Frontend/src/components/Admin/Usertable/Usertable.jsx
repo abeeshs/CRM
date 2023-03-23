@@ -21,26 +21,6 @@ import {
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/system';
 
-// const columns = [
-// 	{ field: 'id', headerName: 'ID', width: 200 },
-// 	{ field: 'username', headerName: 'User Namwe', width: 200 },
-// 	{ field: 'email', headerName: 'Email', width: 200 },
-// 	{
-// 		field: 'mobile',
-// 		headerName: 'Mobile',
-// 		width: 200
-// 	},
-// 	{
-// 		field: 'createdAt',
-// 		headerName: 'Created On',
-// 		description: 'This column has a value getter and is not sortable.',
-// 		sortable: false,
-// 		width: 200
-// 		// valueGetter: (params) =>
-// 		//   `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-// 	}
-// ];
-
 const IOSSwitch = styled((props) => (
 	<Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({

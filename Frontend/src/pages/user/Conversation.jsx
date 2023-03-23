@@ -60,9 +60,7 @@ function Conversation() {
 		try {
 			setLoading(true);
 			const response = await chatService.searchUserService(search);
-			console.log(response);
 			if (response.status === 'success') {
-				console.log(response);
 				setLoading(false);
 				setSearchResult(response.user);
 			}
@@ -73,20 +71,17 @@ function Conversation() {
 
 	const accessChat = async (userId) => {
 		try {
-			console.log({ userId });
 			const response = await chatService.createChatService(userId);
-			console.log(userId);
 			if (response.status === 'success') {
 				if (!chats.find((c) => c._id === response.createdChat._id))
 					setSelectedChat(response.createdChat);
 				setChats((state) => [...state, response.createdChat]);
 			}
 		} catch (err) {
-			toast.error('Something went wrong');
+			toast.error('something went wrong');
 		}
 	};
 	const getSender = (loggedUser, users) => {
-		console.log(loggedUser, users)
 		return users[0]._id === loggedUser._id ? users[1].username : users[0].name;
 	};
 	return (

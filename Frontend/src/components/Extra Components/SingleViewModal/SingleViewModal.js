@@ -17,11 +17,18 @@ import EditMeeting from '../../User/Forms/EditMeeting/EditMeeting';
 import Popup from '../../User/Popup/Popup';
 
 function SingleViewModal(props) {
-	const { title, children, singleView, setSingleView, confirmDelete, selectedMeeting,getMeetings} = props;
+	const {
+		title,
+		children,
+		singleView,
+		setSingleView,
+		confirmDelete,
+		selectedMeeting,
+		getMeetings
+	} = props;
 	const [openModal, setOpenModal] = useState(false);
-	const [openPopup,setOpenPopup]= useState(false)
+	const [openPopup, setOpenPopup] = useState(false);
 	const handleClose = () => {};
-
 
 	return (
 		<div>
@@ -57,7 +64,7 @@ function SingleViewModal(props) {
 								':hover': { backgroundColor: '#d8dee9 ' }
 							}}
 							onClick={() => setOpenPopup(true)}>
-							<EditIcon  sx={{ color: 'black', fontSize: '19px' }} />
+							<EditIcon sx={{ color: 'black', fontSize: '19px' }} />
 						</Button>
 						<Button
 							size="small"
@@ -80,7 +87,6 @@ function SingleViewModal(props) {
 					message={'Do you want to delete this meeting ?'}
 					openModal={openModal}
 					confirmDelete={confirmDelete}
-					
 					setOpenModal={setOpenModal}></DeleteModal>
 
 				<Popup
@@ -88,7 +94,12 @@ function SingleViewModal(props) {
 					width={'md'}
 					openPopup={openPopup}
 					setOpenPopup={setOpenPopup}>
-					<EditMeeting selectedMeeting={selectedMeeting} setSingleView={setSingleView} getMeetings={getMeetings} setOpenPopup={setOpenPopup}/>
+					<EditMeeting
+						selectedMeeting={selectedMeeting}
+						setSingleView={setSingleView}
+						getMeetings={getMeetings}
+						setOpenPopup={setOpenPopup}
+					/>
 				</Popup>
 			</Dialog>
 		</div>

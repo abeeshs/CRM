@@ -5,8 +5,6 @@ import Table from '@mui/material/Table';
 import { useState } from 'react';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import TaskViewTable from './TaskViewTable';
-import * as taskService from '../../../services/taskService';
-import { useSelector } from 'react-redux';
 
 function PendingTaskTable({pendingTask}) {
 	const [rowsPerPage, setRowsPerPage] = useState(5);
