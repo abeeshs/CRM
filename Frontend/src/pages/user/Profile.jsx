@@ -1,18 +1,36 @@
-import { Avatar, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import {
+	Avatar,
+	Box,
+	List,
+	ListItem,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/User/Header/Header';
 import * as userService from '../../services/userService';
-
+import toast, { Toaster } from 'react-hot-toast';
 function Profile() {
 	const { token } = JSON.parse(localStorage.getItem('user'));
 	const [profileData, setProfileData] = useState({});
 	console.log(profileData.email);
-	const handleProfile = (e) => {
-		const { name, value } = e.target;
-		var vl = {
-			name: value
-		};
+	let obj = {};
+	const handleProfile = async (e) => {
+		var { name, value } = e.target;
+		obj[name] = value;
+		
+		const response = await userService.editProfileService(obj);
+		if (response.status === 'Success') {
+			toast.success('Profile updated successfully');
+		}
 	};
+	const handleChange=(e)=>{
+		let { name, value } = e.target;
+		
+		setProfileData(profileData[name]=value)
+
+	}
 	const getUserProfile = async () => {
 		try {
 			const response = await userService.getUserService(token);
@@ -31,7 +49,7 @@ function Profile() {
 	return (
 		<>
 			<Header />
-
+			<Toaster />
 			<Box
 				sx={{
 					width: '100%',
@@ -66,7 +84,7 @@ function Profile() {
 						display: 'flex',
 						marginTop: '10px',
 
-						 backgroundColor: '#26323'
+						backgroundColor: '#26323'
 					}}>
 					<Box
 						sx={{
@@ -75,25 +93,21 @@ function Profile() {
 							backgroundColor: '#263238',
 							border: '1px solid grey'
 						}}>
-							 <List>
-          <ListItem disablePadding>
-            <ListItemButton sx={{backgroundColor:'black',color:'white'}}>
-              <ListItemIcon>
-                {/* <InboxIcon /> */}
-              </ListItemIcon>
-              <ListItemText primary="General" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {/* <DraftsIcon /> */}
-              </ListItemIcon>
-              <ListItemText primary="" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-						</Box>
+						<List>
+							<ListItem disablePadding>
+								<ListItemButton sx={{ backgroundColor: 'black', color: 'white' }}>
+									<ListItemIcon>{/* <InboxIcon /> */}</ListItemIcon>
+									<ListItemText primary="General" />
+								</ListItemButton>
+							</ListItem>
+							<ListItem disablePadding>
+								<ListItemButton>
+									<ListItemIcon>{/* <DraftsIcon /> */}</ListItemIcon>
+									<ListItemText primary="" />
+								</ListItemButton>
+							</ListItem>
+						</List>
+					</Box>
 					<Box
 						sx={{
 							width: '85%',
@@ -105,7 +119,7 @@ function Profile() {
 							sx={{
 								width: '100%',
 								height: '70px',
-								borderBottom: '1px solid grey',
+
 								display: 'flex'
 							}}>
 							<Box
@@ -126,7 +140,7 @@ function Profile() {
 									justifyContent: 'center',
 									alignItems: 'center'
 								}}>
-								Abeesh
+								{profileData.username}
 							</Box>
 						</Box>
 						<Box
@@ -165,7 +179,12 @@ function Profile() {
 												</td>
 												<td className="dview-label">Contact number</td>
 												<td>
-													<input className="profile-input" value={profileData?.mobile} onBlur={handleProfile} />
+													<input
+														className="profile-input"
+														disabled
+														value={profileData?.mobile}
+														onBlur={handleProfile}
+													/>
 												</td>
 											</tr>
 											<tr>
@@ -175,12 +194,19 @@ function Profile() {
 														className="profile-input"
 														name="firstname"
 														onBlur={handleProfile}
+														onChange={handleChange}
 														value={profileData?.firstname}
 													/>
 												</td>
 												<td className="dview-label">Last Name</td>
 												<td>
-													<input className="profile-input" name="lastname" value={profileData?.lastname} onBlur={handleProfile} />
+													<input
+														className="profile-input"
+														name="lastname"
+														value={profileData?.lastname}
+														onChange={handleChange}
+														onBlur={handleProfile}
+													/>
 												</td>
 											</tr>
 										</tbody>

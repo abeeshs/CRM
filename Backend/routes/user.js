@@ -93,4 +93,6 @@ router.put('/meetings/update-meeting/:id',userProtect,meetingController.updateMe
 
 //================ PROFILE =================
 router.get("/profile",userProtect,userController.getProfile)
+router.put("/profile/edit-profile",userProtect,userController.editProfile)
+
 export default router;

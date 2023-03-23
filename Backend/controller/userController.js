@@ -226,3 +226,19 @@ export const getProfile = asyncHandler(async (req, res) => {
 		throw new Error('User not found');
 	}
 });
+
+
+export const editProfile = asyncHandler(async (req, res) => {
+	const userId =req.user._id 
+	const data= req.body
+	console.log(data)
+
+	const user = await User.findByIdAndUpdate(userId,data);
+	console.log({ user });
+	if (user) {
+		res.status(200).json({ status: 'Success', user });
+	} else {
+		res.status(400);
+		throw new Error('User not found');
+	}
+});
