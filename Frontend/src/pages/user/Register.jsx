@@ -30,14 +30,20 @@ export default function Register() {
 	const schema = yup.object().shape({
 		username: yup.string().required('Username is required'),
 		email: yup.string().email().required('Email is required'),
-		mobile: yup.string().required().matches(/^[789]\d{9}$/,'Is not in correct format'),
-		password: yup.string().min(3,'Password must be at least 3 characters').required('Password is required'),
+		mobile: yup
+			.string()
+			.required()
+			.matches(/^[789]\d{9}$/, 'Is not in correct format'),
+		password: yup
+			.string()
+			.min(3, 'Password must be at least 3 characters')
+			.required('Password is required'),
 		confirmPassword: yup
 			.string()
 			.oneOf([yup.ref('password'), null], "Password Didn't Match")
 			.required('Confirm Password is required')
 	});
-    
+
 	//setting schema
 	const {
 		register,
@@ -49,11 +55,10 @@ export default function Register() {
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		
 		const response = await authService.userRegister(data);
-		
+
 		if (response) {
-			dispatch(setUserToken({ token: response.token,username:response.username }));
+			dispatch(setUserToken({ token: response.token, user: response.user }));
 			navigate('/contacts');
 		}
 	};
@@ -79,7 +84,6 @@ export default function Register() {
 						Sign Up
 					</Typography>
 					<Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
-						
 						<TextField
 							margin="normal"
 							required
@@ -117,7 +121,7 @@ export default function Register() {
 							helperText={errors.mobile ? errors.mobile.message : ''}
 							{...register('mobile')}
 						/>
-                      
+
 						<TextField
 							margin="normal"
 							required
@@ -129,7 +133,6 @@ export default function Register() {
 							error={!!errors.password}
 							helperText={errors.password ? errors.password.message : ''}
 							{...register('password')}
-							
 						/>
 
 						<TextField
@@ -151,7 +154,6 @@ export default function Register() {
 						<Grid container>
 							<Grid item sx={{ mt: 3, mb: 2 }}>
 								<Link to="/">You have an account? Sign In</Link>
-								
 							</Grid>
 						</Grid>
 					</Box>

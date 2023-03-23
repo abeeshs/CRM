@@ -8,32 +8,8 @@ import {
 	TableRow,
 	TableSortLabel
 } from '@mui/material';
-// const theme = createTheme({
-// 	table: {
-// 		secondary: {
-// 			main: '#fffbf2'
-// 		}
-// 	}
-// });
-// const useStyle =makeStyles(theme=>({
-//   table:{
-//     marginTop:theme.spacing(3),
-//     '&thead th':{
-//       fontWeight:'600',
-//       color:theme.palette.primary.light,
-//     },
-//     '&tbody td':{
-//       fontWeight:'300',
 
-//     },
-//     '&tbody tr:hover':{
-//       bockgroundColor:'#fffbf2',
-//       cursor:'pointer'
-//     }
-//   }
-// }))
-
-function UseTable(records, headCells,filterFn) {
+function UseTable(records, headCells, filterFn) {
 	// const classes =useStyle()
 
 	const pages = [5, 10, 25];
@@ -42,7 +18,9 @@ function UseTable(records, headCells,filterFn) {
 	const [order, setOrder] = useState();
 	const [orderBy, setOrderBy] = useState();
 
-	const TblContainer = (props) => <Table sx={{margin:'5px',width:'98%',}}>{props.children}</Table>;
+	const TblContainer = (props) => (
+		<Table sx={{ margin: '5px', width: '98%' }}>{props.children}</Table>
+	);
 	const handleSortRequest = (cellId) => {
 		const isAsc = orderBy === cellId && order === 'asc';
 		setOrder(isAsc ? 'dec' : 'asc');
@@ -50,8 +28,8 @@ function UseTable(records, headCells,filterFn) {
 	};
 
 	const TblHead = (props) => (
-		<TableHead sx={{fontWeight:'800 !important'}}>
-			<TableRow sx={{fontWeight:'800 !important',color:"grey",backgroundColor:'#90a4ae'}}>
+		<TableHead sx={{ fontWeight: '800 !important' }}>
+			<TableRow sx={{ fontWeight: '900 !important', color: 'grey',border:'1px solid #EFF0F2',backgroundColor:'#EFF0F2 ' }}>
 				{headCells.map((headCell) => (
 					<TableCell key={headCell.id} sortDirection={orderBy === headCell.id ? order : false}>
 						<TableSortLabel

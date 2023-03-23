@@ -4,8 +4,11 @@ import *as userController from '../controller/userController.js'
 import *as contactController from '../controller/contactController.js'
 import *as taskController from '../controller/taskController.js'
 import *as dealController from  '../controller/dealController.js'
+import *as chatController from '../controller/chatController.js'
+import *as meetingController from '../controller/meetingController.js'
 import { userProtect } from '../middleware/authMiddleware.js';
 import multer from 'multer'
+
 // router.get('/',userController.userLogin)
 
 //================== SIGNUP ================
@@ -72,5 +75,22 @@ router.post('/deals/create-deal',userProtect,dealController.addNewDeal)
 //Update Deal
 router.put('/deals/update-deal/:id',userProtect,dealController.updateDeal)
 
+//================= CONVERSATION =======================
 
+router.post('/conversation/chat',userProtect,chatController.createChat)
+router.get('/conversation/chat',userProtect,chatController.getchats)
+router.get('/conversation/users',userProtect,chatController.searchUser)
+router.post('/conversation/message',userProtect,chatController.sendMessage)
+router.get('/conversation/message/:chatId',userProtect,chatController.allMessage)
+
+//================= MEETINGS =================
+ router.get('/meetings',userProtect,meetingController.getAllMeetings)
+router.post('/meetings/create-meeting',userProtect,meetingController.addNewMeeting)
+router.delete('/meetings/delete-meeting/:id',userProtect,meetingController.deleteMeeting)
+router.put('/meetings/update-meeting/:id',userProtect,meetingController.updateMeeting)
+
+
+
+//================ PROFILE =================
+router.get("/profile",userProtect,userController.getProfile)
 export default router;

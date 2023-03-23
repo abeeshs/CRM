@@ -2,15 +2,12 @@ import mongoose from 'mongoose';
 
 const meetingSchema = new mongoose.Schema(
 	{
-		created_by: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Admin',
-			required: true
-		},
 		organizer: {
-			type: String,
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
 			required: true
 		},
+		
 		event_title: {
 			type: String,
 			required: true
@@ -18,36 +15,35 @@ const meetingSchema = new mongoose.Schema(
 
 		location: {
 			type: String,
-			required: true
+			
 		},
 		description: {
 			type: String
-			// type: mongoose.Schema.Types.ObjectId,
-			// ref: 'Contact'
+			
 		},
-		team_members: {
+		participands: {
 			type: [
 				{
 					memberId: {
 						type: mongoose.Schema.Types.ObjectId,
 						ref: 'User'
+					},
+					member:{
+						type:String
 					}
 				}
 			]
 		},
-		scheduling_title: {
-			type: String
+		start_date:{
+			type:String,
+			required:true
 		},
-		meeting_date: {
-			type: String
+		end_date:{
+			type:String,
+			required:true
 		},
-		time: {
-			type: String,
-			required: true
-		},
-		duration: {
-			type: String,
-			required: true
+		type:{
+			type:String
 		}
 	},
 	{
@@ -56,9 +52,9 @@ const meetingSchema = new mongoose.Schema(
 );
 
 meetingSchema.pre(/^find/, function () {
-	this.populate('team_members.memberId');
+	this.populate('participands.memberId');
 });
 meetingSchema.pre(/^save/, function () {
-	this.populate('team_members.memberId');
+	this.populate('participands.memberId');
 });
 export default mongoose.model('Meetings', meetingSchema);

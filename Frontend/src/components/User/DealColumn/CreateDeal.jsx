@@ -10,14 +10,14 @@ import {
 	TextField,
 	Typography
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './CreateDeal.css';
 import CloseIcon from '@mui/icons-material/Close';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
-
+import Alert from '@mui/material/Alert';
 import * as contactService from '../../../services/contactService.js';
 import * as userService from '../../../services/userService.js';
 import * as dealService from '../../../services/dealService.js';
@@ -28,8 +28,12 @@ function CreateDeal({ getAllDeals }) {
 		dealName: yup.string().required('Deal Name is required'),
 		dealStage: yup.string().required('Pipeline is required'),
 		closeDate: yup.string().required('Close Date is required'),
-		amount: yup.number().typeError('Amount must be a number').required('Amount is required'),
-		deal_owner: yup.string().required(),
+		amount: yup
+			.number()
+			.typeError('Amount must be a number')
+			.required('Amount is required')
+			.test('Is positive?','The number must be greater than 0', (value) => value > 0),
+		deal_owner: yup.string(),
 		priority: yup.string(),
 		contact: yup.string()
 	});
@@ -46,19 +50,22 @@ function CreateDeal({ getAllDeals }) {
 	const [state, setState] = useState({ right: false });
 	const [users, setUsers] = useState([]);
 	const [contacts, setContacts] = useState([]);
-	const [error,setErrors]=useState('')
+	const [error, setErrors] = useState('');
 
 	const { token } = useSelector((state) => state.userAuth);
 	const toggleDrawer = (anchor, open) => async (event) => {
 		if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
 			return;
 		}
-		
-		setState({ ...state, [anchor]: open });
 
+		setState({ ...state, [anchor]: open });
+	};
+	const getAllUsers = async () => {
 		const userlist = await userService.viwAllusers(token);
-		setUsers(userlist);
-		getAllContacts();
+		console.log(userlist);
+		setUsers(userlist.users);
+		
+		
 	};
 	const getAllContacts = async () => {
 		const response = await contactService.getAllContact();
@@ -66,24 +73,32 @@ function CreateDeal({ getAllDeals }) {
 			setContacts(response);
 		}
 	};
+	useEffect(() => {
+		getAllUsers();
+		getAllContacts();
+	}, []);
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		try{
-
-			console.log(data);
+		console.log(data);
+		try {
 			const response = await dealService.createDeal(data);
 			console.log(response);
-	
-			if (response) {
+
+			if (response.status === 'success') {
 				setState('right', false);
 				getAllDeals();
-	
-				
+				setErrors('');
+			} else {
+				setErrors(response.message);
 			}
-		}catch(err){
-
+		} catch (err) {
+			console.log(err);
 		}
+	};
+
+	const onError = async (err) => {
+		console.log(err);
 	};
 
 	const list = (anchor) => (
@@ -102,140 +117,154 @@ function CreateDeal({ getAllDeals }) {
 					/>
 				</Stack>
 			</Box>
-			<Box sx={{backgroundColor:'white'}}>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
-						<InputLabel className="label" htmlFor="my-input">
-							Deal Name *
-						</InputLabel>
-						<TextField
-							sx={{ width: 500 }}
-							
-							{...register('dealName')}
-							error={!!errors.dealName}
-							helperText={errors.dealName ? errors.dealName.message : ''}
-						/>
+			<Box
+				component="form"
+				noValidate
+				sx={{ backgroundColor: 'white' }}
+				onSubmit={handleSubmit(onSubmit, onError)}>
+				{error ? <Alert severity="error">{error}</Alert> : ''}
+				{/* <form onSubmit={handleSubmit(onSubmit)}> */}
+				<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
+					<InputLabel className="label" htmlFor="my-input">
+						Deal Name *
+					</InputLabel>
+					<TextField
+						type="text"
+						name="dealName"
+						id="dealName"
+						sx={{ width: 500 }}
+						{...register('dealName')}
+						error={!!errors.dealName}
+						helperText={errors.dealName ? errors.dealName.message : ''}
+					/>
 
-						<InputLabel className="label" htmlFor="my-input">
-							Deal Stage *
-						</InputLabel>
-						<Select
-							sx={{ m: 1, minWidth: 280 }}
-							labelId="demo-simple-select-autowidth-label"
-							id="dealStage"
-							onChange={onchange}
-							autoWidth
-							
-							error={!!errors.dealStage}
-							helperText={errors.dealStage ? errors.dealStage.message : ''}
-							{...register('dealStage')}>
-							<MenuItem value="">
-								<em>None</em>
-							</MenuItem>
-							<MenuItem value={'APPOINTMENT SCHEDULED'}>Appointment Scheduled</MenuItem>
-							<MenuItem value={'QUALIFIED TO BUY'}>Qualified to Buy</MenuItem>
-							<MenuItem value={'PRESENTATION SHEDULED'}>Presentation Scheduled</MenuItem>
-							<MenuItem value={'DECISION MAKER BOUGHT-IN'}>Decision Maker Bought In</MenuItem>
-							<MenuItem value={'CONTRACT SENT'}>Contract Send</MenuItem>
-							<MenuItem value={'CLOSED WON'}>Closed Won</MenuItem>
-							<MenuItem value={'CLOSED LOST'}>Closed Lost</MenuItem>
+					<InputLabel className="label" htmlFor="my-input">
+						Deal Stage *
+					</InputLabel>
+					<Select
+						sx={{ m: 1, minWidth: 280 }}
+						labelId="demo-simple-select-autowidth-label"
+						id="dealStage"
+						name="dealStage"
+						onChange={onchange}
+						autoWidth
+						error={!!errors.dealStage}
+						helperText={errors.dealStage ? errors.dealStage.message : ''}
+						{...register('dealStage')}>
+						<MenuItem value="">
+							<em>None</em>
+						</MenuItem>
+						<MenuItem value={'APPOINTMENT SCHEDULED'}>Appointment Scheduled</MenuItem>
+						<MenuItem value={'QUALIFIED TO BUY'}>Qualified to Buy</MenuItem>
+						<MenuItem value={'PRESENTATION SHEDULED'}>Presentation Scheduled</MenuItem>
+						<MenuItem value={'DECISION MAKER BOUGHT-IN'}>Decision Maker Bought In</MenuItem>
+						<MenuItem value={'CONTRACT SENT'}>Contract Send</MenuItem>
+						<MenuItem value={'CLOSED WON'}>Closed Won</MenuItem>
+						<MenuItem value={'CLOSED LOST'}>Closed Lost</MenuItem>
+					</Select>
 
-							
-						</Select>
+					<InputLabel className="label" htmlFor="my-input">
+						Amount *
+					</InputLabel>
+					<TextField
+						sx={{ width: 500 }}
+						type="text"
+						name="amount"
+						error={!!errors.amount}
+						helperText={errors.amount ? errors.amount.message : ''}
+						{...register('amount')}
+					/>
 
-						<InputLabel className="label" htmlFor="my-input">
-							Amount *
-						</InputLabel>
-						<TextField
-							sx={{ width: 500 }}
-							name="amount"
-							error={!!errors.amount}
-							helperText={errors.amount ? errors.amount.message : ''}
-							{...register('amount')}
-						/>
+					<InputLabel className="label" htmlFor="my-input">
+						Close Date
+					</InputLabel>
+					<TextField
+						id="outlined-basic"
+						className="outlined-basic"
+						variant="outlined"
+						fullWidth
+						type="date"
+						name="closeDate"
+						error={!!errors.closeDate}
+						helperText={errors.closeDate ? errors.closeDate.message : ''}
+						{...register('closeDate')}
+					/>
+					<InputLabel className="label" htmlFor="my-input">
+						Deal Owner
+					</InputLabel>
+					<Select
+						sx={{ m: 1, minWidth: 280 }}
+						labelId="demo-simple-select-autowidth-label"
+						id="dealOwner"
+						onChange={onchange}
+						autoWidth
+						name="dealOwner"
+						error={!!errors.dealOwner}
+						helperText={errors.dealOwner ? errors.dealOwner.message : ''}
+						{...register('dealOwner')}>
+						<MenuItem value="">
+							<em>None</em>
+						</MenuItem>
 
-						<InputLabel className="label" htmlFor="my-input">
-							Close Date
-						</InputLabel>
-						<TextField
-							id="outlined-basic"
-							className="outlined-basic"
-							variant="outlined"
-							fullWidth
-							type="date"
-							name="closeDate"
-							error={!!errors.closeDate}
-							helperText={errors.closeDate ? errors.closeDate.message : ''}
-							{...register('closeDate')}
-						/>
-						<InputLabel className="label" htmlFor="my-input">
-							Deal Owner
-						</InputLabel>
-						<Select
-							sx={{ m: 1, minWidth: 280 }}
-							labelId="demo-simple-select-autowidth-label"
-							id="dealOwner"
-							onChange={onchange}
-							autoWidth
-							name="dealOwner"
-							error={!!errors.dealOwner}
-							helperText={errors.dealOwner ? errors.dealOwner.message : ''}
-							{...register('dealOwner')}>
-							<MenuItem value="">
-								<em>None</em>
-							</MenuItem>
+						{users?.map((user) => {
+							return (
+								<MenuItem key={user._id} value={user._id}>
+									{user?.username}
+								</MenuItem>
+							);
+						})}
+					</Select>
 
-							{users?.map((user) => {
-								return <MenuItem value={user._id}>{user?.username}</MenuItem>;
-							})}
-						</Select>
-
-						<InputLabel className="label" htmlFor="my-input">
-							Priority
-						</InputLabel>
-						<Select
-							sx={{ m: 1, minWidth: 280 }}
-							labelId="demo-simple-select-autowidth-label"
-							id="priority"
-							onChange={onchange}
-							autoWidth
-							name="priority"
-							error={!!errors.priority}
-							helperText={errors.priority ? errors.priority.message : ''}
-							{...register('priority')}>
-							<MenuItem value="">
-								<em>None</em>
-							</MenuItem>
-							<MenuItem value={'Low'}>Low</MenuItem>
-							<MenuItem value={'Medium'}>Medium</MenuItem>
-							<MenuItem value={'High'}>High</MenuItem>
-						</Select>
-						<InputLabel className="label" htmlFor="my-input">
-							Contact
-						</InputLabel>
-						<Select
-							sx={{ m: 1 }}
-							labelId="demo-simple-select-autowidth-label"
-							id="demo-simple-select-autowidth"
-							onChange={onchange}
-							autoWidth
-							name="contact"
-							error={!!errors.contact}
-							helperText={errors.contact ? errors.contact.message : ''}
-							{...register('contact')}>
-							<MenuItem value="">
-								<em>None</em>
-							</MenuItem>
-							{contacts.map((item) => {
-								return <MenuItem value={item._id}> {item.firstname}</MenuItem>;
-							})}
-						</Select>
-					</Stack>
-					<Button type="submit" className="button-color" style={{ color: 'white', margin: '25px' }}>
-						{' '}
-						Create
-					</Button>
-				</form>
+					<InputLabel className="label" htmlFor="my-input">
+						Priority
+					</InputLabel>
+					<Select
+						sx={{ m: 1, minWidth: 280 }}
+						labelId="demo-simple-select-autowidth-label"
+						id="priority"
+						onChange={onchange}
+						autoWidth
+						name="priority"
+						error={!!errors.priority}
+						helperText={errors.priority ? errors.priority.message : ''}
+						{...register('priority')}>
+						<MenuItem value="">
+							<em>None</em>
+						</MenuItem>
+						<MenuItem value={'Low'}>Low</MenuItem>
+						<MenuItem value={'Medium'}>Medium</MenuItem>
+						<MenuItem value={'High'}>High</MenuItem>
+					</Select>
+					<InputLabel className="label" htmlFor="my-input">
+						Contact
+					</InputLabel>
+					<Select
+						sx={{ m: 1 }}
+						labelId="demo-simple-select-autowidth-label"
+						id="demo-simple-select-autowidth"
+						onChange={onchange}
+						autoWidth
+						name="contact"
+						error={!!errors.contact}
+						helperText={errors.contact ? errors.contact.message : ''}
+						{...register('contact')}>
+						<MenuItem value="">
+							<em>None</em>
+						</MenuItem>
+						{contacts.map((item) => {
+							return (
+								<MenuItem key={item._id} value={item._id}>
+									{' '}
+									{item.firstname}
+								</MenuItem>
+							);
+						})}
+					</Select>
+				</Stack>
+				<Button type="submit" className="button-color" style={{ color: 'white', margin: '25px' }}>
+					Create
+				</Button>
+				{/* </form> */}
 			</Box>
 			<Divider />
 		</Box>
@@ -263,7 +292,6 @@ function CreateDeal({ getAllDeals }) {
 				<SwipeableDrawer
 					anchor={'right'}
 					open={state['right']}
-				
 					onOpen={toggleDrawer('right', true)}>
 					{list('right')}
 				</SwipeableDrawer>

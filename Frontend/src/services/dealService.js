@@ -22,8 +22,13 @@ export const createDeal = async (data) => {
 			headers: { Authorization: `Bearer ${token}` }
 		});
 		return result.data;
-	} catch (err) {
-		console.log(err);
+	} catch (error) {
+		const message =
+			(error.response && error.response.data && error.response.data.message) ||
+			error.message ||
+			error.toString();
+
+		return message;
 	}
 };
 

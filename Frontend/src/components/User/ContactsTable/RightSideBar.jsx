@@ -22,7 +22,8 @@ import { useNavigate } from 'react-router-dom';
 import * as contactService from '../../../services/contactService.js';
 import * as userService from '../../../services/userService.js';
 
-function RightSideBar({ getAllContacts }) {
+function RightSideBar({ getAllContacts,users }) {
+	console.log(users)
 	//schema for create contact form
 	const schema = yup.object().shape({
 		firstname: yup
@@ -34,12 +35,12 @@ function RightSideBar({ getAllContacts }) {
 			.required('Last Name is required')
 			.matches(/^(\S+$)/g, 'Name not in correct format'),
 		email: yup.string().email().required('Email is required'),
+		jobTitle: yup.string().required('Job title is required'),
 		mobile: yup
 			.string()
 			.required('Mobile is required')
 			.matches(/^[789]\d{9}$/, 'Is not in correct format'),
 		contactOwner: yup.string().required('Select the contact owner'),
-		jobTitle: yup.string(),
 		lifeCycle: yup.string(),
 		leadStatus: yup.string()
 	});
@@ -54,8 +55,8 @@ function RightSideBar({ getAllContacts }) {
 	});
 
 	const [state, setState] = React.useState({ right: false });
-	const [users, setUsers] = React.useState([]);
-	const [errorMessage,setErrorMessage]=useState('')
+	
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const { token } = useSelector((state) => state.userAuth);
 	const toggleDrawer = (anchor, open) => async (event) => {
@@ -65,35 +66,32 @@ function RightSideBar({ getAllContacts }) {
 
 		setState({ ...state, [anchor]: open });
 
-		const userlist = await userService.viwAllusers(token);
-		setUsers(userlist);
+		
 		getAllContacts();
 	};
 
 	//form on submit function
 	const onSubmit = async (data) => {
-		try{
+		try {
 			console.log(data);
-		const response = await contactService.createContact(data);
-		console.log(response);
-		if(response.status==="success"){
-			setState('right', false);
-			getAllContacts();
-			setErrorMessage('')
-		}else{
-			setErrorMessage(response)
+			const response = await contactService.createContact(data);
+			console.log(response);
+			if (response && response.status === 'success') {
+				setState('right', false);
+				getAllContacts();
+				setErrorMessage('');
+			} else {
+				setErrorMessage(response);
+			}
+		} catch (err) {
+			console.log(err);
 		}
-		
-
-		}catch(err){
-			console.log(err)
-
-		}
-		
 	};
 
 	const list = (anchor) => (
-		<Box sx={{ width: 550 }} role="presentation">
+		<Box
+			sx={{ width: 550, height: '100vh', backgroundColor: 'white !important' }}
+			role="presentation">
 			<Box className="button-color" sx={{ width: '100%', height: '70px', position: 'sticky' }}>
 				<Stack direction="row" justifyContent="space-between" padding="20px">
 					<Typography variant="h5" sx={{ color: 'white', fontWeight: '500' }}>
@@ -106,12 +104,10 @@ function RightSideBar({ getAllContacts }) {
 					/>
 				</Stack>
 			</Box>
-			<Box sx={{ backgroundColor: 'white !important' }}>
-				{errorMessage?<Alert severity="error">{errorMessage}</Alert>:''}
-			
+			{errorMessage ? <Alert severity="error">{errorMessage}</Alert> : ''}
+			<Box sx={{ backgroundColor: 'white !important', height: '90%', overflowY: 'scroll' }}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Stack spacing={1} justifyContent="center" sx={{ width: 500, paddingLeft: '15px' }}>
-					
 						<InputLabel className="label" htmlFor="my-input">
 							Email address
 						</InputLabel>

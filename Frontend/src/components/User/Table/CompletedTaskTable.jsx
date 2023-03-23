@@ -9,28 +9,11 @@ import { useSelector } from 'react-redux';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import TaskViewTable from './TaskViewTable'; 
 
-function CompletedTaskTable() {
+function CompletedTaskTable({completedTask}) {
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openPopup, setOpenPopup] = useState(false);
 	const [viewTask, setViewTask] = useState({});
-	const [completedTask, setCompletedTask] = useState([]);
-
-	const { token } = useSelector((state) => state.userAuth);
-	useEffect(()=>{
-		getCompletedTask()
-	},[])
-	const getCompletedTask = async () => {
-		try {
-			const response = await taskService.completedTask(token);
-			if (response) {
-				setCompletedTask(response);
-			} else {
-				console.log('Pending task empty');
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	
 	const handleOpen = (item) => {
 		setViewTask(item);
 		setOpenPopup(true);

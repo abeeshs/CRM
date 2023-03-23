@@ -19,11 +19,11 @@ export const getAllContact = asyncHandler(async (req, res) => {
 //-------------ADD NEW CONTACT--------------
 //Mathod - POST
 
-export const addNewContact = asyncHandler(async (req, res,next) => {
+export const addNewContact = asyncHandler(async (req, res, next) => {
 	const { email, mobile, firstname, lastname, contactOwner, jobTitle, lifeCycle, leadStatus } =
 		req.body.data;
-        console.log(req.body)
-	if (!email ||!mobile ||!firstname ||!lastname ||!contactOwner ||!jobTitle) {
+	console.log(req.body);
+	if (!email || !mobile || !firstname || !lastname || !contactOwner || !jobTitle) {
 		res.status(400);
 		throw new Error('All fields required');
 	} else {
@@ -40,7 +40,7 @@ export const addNewContact = asyncHandler(async (req, res,next) => {
 		};
 		const contact = await contactService.createContactService(newContact);
 		if (contact) {
-			res.status(200).json({ message: 'Contact created succesfully',status:"success" });
+			res.status(200).json({ message: 'Contact created succesfully', status: 'success' });
 		} else {
 			res.status(400);
 			throw new Error('Contact creation failed');

@@ -4,9 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const userToken = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
-	user: userToken ? userToken.username : null,
+	user: userToken ? userToken.user : null,
 	token: userToken ? userToken.token : null
-	
 };
 
 //Register admin
@@ -16,18 +15,20 @@ export const authSlice = createSlice({
 	initialState,
 	reducers: {
 		setUserToken(state, action) {
-			const { token, username } = action.payload;
+			const { token, user } = action.payload;
+			//state = { token, user };
+			state.token = token;
+			state.user = user;
 			localStorage.setItem(
 				'user',
 				JSON.stringify({
-                    token,
-					username
+					token,
+					user
 				})
 			);
-			state = { token, username };
 		},
 		deleteUserToken(state) {
-			state = { username: null, token: null };
+			state = { user: null, token: null };
 			localStorage.removeItem('user');
 		}
 	}
@@ -35,5 +36,3 @@ export const authSlice = createSlice({
 export const { deleteUserToken, setUserToken } = authSlice.actions;
 
 export default authSlice.reducer;
-
-

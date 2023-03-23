@@ -8,28 +8,11 @@ import TaskViewTable from './TaskViewTable';
 import * as taskService from '../../../services/taskService';
 import { useSelector } from 'react-redux';
 
-function PendingTaskTable() {
+function PendingTaskTable({pendingTask}) {
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openPopup, setOpenPopup] = useState(false);
 	const [viewTask, setViewTask] = useState({});
-	const [pendingTask, setPendingTask] = useState([]);
-
-	const { token } = useSelector((state) => state.userAuth);
-	useEffect(() => {
-		getPendingTask();
-	}, []);
-	const getPendingTask = async () => {
-		try {
-			const response = await taskService.getPendingTask(token);
-			if (response) {
-				setPendingTask(response);
-			} else {
-				console.log('Pending task empty');
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	
 	const handleOpen = (item) => {
 		setViewTask(item);
 		setOpenPopup(true);

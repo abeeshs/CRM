@@ -14,32 +14,9 @@ import {
 	Typography
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import * as userService from '../../../../services/userService';
 import * as contactService from '../../../../services/contactService';
-import Notification from '../../../Extra Components/Notification';
 function EditContactForm(props) {
-	const { updateContact, setOpenPopup, getAllContacts } = props;
-	console.log('updateContact');
-	console.log(updateContact);
-	const [users, setUsers] = useState([]);
-	const [notify,setNotify]=useState({isOpen:false,message:'',type:''})
-
-	const { token } = useSelector((state) => state.userAuth);
-	const getAllUsers = async (req, res) => {
-		try {
-			const allUsers = await userService.viwAllusers(token);
-			console.log('allUsers');
-			console.log(allUsers);
-			setUsers(allUsers);
-			
-		} catch (err) {
-			console.log(err);
-		}
-	};
-	useEffect(() => {
-		getAllUsers();
-		reset(updateContact);
-	}, []);
+	const { updateContact, setOpenPopup, getAllContacts, users } = props;
 
 	//schema for create contact form
 	const schema = yup.object().shape({
@@ -56,12 +33,15 @@ function EditContactForm(props) {
 	//setting schema
 	const {
 		register,
-		reset,
 		handleSubmit,
+		reset,
 		formState: { errors }
 	} = useForm({
 		resolver: yupResolver(schema)
 	});
+	useEffect(() => {
+		reset(updateContact);
+	}, [updateContact, reset]);
 
 	//form on submit function
 	const onSubmit = async (data) => {
@@ -71,11 +51,6 @@ function EditContactForm(props) {
 			console.log(response);
 			setOpenPopup(false);
 			getAllContacts();
-			setNotify({
-				isOpen:true,
-				message:"Contact updated succesfully",
-				type:'success'
-			})
 		} catch (err) {
 			console.log(err);
 		}
@@ -113,9 +88,12 @@ function EditContactForm(props) {
 							id="lastname"
 							label="Last Name"
 							name="lastname"
+							type="text"
 							focused
 							autoComplete="family-name"
 							{...register('lastname')}
+							error={!!errors.lastname}
+							helperText={errors.lastname ? errors.lastname.message : ''}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -153,12 +131,13 @@ function EditContactForm(props) {
 							id="outlined-select-currency"
 							select
 							label="Contact Owner"
-							defaultValue={updateContact?.contact_owner.username}>
-							{users?.map((option) => (
-								<MenuItem key={option?._id} value={option?.username}>
-									{option?.username}
-								</MenuItem>
-							))}
+							defaultValue={updateContact?.contact_owner?.username}>
+							{users &&
+								users.map((option) => (
+									<MenuItem key={option?._id} value={option?.username}>
+										{option?.username}
+									</MenuItem>
+								))}
 						</TextField>
 					</Grid>
 					<Grid item xs={12}>
@@ -172,7 +151,6 @@ function EditContactForm(props) {
 							autoComplete="jobTitle"
 							focused
 							{...register('jobTitle')}
-							value={updateContact.contact_owner.username}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -208,11 +186,11 @@ function EditContactForm(props) {
 						</TextField>
 					</Grid>
 				</Grid>
-				<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 ,backgroundColor:'black'}}>
+				<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: 'black' }}>
 					Update
 				</Button>
 			</Box>
-			<Notification notify={notify} setNotify={setNotify}/>
+			{/* <Notification notify={notify} setNotify={setNotify} /> */}
 		</Box>
 	);
 }

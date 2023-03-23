@@ -11,8 +11,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-//import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import * as userService from '../../../services/userService';
 import { Box } from '@mui/system';
@@ -34,10 +32,6 @@ import * as contactService from '../../../services/contactService';
 import { useSelector } from 'react-redux';
 import DeleteModal from '../../Extra Components/DeleteModal';
 import AdminTaskView from './AdminTaskView';
-import { grey } from '@mui/material/colors';
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
 
 const taskType = [
 	{ value: 'To-do', label: 'To-do' },
@@ -51,7 +45,6 @@ const priorityy = [
 ];
 
 export default function AdminTaskTable() {
-	const [rows, setRows] = useState([]);
 	const [deleteTask, setDeleteTask] = useState('');
 	const [tasks, setTasks] = useState([]);
 	const [editTask, setEditTask] = useState({});
@@ -187,7 +180,7 @@ export default function AdminTaskTable() {
 		setDeleteTask(id);
 		setOpenModal(true);
 	};
-	const confirmDeleteTask = async () => {
+	const confirmDelete = async () => {
 		try {
 			const response = await taskService.deleteTaskAdmin(token, deleteTask);
 			if (response) {
@@ -227,11 +220,22 @@ export default function AdminTaskTable() {
 							<TableCell>
 								<TableSortLabel>Title</TableSortLabel>
 							</TableCell>
-							<TableCell> <TableSortLabel>Task Type</TableSortLabel></TableCell>
-							<TableCell><TableSortLabel>Assigned To</TableSortLabel></TableCell>
-							<TableCell><TableSortLabel>Priority</TableSortLabel></TableCell>
-							<TableCell><TableSortLabel>Due Date</TableSortLabel></TableCell>
-							<TableCell><TableSortLabel>Task Status</TableSortLabel></TableCell>
+							<TableCell>
+								{' '}
+								<TableSortLabel>Task Type</TableSortLabel>
+							</TableCell>
+							<TableCell>
+								<TableSortLabel>Assigned To</TableSortLabel>
+							</TableCell>
+							<TableCell>
+								<TableSortLabel>Priority</TableSortLabel>
+							</TableCell>
+							<TableCell>
+								<TableSortLabel>Due Date</TableSortLabel>
+							</TableCell>
+							<TableCell>
+								<TableSortLabel>Task Status</TableSortLabel>
+							</TableCell>
 							<TableCell>Action</TableCell>
 							<TableCell>Action</TableCell>
 						</TableRow>
@@ -284,13 +288,7 @@ export default function AdminTaskTable() {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			{/* <DataGrid
-				rows={rows}
-				columns={columns}
-				pageSize={5}
-				rowsPerPageOptions={[5]}
-				checkboxSelection
-			/> */}
+
 			<Dialog
 				open={open}
 				onClose={handleClose}
@@ -452,9 +450,11 @@ export default function AdminTaskTable() {
 				/>
 			</Popup>
 			<DeleteModal
+				title={'Delete Task'}
 				openModal={openModal}
 				setOpenModal={setOpenModal}
-				confirmDeleteTask={confirmDeleteTask}>
+				confirmDelete={confirmDelete}
+				message={'Do you want to delete this task ?'}>
 				<ModalBody />
 			</DeleteModal>
 
@@ -472,62 +472,3 @@ function ModalBody() {
 		</Box>
 	);
 }
-// function Priority() {
-// 	const [age, setAge] = React.useState('');
-
-// 	const handleChange = (event) => {
-// 		setAge(event.target.value);
-// 	};
-
-// 	return (
-// 		<div>
-// 			<FormControl sx={{ m: 1, minWidth: 280 }}>
-// 				<InputLabel id="demo-simple-select-autowidth-label">Priority</InputLabel>
-// 				<Select
-// 					labelId="demo-simple-select-autowidth-label"
-// 					id="demo-simple-select-autowidth"
-// 					value={age}
-// 					onChange={handleChange}
-// 					autoWidth
-// 					label="Age">
-// 					<MenuItem value="">
-// 						<em>None</em>
-// 					</MenuItem>
-// 					<MenuItem value={'Low'}>Low</MenuItem>
-// 					<MenuItem value={'Medium'}>Medium</MenuItem>
-// 					<MenuItem value={'High'}>High</MenuItem>
-// 				</Select>
-// 			</FormControl>
-// 		</div>
-// 	);
-// }
-
-// function Type() {
-// 	const [type, setType] = React.useState('');
-
-// 	const handleChange = (event) => {
-// 		setType(event.target.value);
-// 	};
-
-// 	return (
-// 		<div>
-// 			<FormControl sx={{ m: 1, minWidth: 280 }}>
-// 				<InputLabel id="demo-simple-select-autowidth-label">Type</InputLabel>
-// 				<Select
-// 					labelId="demo-simple-select-autowidth-label"
-// 					id="demo-simple-select-autowidth"
-// 					value={type}
-// 					onChange={handleChange}
-// 					autoWidth
-// 					label="Type">
-// 					<MenuItem value="">
-// 						<em>None</em>
-// 					</MenuItem>
-// 					<MenuItem value={'To-do'}>To-do</MenuItem>
-// 					<MenuItem value={'Call'}>Call</MenuItem>
-// 					<MenuItem value={'Email'}>Email</MenuItem>
-// 				</Select>
-// 			</FormControl>
-// 		</div>
-// 	);
-// }

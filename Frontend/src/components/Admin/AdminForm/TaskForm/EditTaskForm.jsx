@@ -163,7 +163,7 @@ function EditTaskForm(props) {
 				value={associated}
 				onChange={selectAssociated}
 				options={allContacts}
-				defaultValue={{ label: "vishnu", value: "vishnu" }}
+				defaultValue={{ label: 'vishnu', value: 'vishnu' }}
 			/>
 
 			{/* <Select

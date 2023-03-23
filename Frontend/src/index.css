@@ -157,7 +157,7 @@ div[data-testid='otp-input-root'] input:focus {
 	border:1px solid rgba(19, 40, 48, 0.314)
 	
 } */
-.page-heading{
+.page-heading {
 	font-family: var(
 		--uicomponents-font-family,
 		'Avenir Next W02',
@@ -167,9 +167,8 @@ div[data-testid='otp-input-root'] input:focus {
 		sans-serif
 	);
 	font-size: 19px;
-    font-weight: 600;
-    color: rgb(0, 145, 174);
-
+	font-weight: 600;
+	color: rgb(0, 145, 174);
 }
 
 .commen-font {
@@ -252,12 +251,13 @@ div[data-testid='otp-input-root'] input:focus {
 }
 .messages {
 	padding: 1rem;
-	background: #F7F7F7;
+	background: #f7f7f7;
 	flex-shrink: 2;
 	overflow-y: auto;
-	box-shadow: inset 0 2rem 2rem -2rem rgba(0, 0, 0, 0.05), inset 0 -2rem 2rem -2rem rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 2rem 2rem -2rem rgba(0, 0, 0, 0.05),
+		inset 0 -2rem 2rem -2rem rgba(0, 0, 0, 0.05);
 	height: 68%;
-  }
+}
 
 .messages .time {
 	font-size: 0.8rem;
@@ -280,7 +280,7 @@ div[data-testid='otp-input-root'] input:focus {
 	box-sizing: border-box;
 	padding: 0.5rem 1rem;
 	margin: 1rem;
-	background: #FFF;
+	background: #fff;
 	border-radius: 1.125rem 1.125rem 1.125rem 0;
 	min-height: 2.25rem;
 	width: -webkit-fit-content;
@@ -288,19 +288,51 @@ div[data-testid='otp-input-root'] input:focus {
 	width: fit-content;
 	max-width: 66%;
 	box-shadow: 0 0 2rem rgba(0, 0, 0, 0.075), 0rem 1rem 1rem -1rem rgba(0, 0, 0, 0.1);
-  }
-.contact-info{
+}
+.contact-info {
 	display: flex;
 	gap: 20px;
 	flex-direction: column;
-	font-family:'Lexend Deca', Helvetica, Arial, sans-serif; 
+	font-family: 'Lexend Deca', Helvetica, Arial, sans-serif;
 	font-size: 13px;
-	color: #516F90;
+	color: #516f90;
 	padding: 15px;
 }
-.contact-info p{
-	font-family:'Lexend Deca', Helvetica, Arial, sans-serif; 
+.contact-info p {
+	font-family: 'Lexend Deca', Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	color: black;
 	padding-left: 2px;
+}
+
+.mychat-select {
+	width: '100%';
+	background-color: grey;
+	box-sizing: 'border-box';
+	border: '1px solid rgb(223, 227, 235)';
+	border-radius: '5px';
+	text-align: 'center';
+}
+.basic-font-all {
+	font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+		Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+		'Noto Color Emoji';
+}
+.table-detailview td {
+	width: 380px;
+	height: 65px;
+	font-family: OpenSans-Regular, Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	color: black;
+	font-weight: 600;
+	
+}
+.dview-label {
+	color: #616161 !important;
+	font-weight: 500 !important;
+}
+.profile-input {
+	width: 280px;
+	height:50px ;
+	border: #eaf0f6;
 }

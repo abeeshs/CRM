@@ -12,6 +12,7 @@ function NewMeeting() {
 	const [users, setUsers] = useState([]);
 	const [activeStep, setActiveStep] = useState(0);
 	const [meetings,setMeetings]=useState()
+	const [NewMeetings,setNewMeetings]=useState([])
 	const steps = ['OVERVIEW', 'SCHEDULING', 'AUTOMATION'];
 	const nextStep = () => {
 		if (activeStep <2) setActiveStep((prev) => prev + 1);
@@ -81,7 +82,7 @@ function NewMeeting() {
 						<span style={{ fontSize: '18px' }}>Step {activeStep+1} of 3 </span>
 					</Box>
 				</Box>
-			{activeStep===0?<Overview setMeetings={setMeetings}/> :activeStep===1?  <Scheduling setMeetings={setMeetings} />:<Invitation setMeetings={setMeetings}/>}
+			{activeStep===0?<Overview meetings={meetings} setMeetings={setMeetings}/> :activeStep===1?  <Scheduling meetings={meetings} setMeetings={setMeetings} />:<Invitation meetings={meetings} setMeetings={setMeetings}/>}
 
 			</Box>
 			<footer
@@ -125,6 +126,7 @@ function NewMeeting() {
 						}}>
 						<Button
 							onClick={() => nextStep()}
+							disabled={meetings?false:true}
 							className="meeting-btn"
 							style={{ color: 'white', margin: '8px' }}
 							varient="contained">

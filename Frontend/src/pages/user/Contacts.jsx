@@ -15,14 +15,18 @@ import { useSelector } from 'react-redux';
 
 function Contacts() {
 	const navigate = useNavigate();
-	const user =
-		useSelector((state) => state.userAuth.token) || JSON.parse(localStorage.getItem('user'));
-	const token = user?.token;
+	const token =
+		useSelector((state) => state.userAuth.token) 
+	
+	console.log(token);
+	useEffect(()=>{
+		console.log("mmmmm")
+		if(!token){
+			navigate('/')
+		}
 
-	if (!token) {
-		
-		navigate('/');
-	}
+	},[])
+	
 	const [rightSIde, setRightSide] = useState(false);
 
 	const toggleDrawer = (status) => {
@@ -32,14 +36,9 @@ function Contacts() {
 
 	console.log('thsd hdgdgg');
 
-	console.log(token);
+	
 
-	// useEffect(()=>{
-	// 	if(!token){
-	// 		navigate('/')
-	// 	}
-
-	// },[])
+	
 
 	//right sidebar
 	function List({ anchor }) {

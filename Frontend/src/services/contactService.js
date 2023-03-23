@@ -48,15 +48,17 @@ export const createContact = async (data) => {
 				headers: { Authorization: `Bearer ${token}` }
 			}
 		);
+		console.log(res);
 
 		return res.data;
 	} catch (error) {
+		console.log(error);
+
 		const message =
-			(error.response && error.response.data && error.response.data.message) ||
-			error.message ||
-			error.toString();
-			return message
-			toast.error(message)
+			(error.response && error.response.data && error.response.data.message)
+		return message;
+		// 	toast.error(message)
+
 		// toast(message, {
 		// 	position: 'top-center',
 		// 	autoClose: 5000,
@@ -156,12 +158,11 @@ export const adminCreateContact = async (data) => {
 			}
 		);
 	} catch (error) {
-		
 		const message =
 			(error.response && error.response.data && error.response.data.message) ||
 			error.message ||
 			error.toString();
-			console.log(message)
+		console.log(message);
 		return message;
 	}
 };

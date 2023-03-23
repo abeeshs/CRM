@@ -27,7 +27,6 @@ export default function SignIn() {
 	useEffect(() => {
 		if (token) {
 			navigate('/contacts');
-		} else {
 		}
 	});
 
@@ -53,7 +52,7 @@ export default function SignIn() {
 			console.log(response);
 
 			if (response) {
-				dispatch(setUserToken({ token: response.token, username: response.username }));
+				dispatch(setUserToken({ token: response.token, user: response.user}));
 				navigate('/contacts');
 			}
 		} catch (err) {

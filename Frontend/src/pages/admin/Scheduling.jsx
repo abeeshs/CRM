@@ -10,13 +10,11 @@ import * as userService from '../../services/userService';
 import makeAnimated from 'react-select/animated';
 import Select from 'react-select';
 
-
-
-function Scheduling() {
+function Scheduling({ meetings, setMeetings }) {
 	const dispatch = useDispatch();
 	const [users, setUsers] = useState([]);
 	const [assignedUser, setAssignedUser] = useState([]);
-	
+
 	const schema = yup.object().shape({
 		member: yup.string(),
 		schedulingTitle: yup.string().required('Title is required'),
@@ -24,7 +22,6 @@ function Scheduling() {
 		time: yup.string().required('Time is required'),
 		duration: yup.string().required('Duration is required')
 	});
-	
 
 	const {
 		register,
@@ -38,12 +35,12 @@ function Scheduling() {
 		let members = assignedUser.map((item) => {
 			return {
 				memberId: item.value,
-				name:item.label
+				name: item.label
 			};
 		});
-		dispatch(setNewMeeting({data,members}));
-		localStorage.setItem("members",JSON.stringify(members))
-		
+		dispatch(setNewMeeting({ data, members }));
+		localStorage.setItem('members', JSON.stringify(members));
+		setMeetings((state) => [...state, data, members]);
 	};
 	const getUserDetails = async () => {
 		const response = await userService.getAllUser();
@@ -106,13 +103,14 @@ function Scheduling() {
 								onChange={selectMulti}
 								options={users}
 							/>
-							
 
 							<InputLabel className="input-label-f" htmlFor="my-input">
 								Scheduling Title
 							</InputLabel>
 							<TextField
 								size="small"
+								id="outlined-basic"
+								className="outlined-basic"
 								sx={{ backgroundColor: '#f5f8fa' }}
 								name="schedulingTitle"
 								error={!!errors.schedulingTitle}
@@ -143,8 +141,9 @@ function Scheduling() {
 										Time
 									</InputLabel>
 									<TextField
+										id="time"
 										size="small"
-										type='time'
+										type="time"
 										sx={{ backgroundColor: '#f5f8fa' }}
 										name="time"
 										error={!!errors.time}
@@ -157,6 +156,7 @@ function Scheduling() {
 										Duration
 									</InputLabel>
 									<TextField
+										id="duration"
 										size="small"
 										sx={{ backgroundColor: '#f5f8fa' }}
 										name="duration"

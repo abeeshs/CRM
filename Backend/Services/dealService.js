@@ -18,6 +18,8 @@ export const dealExist = asyncHandler(async(dealName)=>{
 
 // Create new deals
 export const dealCreateService = asyncHandler(async (data) => {
+	
+
 	const result = await Deals.create(data);
 	return result;
 });

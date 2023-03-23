@@ -9,11 +9,12 @@ import './Header.css';
 import * as authService from '../../../services/authService';
 import { useDispatch } from 'react-redux';
 import { deleteUserToken } from '../../../features/auth/userAuthSlice';
-
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 function Header() {
 	const navigate = useNavigate();
 	const [tableType, setTableType] = useState('');
 	const [open, setOpen] = useState(false);
+	const { user } = JSON.parse(localStorage.getItem('user'));
 	const dispatch = useDispatch();
 
 	const tableHandle = (type) => {
@@ -170,8 +171,12 @@ function Header() {
 							</Typography>
 						</Box>
 						<Box>
+							
 							<div onClick={() => setOpen(!open)} style={{ float: 'right' }}>
 								<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+							</div>
+							<div onClick={() => setOpen(!open)} style={{ float: 'right' }}>
+								<NotificationsNoneIcon sx={{color:'grey',m:1,mr:1}} />
 							</div>
 							<div className="menu-container">
 								<div className="menu-trigger"></div>
@@ -180,13 +185,13 @@ function Header() {
 										<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
 
 										<h3>
-											Abeesh
+											{user.username}
 											<br />
-											<span>abiabeesh@gmail.com</span>
+											<span>{user.email}</span>
 										</h3>
 									</div>
 									<ul>
-										<li className="dropdownItem">
+										<li className="dropdownItem" onClick={() => navigate('/profile')}>
 											<AccountCircleIcon />
 											<p>Account</p>
 										</li>
@@ -198,13 +203,10 @@ function Header() {
 											<AccountCircleIcon />
 											<p>Notification</p>
 										</li>
+										
 										<li className="dropdownItem">
 											<AccountCircleIcon />
-											<p>Privacy</p>
-										</li>
-										<li className="dropdownItem">
-											<AccountCircleIcon />
-											<p>setting</p>
+											<p>Setting</p>
 										</li>
 									</ul>
 									<div className="sign-out">

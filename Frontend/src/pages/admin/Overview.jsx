@@ -9,7 +9,7 @@ import { meetingData } from '../../features/meeting/meetingSlice';
 import { setNewMeeting } from '../../features/meeting/meetingSlice';
 
 
-function Overview({ setMeetings }) {
+function Overview({ setMeetings,meetings }) {
 	const [admin, setAdmin] = useState({});
 	const dispatch = useDispatch();
 
@@ -29,7 +29,8 @@ function Overview({ setMeetings }) {
 	});
 	//form on submit function
 	const onSubmit = async (data) => {
-		dispatch(setNewMeeting(data));
+		// dispatch(setNewMeeting(data));
+		setMeetings(data)
 	};
 	
 
@@ -139,7 +140,7 @@ function Overview({ setMeetings }) {
 								{...register('description')}
 							/>
 							
-						</Stack>
+						</Stack>{}
 						<Button
 							type="submit"
 							className="meeting-btn"

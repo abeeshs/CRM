@@ -37,7 +37,7 @@ export const userRegister = asyncHandler(async (req, res) => {
 		const user = await User.create(userDetails);
 		if (user) {
 			res.status(201).json({
-				name: user.username,
+				user: user,
 				email: user.email,
 				token: generateToken(user._id)
 			});
@@ -53,29 +53,29 @@ export const userRegister = asyncHandler(async (req, res) => {
 
 export const userLogin = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
-	console.log(req.body)
-	console.log("1")
+	console.log(req.body);
+	console.log('1');
 	if (!email || !password) {
 		res.status(400);
 		throw new Error('All fields required');
 	} else {
 		const userExist = await User.findOne({ email: email }).select('+password');
-		console.log(userExist)
+		console.log(userExist);
 		if (userExist && (await bcrypt.compare(req.body.password, userExist.password))) {
 			if (userExist.is_block) {
-				console.log("2")
+				console.log('2');
 				res.status(401);
 				throw new Error('Temporarly blocked by admin');
 			} else {
-				console.log("3")
+				console.log('3');
 				res.status(200).json({
 					message: 'Loggin Success',
 					token: generateToken(userExist._id),
-					username: userExist.username
+					user: userExist
 				});
 			}
 		} else {
-			console.log("4")
+			console.log('4');
 			res.status(401);
 			throw new Error('Incorrect email or password');
 		}
@@ -205,10 +205,24 @@ export const generateToken = (id) => {
 
 export const viewAllUser = asyncHandler(async (req, res) => {
 	const users = await User.find();
+	console.log({ users });
 	if (users) {
-		res.status(200).json(users);
+		res.status(200).json({ status: 'Success', users });
 	} else {
 		res.status(400);
 		throw new Error('Users not found');
+	}
+});
+
+//---------------- Get Profile ----------------
+
+export const getProfile = asyncHandler(async (req, res) => {
+	const user = await User.findOne({ _id: req.user._id });
+	console.log({ user });
+	if (user) {
+		res.status(200).json({ status: 'Success', user });
+	} else {
+		res.status(400);
+		throw new Error('User not found');
 	}
 });
