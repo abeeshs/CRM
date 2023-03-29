@@ -6,9 +6,13 @@ import multer from 'multer';
 //--------------- View all tasks assigned to this user ---------------
 
 export const getAllTask = asyncHandler(async (req, res) => {
-	const userId = req.user._id;
+	var userId = req.user._id;
+	var userId = userId.toString();
+	console.log(userId);
 
-	const allTask = await Task.find({ assigned_to: userId }).populate('created_by');
+	const allTask = await Task.find({ assigned_to: { $elemMatch: { id: userId } } }).populate(
+		'created_by'
+	);
 	if (allTask) {
 		res.status(200).json(allTask);
 	} else {
@@ -20,12 +24,16 @@ export const getAllTask = asyncHandler(async (req, res) => {
 //--------------- Get pending task ---------------
 
 export const getPendingTask = asyncHandler(async (req, res) => {
-	const userId = req.user._id;
-	const allTask = await Task.find({ assigned_to: userId, task_status: 'Pending' }).populate(
-		'created_by'
-	);
-	if (allTask) {
-		res.status(200).json(allTask);
+	var userId = req.user._id;
+	var userId = userId.toString();
+	const task = await Tasks.find({
+		task_status: 'Pending',
+		assigned_to: { $elemMatch: { id: userId } }
+	}).populate('created_by');
+
+	console.log(task);
+	if (task) {
+		res.status(200).json(task);
 	} else {
 		res.status(400);
 		throw new Error('Tasks not found');
@@ -134,7 +142,8 @@ export const aproveTask = asyncHandler(async (req, res) => {
 // Method- POSt
 export const getAllCompletedTask = asyncHandler(async (req, res) => {
 	const userId = req.user._id;
-	const completedTask = await taskService.getCompletedTask(userId);
+	const userid = userId.toString();
+	const completedTask = await taskService.getCompletedTask(userid);
 	if (completedTask) {
 		res.status(200).json(completedTask);
 	} else {
@@ -158,7 +167,7 @@ export const uploadTaskFile = asyncHandler(async (req, res) => {
 	const taskId = req.params.id;
 	const uploaded = await taskService.uploadTaskDocument(taskId, req.file.filename);
 	if (uploaded) {
-		res.status(200).json(uploaded);
+		res.status(200).json({status:'Success',uploaded});
 	} else {
 		res.status(400);
 		throw new Error('dsgdgs');

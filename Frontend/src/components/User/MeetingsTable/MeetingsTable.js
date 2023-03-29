@@ -25,8 +25,6 @@ function MeetingsTable({ meetings, getMeetings, users, setUsers }) {
 	const [singleView, setSingleView] = useState(false);
 	const [selectedMeeting, setSelectedMeeting] = useState({});
 
-	
-
 	const handleSearch = () => {};
 
 	const handleClick = (item) => {
@@ -56,7 +54,7 @@ function MeetingsTable({ meetings, getMeetings, users, setUsers }) {
 	return (
 		<>
 			<Toaster />
-			<Container maxWidth="xl" sx={{backgroundColor:'white',marginTop:'10px'}}>
+			<Container maxWidth="xl" sx={{ backgroundColor: 'white', marginTop: '10px' }}>
 				<Toolbar>
 					{/* <TextField
 						fullWidth
@@ -77,7 +75,7 @@ function MeetingsTable({ meetings, getMeetings, users, setUsers }) {
 						+ Add New
 					</Button>
 				</Toolbar>
-				<TblContainer >
+				<TblContainer>
 					<TblHead />
 					<TableBody>
 						{meetings?.map((item) => (

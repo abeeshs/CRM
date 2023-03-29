@@ -8,7 +8,6 @@ import {
 	TableBody,
 	TableCell,
 	TableContainer,
-	
 	TableRow,
 	TextField
 } from '@mui/material';
@@ -16,6 +15,7 @@ import { useState } from 'react';
 import * as taskService from '../../../services/taskService';
 import { useSelector } from 'react-redux';
 import './Table.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 function TaskViewTable(props) {
 	const { viewTask, setViewTask } = props;
@@ -41,12 +41,16 @@ function TaskViewTable(props) {
 		data.append('file', file);
 
 		const response = await taskService.uploadFile(token, data, viewTask._id);
+		if (response.status === 'Success') {
+			toast.success('File uploaded Succesfully');
+		}
 	};
 	if (file) {
 	}
 
 	return (
 		<Box>
+			<Toaster />
 			<TableContainer>
 				<Table sx={{ minWidth: 550 }}>
 					<TableBody>
@@ -130,17 +134,17 @@ function TaskViewTable(props) {
 
 					<p>Files</p>
 					<a href=""></a>
-
-					<a href={`${process.env.REACT_APP_SERVER_URL}/public/${viewTask.file}`}>
-						{' '}
-						<img
-							src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png"
-							style={{ width: '100px', height: '100px' }}
-							alt=""
-						/>
-					</a>
-					{/* <img src={`${process.env.REACT_APP_SERVER_URL}/public/${viewTask.file}`} alt="not available" /> */}
-					{/* <embed src={`${process.env.REACT_APP_SERVER_URL}/public/${viewTask.file}`} type='application/pdf' width="180px" height="130px" /> */}
+					{viewTask.file ? (
+						<a href={`${process.env.REACT_APP_SERVER_URL}/public/${viewTask.file}`}>
+							<img
+								src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png"
+								style={{ width: '100px', height: '100px' }}
+								alt=""
+							/>
+						</a>
+					) : (
+						''
+					)}
 				</div>
 			</TableContainer>
 		</Box>

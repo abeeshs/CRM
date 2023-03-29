@@ -10,6 +10,7 @@ export const searchUserService = async (search) => {
 				headers: { Authorization: `Bearer ${token}` }
 			}
 		);
+
 		return res.data;
 	} catch (err) {
 		console.log(err);
@@ -19,9 +20,13 @@ export const searchUserService = async (search) => {
 export const createChatService = async (userId) => {
 	try {
 		const { token } = JSON.parse(localStorage.getItem('user'));
-		const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/conversation/chat`, {userId}, {
-			headers: { Authorization: `Bearer ${token}` }
-		});
+		const res = await axios.post(
+			`${process.env.REACT_APP_SERVER_URL}/conversation/chat`,
+			{ userId },
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			}
+		);
 		return res.data;
 	} catch (err) {
 		console.log(err);

@@ -1,15 +1,18 @@
-import React from 'react'
-import Contacts from './Contacts'
-import Sidebar from '../../components/User/Sidebar/Sidebar'
-import Header from '../../components/User/Header/Header'
+import { Box } from '@mui/material';
+import React from 'react';
+import Footer from '../../components/User/Footer/Footer';
+import HomeHeader from '../../components/User/HomeHeader/HomeHeader';
+import HomeMid from '../../components/User/HomeMid/HomeMid';
+import HomeStart from '../../components/User/HomeStart/HomeStart';
 function Home() {
-  return (
-    <div>
-      <Sidebar/>
-
-     
-    </div>
-  )
+	return (
+		<Box >
+			<HomeHeader />
+			<HomeStart />
+			<HomeMid/>
+			<Footer/>
+		</Box>
+	);
 }
 
-export default Home
+export default Home;

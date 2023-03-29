@@ -16,7 +16,7 @@ import {
 import { useEffect, useState } from 'react';
 import * as contactService from '../../../../services/contactService';
 function EditContactForm(props) {
-	const { updateContact, setOpenPopup, getAllContacts, users } = props;
+	const { selectedContact, setOpenPopup, getAllContacts, users,setSingleView } = props;
 
 	//schema for create contact form
 	const schema = yup.object().shape({
@@ -40,14 +40,15 @@ function EditContactForm(props) {
 		resolver: yupResolver(schema)
 	});
 	useEffect(() => {
-		reset(updateContact);
-	}, [updateContact, reset]);
+		reset(selectedContact);
+	}, [selectedContact, reset]);
 
 	//form on submit function
 	const onSubmit = async (data) => {
 		try {
 			const response = await contactService.updateContact(data);
 			setOpenPopup(false);
+			setSingleView(false)
 			getAllContacts();
 		} catch (err) {
 			console.log(err);
@@ -129,7 +130,7 @@ function EditContactForm(props) {
 							id="outlined-select-currency"
 							select
 							label="Contact Owner"
-							defaultValue={updateContact?.contact_owner?.username}>
+							defaultValue={selectedContact?.contact_owner?.username}>
 							{users &&
 								users.map((option) => (
 									<MenuItem key={option?._id} value={option?.username}>
@@ -158,7 +159,7 @@ function EditContactForm(props) {
 							id="outlined-select-currency"
 							select
 							label="Life Cycle Stage"
-							defaultValue={updateContact.lifecycle_stage}
+							defaultValue={selectedContact.lifecycle_stage}
 							{...register('lifeCycle')}>
 							<MenuItem value={'Lead'}>Lead</MenuItem>
 							<MenuItem value={'Marketing Qualified Lead'}>Marketing Qualified Lead</MenuItem>
@@ -173,7 +174,7 @@ function EditContactForm(props) {
 							id="outlined-select-currency"
 							select
 							label="Lead Status"
-							defaultValue={updateContact.lead_status}
+							defaultValue={selectedContact.lead_status}
 							{...register('leadStatus')}>
 							<MenuItem value={'New'}>New</MenuItem>
 							<MenuItem value={'Open Deal'}>Open Deal</MenuItem>

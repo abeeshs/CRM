@@ -16,12 +16,13 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/User/Header/Header';
 import Chat from '../../components/User/ChatBox/Chat';
 import SearchIcon from '@mui/icons-material/Search';
-import { toast } from 'react-toastify';
+import toast, { Toaster } from 'react-hot-toast';
 import * as chatService from '../../services/chatService';
 import Loading from '../../components/Extra Components/Loading/Loading';
+import { deepOrange, deepPurple } from '@mui/material/colors';
+import dayjs from 'dayjs';
 
 function Conversation() {
-	
 	const [open, setOpen] = useState(false);
 	const [search, setSearch] = useState('');
 	const [searchResult, setSearchResult] = useState([]);
@@ -30,22 +31,26 @@ function Conversation() {
 	const [chats, setChats] = useState([]);
 	const [fetchAgain, setFetchAgain] = useState(false);
 	const [loggedUser, setLoggedUser] = useState();
+	const [sender,setSender]=useState();
 
+	console.log(selectedChat);
 	const getAllChats = async () => {
 		try {
 			const response = await chatService.getChatService();
+			console.log(response);
 
 			if (response.status === 'success') {
 				setChats(response.allChats);
 			}
 		} catch (err) {
-			toast.error('something went wrong');
+			console.log(err);
 		}
 	};
 
 	useEffect(() => {
 		getAllChats();
 		const user = JSON.parse(localStorage.getItem('user'));
+		console.log(user);
 		setLoggedUser(user.user);
 	}, []);
 
@@ -55,14 +60,17 @@ function Conversation() {
 
 	const handleSearch = async () => {
 		if (!search) {
-			toast.error('please enter text');
+			toast.error('Please enter text');
 		}
 		try {
 			setLoading(true);
 			const response = await chatService.searchUserService(search);
-			if (response.status === 'success') {
+			if (response && response.status === 'Success') {
 				setLoading(false);
 				setSearchResult(response.user);
+			} else {
+				setLoading(false);
+				toast.error('No users found');
 			}
 		} catch (err) {
 			console.log(err);
@@ -78,21 +86,27 @@ function Conversation() {
 				setChats((state) => [...state, response.createdChat]);
 			}
 		} catch (err) {
-			toast.error('something went wrong');
+			console.log(err);
 		}
 	};
 	const getSender = (loggedUser, users) => {
-		return users[0]._id === loggedUser._id ? users[1].username : users[0].name;
+		console.log(loggedUser, users);
+		return users[0]._id === loggedUser._id ? users[1].username : users[0].username;
 	};
+	const getSenderDetails = (loggedUser,users)=>{
+		return users[0]._id === loggedUser._id ? users[1]:users[0];
+	}
 	return (
 		<>
 			<Header />
+			<Toaster />
 			<Box
 				sx={{
 					height: '70px',
 					border: '1px solid rgb(223, 227, 235)',
 					display: 'flex',
-					alignItems: 'center'
+					alignItems: 'center',
+					backgroundColor: 'white'
 				}}>
 				<Box sx={{ padding: '55px' }}>
 					<p className="page-heading">Conversation</p>
@@ -103,7 +117,9 @@ function Conversation() {
 					height: '78vh',
 					width: '100%',
 					display: 'flex',
-					justifyContent: 'space-between'
+					justifyContent: 'space-between',
+					marginTop: '10px',
+					backgroundColor: 'white'
 				}}>
 				<Box sx={{ width: '17%', border: '1px solid rgb(223, 227, 235)' }}>
 					<List>
@@ -182,21 +198,54 @@ function Conversation() {
 						return (
 							<Box
 								key={item._id}
-								onClick={() => setSelectedChat({...item,name:getSender(loggedUser, item.users)})}
+								onClick={() =>
+									setSelectedChat({ ...item, user: getSenderDetails(loggedUser, item.users) })
+								}
 								sx={{
 									width: '95%',
 									height: '50px',
-									alignContent: 'center',
+									display: 'flex',
 									backgroundColor: 'rgb(229, 245, 248)',
 									boxSizing: 'border-box',
 									border: '1px solid rgb(223, 227, 235)',
 									borderRadius: '5px',
 									m: 1,
-									textAlign:'center'
+									alignItems: 'center'
 								}}>
-								<Typography className="commen-font" sx={{ p: 2, color: '#33475b' }}>
-									{item.isGroupChat ? getSender(loggedUser, item.users) : item.chatName}
-								</Typography>
+								<Box
+									sx={{
+										padding: '8px 8px',
+										width: '20%',
+										height: '100%',
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'center'
+									}}>
+									<Avatar sx={{ bgcolor: deepPurple[500] }}>A</Avatar>
+								</Box>
+								<Box sx={{ width: '100%' }}>
+									<Box
+										sx={{
+											display: 'flex',
+											justifyContent: 'space-between',
+											width: '100%',
+											height: '100%'
+										}}>
+										<Typography className="commen-font" sx={{ fontSize: '13px', color: 'black' }}>
+											{item.isGroupChat === true
+												? item.chatName
+												: getSender(loggedUser, item.users)}
+										</Typography>
+										<Typography className="commen-font" sx={{ paddingRight:'5px',fontSize: '10px', color: 'black' }}>
+											{dayjs(item.latestMessage?.createdAt).format('LT')}
+										</Typography>
+									</Box>
+									<Box>
+										<Typography className="commen-font" sx={{ fontSize: '11px', color: '#33475b' }}>
+											{item.latestMessage?.contend}
+										</Typography>
+									</Box>
+								</Box>
 							</Box>
 						);
 					})}
@@ -219,24 +268,17 @@ function Conversation() {
 					<Box className="contact-info">
 						<Box>
 							<span>Email</span>
-							<p>Email</p>
+							<p>{selectedChat?.user.email}</p>
 						</Box>
 						<Box>
 							<span>Phone Number</span>
-							<p>Email</p>
+							<p>{selectedChat?.user.mobile}</p>
 						</Box>
 						<Box>
-							<span>Contact Owner</span>
-							<p>Email</p>
+							<span>Created On</span>
+							<p>{dayjs(selectedChat?.user.createdAt).format('DD/MM/YYYY')}</p>
 						</Box>
-						<Box>
-							<span>Life Cycle Stage</span>
-							<p>Email</p>
-						</Box>
-						<Box>
-							<span>Lead Status</span>
-							<p>Email</p>
-						</Box>
+						
 					</Box>
 				</Box>
 			</Box>

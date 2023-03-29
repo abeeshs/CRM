@@ -142,10 +142,6 @@ export default function AdminTaskTable() {
 		newTask.type = types.value;
 		newTask.associated = associated.value;
 
-<<<<<<< HEAD
-=======
-		
->>>>>>> Profile
 		const data = await taskService.createTask(newTask);
 		if (data) {
 			handleClose();
@@ -195,10 +191,6 @@ export default function AdminTaskTable() {
 	//Change Status
 	const changeStatus = async (taskId) => {
 		try {
-<<<<<<< HEAD
-=======
-			
->>>>>>> Profile
 			const response = await taskService.changeTaskStatusAdmin(token, taskId);
 			if (response) {
 				setButtonDesable(true);
@@ -435,10 +427,6 @@ export default function AdminTaskTable() {
 							</Button>
 						</form>
 					</DialogContentText>
-<<<<<<< HEAD
-=======
-					
->>>>>>> Profile
 				</DialogContent>
 				<DialogActions></DialogActions>
 			</Dialog>

@@ -21,8 +21,8 @@ const types = [
 ];
 function MeetingForm({ users, setOpenPopup,getMeetings }) {
 	const animatedComponents = makeAnimated();
-	const [start, setStart] = useState(dayjs(new Date()));
-	const [end, setNewEnd] = useState(dayjs(new Date()));
+	const [start, setStart] = useState(dayjs(new Date()).add(1,"hour"));
+	const [end, setNewEnd] = useState(dayjs(new Date()).add(1,"hour"));
 	const [value, setValue] = useState('');
 	const [type, setType] = useState({ label: 'Medium', value: 'Medium' });
 	const [participands, setParticipands] = useState('');

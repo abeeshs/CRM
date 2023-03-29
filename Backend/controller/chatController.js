@@ -6,7 +6,8 @@ export const createChat = asyncHandler(async (req, res, next) => {
 	const { userId } = req.body;
 
 	if (!userId) {
-		console.log('no userId');
+		console.log('No userId');
+		return;
 	}
 	const isChat = await chatService.getExistChat(userId, req.user._id);
 
@@ -24,7 +25,7 @@ export const createChat = asyncHandler(async (req, res, next) => {
 		if (createdChat) {
 			res.status(200).json({ createdChat, status: 'success' });
 		} else {
-			throw new Error('Somethin went wrong');
+			throw new Error('Something went wrong');
 		}
 	}
 });
@@ -38,7 +39,7 @@ export const getchats = asyncHandler(async (req, res) => {
 	if (allChats.length > 0) {
 		res.status(200).json({ status: 'success', allChats });
 	} else {
-		throw new Error('something went wrong');
+		throw new Error('No Chats');
 	}
 });
 
@@ -55,9 +56,9 @@ export const searchUser = asyncHandler(async (req, res, next) => {
 
 	const user = await chatService.searchUserService(req.user._id, keyword);
 	if (user && user.length > 0) {
-		res.status(200).json({ status: 'success', user });
+		res.status(200).json({ status: 'Success', user });
 	} else {
-		throw new Error('no users found');
+		throw new Error('No users found');
 	}
 });
 

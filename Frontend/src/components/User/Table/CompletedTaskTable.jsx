@@ -30,7 +30,7 @@ function CompletedTaskTable({completedTask}) {
 							<TableCell sx={{color:'white'}}>Action</TableCell>
 						</TableRow>
 					</TableHead>
-					<TableBody>
+					<TableBody  sx={{backgroundColor:'white'}}>
 						{completedTask.map((item) => (
 							<TableRow key={item._id}>
 								<TableCell>{item.title}</TableCell>

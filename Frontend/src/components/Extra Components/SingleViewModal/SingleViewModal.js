@@ -42,42 +42,7 @@ function SingleViewModal(props) {
 						borderRadius: '15px'
 					}
 				}}>
-				<DialogTitle>
-					<div style={{ display: 'flex' }}>
-						<ArrowBackIcon
-							sx={{
-								padding: '5px',
-								padddingRight: '5px',
-								color: 'rgb(0, 145, 174)',
-								':hover': { color: 'red ', boxShadow: '2px' }
-							}}
-							onClick={() => setSingleView(false)}
-						/>
-						<Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-							{title}
-						</Typography>
-						<Button
-							sx={{
-								margin: '5px',
-								backgroundColor: '#f0f1f3',
-
-								':hover': { backgroundColor: '#d8dee9 ' }
-							}}
-							onClick={() => setOpenPopup(true)}>
-							<EditIcon sx={{ color: 'black', fontSize: '19px' }} />
-						</Button>
-						<Button
-							size="small"
-							sx={{
-								margin: '5px',
-								backgroundColor: '#f0f1f3',
-								':hover': { backgroundColor: '#d8dee9 ' }
-							}}
-							onClick={() => setOpenModal(true)}>
-							<DeleteOutlineIcon sx={{ color: 'black', fontSize: '19px' }} />
-						</Button>
-					</div>
-				</DialogTitle>
+				{/* x */}
 				<DialogContent dividers sx={{ backgroundColor: '#F9F9FA ', height: '500px' }}>
 					<div>{children}</div>
 				</DialogContent>

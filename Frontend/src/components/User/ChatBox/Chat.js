@@ -1,31 +1,32 @@
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Avatar, Box, Button, FormControl, TextField, Typography } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import * as chatService from '../../../services/chatService';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSelector } from 'react-redux';
 import io from 'socket.io-client';
-
+import dayjs from 'dayjs';
+import './Chat.css';
 const ENDPOINT = 'http://localhost:8000';
 var socket;
 var selectedChatCompare;
 
 function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 	const user = useSelector((state) => state.userAuth.user);
-
+	const [socketConnected, setSocketConnected] = useState(false);
 	useEffect(() => {
 		socket = io(ENDPOINT);
 		socket.emit('setup', user);
-		socket.on('connected', () => {
-			setSocketConnected(true);
-		});
+		socket.on('connected', () => setSocketConnected(true));
+		socket.on('typing', () => setIsTyping(true));
+		socket.on('stop typing', () => setIsTyping(false));
 	}, []);
 
 	const [messages, setMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState('');
 	const [loading, setLoading] = useState(false);
-	const [socketConnected, setSocketConnected] = useState(false);
+
 	const [typing, setTyping] = useState(false);
 	const [isTyping, setIsTyping] = useState(false);
 
@@ -44,11 +45,32 @@ function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 	};
 	const typingHandler = (e) => {
 		setNewMessage(e.target.value);
+		if (!socketConnected) return;
+		if (!typing) {
+			setTyping(true);
+			socket.emit('typing', selectedChat._id);
+		}
+		let lastTypingTime = new Date().getTime();
+		let timerLength = 3000;
+		setTimeout(() => {
+			var timeNow = new Date().getTime();
+			var timeDiff = timeNow - lastTypingTime;
+			if (timeDiff >= timerLength && typing) {
+				socket.emit('stop typing', selectedChat._id);
+				setTyping(false);
+			}
+		}, timerLength);
 	};
+	// const scroll = useRef(null);
+
+	// scroll.current.scrollIntoView({
+	// 	behavior: 'smooth'
+	// });
 
 	const sendMesage = async (e) => {
 		try {
 			if (e.key === 'Enter' && newMessage) {
+				socket.emit('stop typing', selectedChat._id);
 				setNewMessage('');
 				const data = {
 					content: newMessage,
@@ -102,7 +124,7 @@ function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 							<span style={{ color: 'grey' }}>
 								<AccountCircle />
 							</span>
-							<span className="sub-heading">{selectedChat.name}</span>
+							<span className="sub-heading">{selectedChat.user.username}</span>
 						</Box>
 					</Box>
 					<Box className="messages">
@@ -120,16 +142,39 @@ function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 						) : (
 							messages?.map((e) => {
 								return (
-									<div key={e._id}>
-										<div className={e.sender._id === user._id ? 'message parker' : 'message stark'}>
-											{e.contend}
+									<div>
+										<div className="msg-contend" key={e._id}>
+											{e.sender._id === user._id ? (
+												''
+											) : (
+												<div className="userdp">
+													<Avatar />
+													{/* <div className={e.sender._id === user._id ? 'r-time' : 'l-time'}>{dayjs(e.createdAt).format('LT')}</div> */}
+												</div>
+											)}
+											<div
+												className={e.sender._id === user._id ? 'message parker' : 'message stark'}>
+												{e.contend}
+											</div>
 										</div>
-										
-										<div></div>
+										<div className={e.sender._id === user._id ? 'r-time' : 'l-time'}>
+											{dayjs(e.createdAt).format('LT')}
+										</div>
 									</div>
 								);
 							})
 						)}
+						<div>
+							{isTyping ? (
+								<div className="message stark">
+									<div className="typing typing-1"></div>
+									<div className="typing typing-2"></div>
+									<div className="typing typing-3"></div>
+								</div>
+							) : (
+								''
+							)}
+						</div>
 					</Box>
 					<Box className="chat-footer">
 						<Box className="chat-footer-head">
@@ -151,9 +196,6 @@ function Chat({ selectedChat, setSelectedChat, fetchAgain, setFetchAgain }) {
 									value={newMessage}
 								/>
 							</FormControl>
-							<Button className="deal-btn" sx={{ backgroundColor: '#33475b' }} variant="contained">
-								send
-							</Button>
 						</Box>
 					</Box>
 				</Box>

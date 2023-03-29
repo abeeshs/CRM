@@ -33,7 +33,7 @@ function TaskTable(props) {
 							<TableCell sx={{ fontSize: '15PX', fontWeight: '500',color:'white' }}>Action</TableCell>
 						</TableRow>
 					</TableHead>
-					<TableBody>
+					<TableBody sx={{backgroundColor:'white'}}>
 						{userTask?.map((item) => (
 							<TableRow key={item._id}>
 								<TableCell>{item.title}</TableCell>

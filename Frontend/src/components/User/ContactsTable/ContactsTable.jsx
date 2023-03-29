@@ -18,40 +18,32 @@ import Popup from '../Popup/Popup.jsx';
 import Notification from '../../Extra Components/Notification.js';
 import { Box } from '@mui/system';
 import ContactDeleteModal from '../Popup/ContactDeleteModal.jsx';
-import DeleteModal from '../../Extra Components/DeleteModal.jsx';
 import * as userService from '../../../services/userService';
+import SingleViewModal from '../../Extra Components/SingleViewModal/SingleViewModal.js';
+import ViewContact from '../ViewContact/ViewContact.js';
+import dayjs from 'dayjs';
 
 export default function ContactsTable() {
 	const [rows, setRows] = useState([]);
-	const [openPopup, setOpenPopup] = useState(false);
-	const [updateContact, setUpdateContact] = useState({});
 	const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
-	const [openDeleteModal, setOpenDeleteModal] = useState(false);
-	const [deleteContactId, setDeleteContactId] = useState('');
 	const [users, setUsers] = useState([]);
+	const [selectedContact, setSelectedContact] = useState({});
+	const [singleView, setSingleView] = useState(false);
 
 	const { token } = JSON.parse(localStorage.getItem('user'));
 
 	const getAllUsers = async () => {
+		
 		const userlist = await userService.viwAllusers(token);
-
 		setUsers(userlist.users);
 	};
-	const closePopup = () => {};
 
-	const getEditContact = (contact) => {
-		setUpdateContact(contact);
-		setOpenPopup(true);
-	};
-	//modal state
-	const [open, setOpen] = useState(false);
-	const handleClickOpen = async () => {
-		setOpen(true);
+	const handleClick = (item) => {
+		console.log('object', item);
+		setSelectedContact(item);
+		setSingleView(true);
 	};
 
-	const handleClose = () => {
-		setOpen(false);
-	};
 	//get all contacts
 	const getAllcontacts = async () => {
 		try {
@@ -67,22 +59,6 @@ export default function ContactsTable() {
 		getAllUsers();
 		getAllcontacts();
 	}, []);
-
-	const deleteContactHandler = (id) => {
-		setDeleteContactId(id);
-		setOpenDeleteModal(true);
-	};
-	const confirmDeleteContact = async () => {
-		try {
-			const res = await contactService.deleteContact(deleteContactId);
-			if (res) {
-				setOpenDeleteModal(false);
-				getAllcontacts();
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	};
 
 	return (
 		<>
@@ -118,11 +94,7 @@ export default function ContactsTable() {
 									align="right">
 									CREATED AT
 								</TableCell>
-								<TableCell
-									sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }}
-									align="right">
-									OPTIONS
-								</TableCell>
+
 								<TableCell
 									sx={{ fontSize: '15PX', fontWeight: '500', color: 'white' }}
 									align="right"></TableCell>
@@ -132,6 +104,7 @@ export default function ContactsTable() {
 							{rows.map((row, index) => (
 								<TableRow
 									key={row.firstname}
+									onClick={() => handleClick(row)}
 									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 									<TableCell>{index + 1}</TableCell>
 									<TableCell component="th" scope="row">
@@ -140,24 +113,7 @@ export default function ContactsTable() {
 									<TableCell align="center">{row.email}</TableCell>
 									<TableCell align="right">{row.mobile}</TableCell>
 									<TableCell align="right">{row.contact_owner?.username}</TableCell>
-									<TableCell align="right">{row.createdAt}</TableCell>
-									<TableCell
-										align="right"
-										sx={{ display: 'flex', justifyContent: 'space-between' }}>
-										<Button
-											sx={{ width: '10px' }}
-											variant="outlined"
-											onClick={() => getEditContact(row)}>
-											<EditIcon />
-										</Button>
-										<Box sx={{ width: '5px' }}></Box>
-										<Button
-											variant="outlined"
-											color="error"
-											onClick={() => deleteContactHandler(row._id)}>
-											<ClearIcon />{' '}
-										</Button>
-									</TableCell>
+									<TableCell align="right">{dayjs(row.createdAt).format('DD/MM/YYYY')}</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
@@ -173,20 +129,18 @@ export default function ContactsTable() {
 					</div>
 				</Box>
 			)}
-			<Popup title={'Edit Contact'} openPopup={openPopup} setOpenPopup={setOpenPopup}>
-				<EditContactForm
-					users={users}
-					setOpenPopup={setOpenPopup}
-					updateContact={updateContact}
-					getAllContacts={getAllcontacts}
-				/>
-			</Popup>
+
 			<Notification notify={notify} setNotify={setNotify} />
-			<ContactDeleteModal
-				openDeleteModal={openDeleteModal}
-				setOpenDeleteModal={setOpenDeleteModal}
-				confirmDeleteContact={confirmDeleteContact}
-			/>
+
+			<SingleViewModal singleView={singleView} setSingleView={setSingleView}>
+				<ViewContact
+					singleView={singleView}
+					setSingleView={setSingleView}
+					selectedContact={selectedContact}
+					users={users}
+					getAllcontacts={getAllcontacts}
+				/>
+			</SingleViewModal>
 		</>
 	);
 }

@@ -181,10 +181,10 @@ export default function Sidebar() {
 						{[
 							{ name: 'Users', icon: <GroupIcon /> },
 							{ name: 'Conversation', icon: <ChatIcon /> },
-							{ name: 'Deals', icon: <ListAltIcon /> },
+							// { name: 'Deals', icon: <ListAltIcon /> },
 							{ name: 'Task', icon: <TaskIcon /> },
 							{ name: 'Contacts', icon: <PermContactCalendarIcon /> },
-							{ name: 'Meetings', icon: <GroupsIcon /> },
+							// { name: 'Meetings', icon: <GroupsIcon /> },
 							{ name: 'Settings', icon: <SettingsIcon /> }
 						].map((text, index) => (
 							<ListItem

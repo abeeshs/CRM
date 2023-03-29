@@ -14,10 +14,11 @@ function CompletedTask() {
 	const getCompletedTask = async () => {
 		try {
 			const response = await taskService.completedTask(token);
+			console.log(response)
 			if (response) {
 				setCompletedTask(response);
 			} else {
-				console.log('Pending task empty');
+				console.log('Completed task empty');
 			}
 		} catch (err) {
 			console.log(err);

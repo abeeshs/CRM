@@ -20,10 +20,10 @@ const handleValidationError = (err, res) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-	const statusCode = res.statusCode ? res.statusCode : 500;
+	const statusCode = err.statusCode ? err.statusCode : 500;
 	console.log(err);
 	try {
-		console.log('congrats you hit the error middleware');
+		console.log('congrats you hit the error middleware',statusCode);
 		if (err.name === 'ValidationError') return (err = handleValidationError(err, res));
 		if (err.code && err.code == 11000) return (err = handleDuplicateKeyError(err, res));
 

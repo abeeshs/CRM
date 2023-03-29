@@ -258,6 +258,9 @@ div[data-testid='otp-input-root'] input:focus {
 		inset 0 -2rem 2rem -2rem rgba(0, 0, 0, 0.05);
 	height: 68%;
 }
+.messages::-webkit-scrollbar {
+	display: none;
+}
 
 .messages .time {
 	font-size: 0.8rem;
@@ -325,7 +328,6 @@ div[data-testid='otp-input-root'] input:focus {
 	font-size: 13px;
 	color: black;
 	font-weight: 600;
-	
 }
 .dview-label {
 	color: #616161 !important;
@@ -333,6 +335,11 @@ div[data-testid='otp-input-root'] input:focus {
 }
 .profile-input {
 	width: 280px;
-	height:50px ;
+	height: 50px;
 	border: #eaf0f6;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }
