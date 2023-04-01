@@ -30,10 +30,10 @@ export default function ContactsTable() {
 	const [selectedContact, setSelectedContact] = useState({});
 	const [singleView, setSingleView] = useState(false);
 
-	const { token } = JSON.parse(localStorage.getItem('user'));
+	const user = JSON.parse(localStorage.getItem('user'));
+	let token = user?.token;
 
 	const getAllUsers = async () => {
-		
 		const userlist = await userService.viwAllusers(token);
 		setUsers(userlist.users);
 	};

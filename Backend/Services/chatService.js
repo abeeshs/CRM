@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Message from '../model/messageModel.js';
-import User from '../Model/userModel.js';
+import User from '../model/userModel.js';
 import Chat from '../model/chatModel.js';
 
 export const createChatService = asyncHandler(async (data) => {

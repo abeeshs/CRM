@@ -100,7 +100,7 @@ export default function TabsView({ title, description, participands }) {
 				<Box sx={{ width: '100%', height: '50px', display: 'flex' }}>
 					{participands?.map((item) => {
 						return (
-							<Box key={item.memberId._id} sx={{ borderRight: '1px solid grey', width: '25%', height: '100%' }}>
+							<Box key={item?.memberId?._id} sx={{ borderRight: '1px solid grey', width: '25%', height: '100%' }}>
 								<Box className="participant">
 									<Box>
 										<label>
@@ -108,8 +108,8 @@ export default function TabsView({ title, description, participands }) {
 										</label>
 									</Box>
 
-									<span>{item.member}</span>
-									<span>{item.memberId.email}</span>
+									<span>{item?.member}</span>
+									<span>{item?.memberId?.email}</span>
 								</Box>
 							</Box>
 						);

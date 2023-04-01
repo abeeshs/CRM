@@ -1,4 +1,3 @@
-
 import mongoose from 'mongoose';
 
 const adminSchema = new mongoose.Schema(
@@ -26,16 +25,11 @@ const adminSchema = new mongoose.Schema(
         },
         confirmPassword:{
             type:String,
-           
         },
-       
-
     },
     {
         timestamps:true
     }
-    
 )
-
 
 export default mongoose.model('Admin',adminSchema);

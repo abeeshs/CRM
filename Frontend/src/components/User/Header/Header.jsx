@@ -14,7 +14,8 @@ function Header() {
 	const navigate = useNavigate();
 	const [tableType, setTableType] = useState('');
 	const [open, setOpen] = useState(false);
-	const { user } = JSON.parse(localStorage.getItem('user'));
+	const user  = JSON.parse(localStorage.getItem('user'));
+	let userData= user?.user
 	const dispatch = useDispatch();
 
 	const tableHandle = (type) => {
@@ -24,9 +25,10 @@ function Header() {
 		let res = await authService.userLogout();
 		if (res) {
 			dispatch(deleteUserToken());
-			navigate('/');
+			navigate('/login');
 		}
 	};
+	
 	return (
 		<Box>
 			<AppBar position="static">
@@ -185,9 +187,9 @@ function Header() {
 										<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
 
 										<h3>
-											{user.username}
+											{user?.username}
 											<br />
-											<span>{user.email}</span>
+											<span>{user?.email}</span>
 										</h3>
 									</div>
 									<ul>

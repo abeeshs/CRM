@@ -1,10 +1,10 @@
-import Admin from '../Model/adminModel.js';
+import Admin from '../model/adminModel.js'
 import bcrypt from 'bcryptjs';
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
-import User from '../Model/userModel.js';
-import Tasks from '../Model/taskModel.js';
-import * as authService from '../Services/authService.js';
+import User from '../model/userModel.js';
+import Tasks from '../model/taskModel.js';
+import * as authService from '../services/authService.js';
 //-------------Admin Register-------------
 //method = POST
 export const adminRegister = asyncHandler(async (req, res) => {

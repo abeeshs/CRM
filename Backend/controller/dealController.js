@@ -1,4 +1,4 @@
-import * as dealService from '../Services/dealService.js';
+import * as dealService from '../services/dealService.js';
 import asyncHandler from 'express-async-handler';
 
 //View all deals

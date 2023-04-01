@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import Contact from '../Model/contactModel.js';
+import Contact from '../model/contactModel.js';
 import * as contactService from '../services/contactService.js';
 
 //------------VIEW CONTACT----------------

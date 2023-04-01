@@ -33,6 +33,17 @@ const userSchema =new mongoose.Schema(
         is_block:{
             type:Boolean,
             default:false
+        },
+        company_id:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Company'
+        },
+        role:{
+            type:String
+        },
+        user_type:{
+            type:String,
+            default:"owner"
         }
        
 

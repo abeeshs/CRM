@@ -1,4 +1,4 @@
-import Deals from '../Model/dealModel.js';
+import Deals from '../model/dealModel.js';
 import asyncHandler from 'express-async-handler';
 
 //get all deals

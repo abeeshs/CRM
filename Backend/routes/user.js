@@ -14,6 +14,9 @@ import multer from 'multer'
 //================== SIGNUP ================
 router.post('/',userController.userLogin)
 router.post ('/signup',userController.userRegister)
+router.post('/signup-validate',userController.checkUserExist)
+router.post('/signup/sent-otp',userController.sendEmailOtp)
+router.post('/signup/verify-otp',userController.varifySignUpOtp)
 router.post ('/logout',userController.userLogOut)
 router.post ('/otp-login',userController.otpLogin)
 router.post ('/varify-otp',userController.varifyOtp)
@@ -88,8 +91,6 @@ router.get('/conversation/message/:chatId',userProtect,chatController.allMessage
 router.post('/meetings/create-meeting',userProtect,meetingController.addNewMeeting)
 router.delete('/meetings/delete-meeting/:id',userProtect,meetingController.deleteMeeting)
 router.put('/meetings/update-meeting/:id',userProtect,meetingController.updateMeeting)
-
-
 
 //================ PROFILE =================
 router.get("/profile",userProtect,userController.getProfile)

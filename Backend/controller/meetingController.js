@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import * as meetingService from '../Services/meetingService.js';
+import * as meetingService from '../services/meetingService.js';
 
 export const addNewMeeting = asyncHandler(async (req, res) => {
 	const { name, startDate, endDate, participands, type, description } = req.body;

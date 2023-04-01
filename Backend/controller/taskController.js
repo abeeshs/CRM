@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
-import Task from '../Model/taskModel.js';
-import * as taskService from '../Services/taskService.js';
+import Task from '../model/taskModel.js'
+import * as taskService from '../services/taskService.js';
 import multer from 'multer';
 
 //--------------- View all tasks assigned to this user ---------------
@@ -26,7 +26,7 @@ export const getAllTask = asyncHandler(async (req, res) => {
 export const getPendingTask = asyncHandler(async (req, res) => {
 	var userId = req.user._id;
 	var userId = userId.toString();
-	const task = await Tasks.find({
+	const task = await Task.find({
 		task_status: 'Pending',
 		assigned_to: { $elemMatch: { id: userId } }
 	}).populate('created_by');

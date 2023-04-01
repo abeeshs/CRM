@@ -14,12 +14,6 @@ const contactSchema = new mongoose.Schema(
 			type: String,
 			required: [true, 'Please enter email address'],
 			unique:[true,'Email alredy exists'],
-			// validate: {
-			// 	validator: function(v){
-			// 		return this.model('Contact').findOne({ email: v }).then(user => !user)
-			// 	},
-			// 	message: props => `${props.value} is already used by another user`
-			// },
 		},
 		mobile: {
 			type: Number,
@@ -47,5 +41,4 @@ const contactSchema = new mongoose.Schema(
 		timestamps: true
 	}
 );
-
 export default mongoose.model('Contact', contactSchema);

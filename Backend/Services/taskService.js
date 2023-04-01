@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import Tasks from '../Model/taskModel.js';
+import Tasks from '../model/taskModel.js';
 
 // find all completed task
 export const getCompletedTask = asyncHandler(async (userId) => {

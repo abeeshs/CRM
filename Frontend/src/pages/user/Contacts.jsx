@@ -3,7 +3,13 @@ import Sidebar from '../../components/User/Sidebar/Sidebar';
 import ContactsTable from '../../components/User/ContactsTable/ContactsTable';
 import Box from '@mui/material/Box';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import {
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { useState } from 'react';
 import Popup from '../../components/User/Popup/Popup.jsx';
@@ -14,77 +20,78 @@ import { Container } from '@mui/system';
 import { useSelector } from 'react-redux';
 
 function Contacts() {
-	const navigate = useNavigate();
-	const token = useSelector((state) => state.userAuth.token);
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user'));
+  // const token = useSelector((state) => state.userAuth.token);
+  let token = user?.token;
+ 
 
-	console.log(token);
-	useEffect(() => {
-		if (!token) {
-			navigate('/');
-		}
-	}, []);
+  useEffect(() => {
+    if (token === undefined || token === null) {
+      console.log('object');
+      navigate('/');
+    }
+  }, []);
 
-	const [rightSIde, setRightSide] = useState(false);
+  const [rightSIde, setRightSide] = useState(false);
 
-	const toggleDrawer = (status) => {
-		console.log('status');
-		// setRightSide(status);
-	};
+  const toggleDrawer = (status) => {
+    // setRightSide(status);
+  };
 
-	console.log('thsd hdgdgg');
+  //right sidebar
+  function List({ anchor }) {
+    return (
+      <Box
+        sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+        role="presentation"
+      >
+        <List>
+          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon></ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+      </Box>
+    );
+  }
 
-	//right sidebar
-	function List({ anchor }) {
-		return (
-			<Box
-				sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-				role="presentation">
-				<List>
-					{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text) => (
-						<ListItem key={text} disablePadding>
-							<ListItemButton>
-								<ListItemIcon></ListItemIcon>
-								<ListItemText primary={text} />
-							</ListItemButton>
-						</ListItem>
-					))}
-				</List>
-				<Divider />
-			</Box>
-		);
-	}
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const opens = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const opens = Boolean(anchorEl);
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
+  //logOut user
+  const logoutUser = async () => {
+    const res = await userService.userLogOut();
+    console.log(res);
+    if (res) {
+      navigate('/login');
+      handleClose();
+    }
+  };
 
-	//logOut user
-	const logoutUser = async () => {
-		const res = await userService.userLogOut();
-		console.log(res);
-		if (res) {
-			navigate('/');
-			handleClose();
-		}
-	};
+  return (
+    <div>
+      <Header />
+      <Container maxWidth="xl">
+        <Typography component="div" variant="h6" marginTop="10px">
+          Contacts
+        </Typography>
 
-	return (
-		<div>
-			<Header />
-			<Container maxWidth="xl">
-				<Typography component="div" variant="h6" marginTop="10px">
-					Contacts
-				</Typography>
-
-				<ContactsTable />
-			</Container>
-		</div>
-	);
+        <ContactsTable />
+      </Container>
+    </div>
+  );
 }
 
 export default Contacts;

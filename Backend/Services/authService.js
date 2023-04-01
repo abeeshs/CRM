@@ -1,6 +1,6 @@
-import Otp from '../Model/otpModel.js';
+import Otp from '../model/otpModel.js';
 import asyncHandler from 'express-async-handler';
-import Admin from '../Model/adminModel.js';
+import Admin from '../model/adminModel.js';
 
 // otp login
 export const emailOtpLogin = asyncHandler(async (data) => {

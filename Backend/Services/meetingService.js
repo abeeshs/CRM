@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import Meetings from '../Model/meetingModel.js';
+import Meetings from '../model/meetingModel.js';
 
 export const creatMeetingService = asyncHandler(async (data) => {
 	const response = await Meetings.create(data);
